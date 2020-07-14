@@ -7,6 +7,8 @@ const prefix = Settings.prefix
 const Discord = require("discord.js")
 const client = new Discord.Client()
 
+let startdate = new Date()
+
 let helptext = `
 RTFM Time :partying_face:
 
@@ -17,14 +19,14 @@ let smallLetters = ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ"
 let smallNumbers = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]
 
 client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}!`)
+    console.log(`Logged in as ${client.user.tag}`)
 })
 
 client.on("message", msg => {
-    console.log(msg.author)
     if (!new RegExp(`^${prefix}[a-z]+`).test(msg)) return
     lastchannel = msg.channel
     let message = msg.content.substr(prefix.length)
+    console.log(msg)
     let splitmsg = message.split(" ")
     let args = splitmsg.slice(1)
     let argstring = message.substr(message.indexOf(" "))
@@ -33,8 +35,6 @@ client.on("message", msg => {
     //msg.channel.send("***S S H***")
 
     let failedbefore = false
-
-    console.log(message.match("^[a-z]+$"))
 
     switch (splitmsg[0]) {
         case "ping":
@@ -67,6 +67,14 @@ client.on("message", msg => {
             break
         case "uwu":
             msg.channel.send(argstring.replace(/[prl]/g, "w"))
+            break
+        case "uptime":
+            let diff = new Date() - startdate
+            let days = Math.floor(diff / (1000 * 60 * 60 * 24))
+            let hours = Math.floor(diff / (1000 * 60 * 60))
+            let mins = Math.floor(diff / (1000 * 60))
+            let seconds = Math.floor(diff / 1000)
+            msg.channel.send(`${days} days, ${hours} hours, ${mins} minutes, ${seconds} seconds`)
             break
         default:
             msg.channel.send("wdym")
