@@ -71,9 +71,9 @@ client.on("message", msg => {
         case "uptime":
             let diff = new Date() - startdate
             let days = Math.floor(diff / (1000 * 60 * 60 * 24))
-            let hours = Math.floor(diff / (1000 * 60 * 60))
-            let mins = Math.floor(diff / (1000 * 60))
-            let seconds = Math.floor(diff / 1000)
+            let hours = Math.floor(diff / (1000 * 60 * 60)) % 24
+            let mins = Math.floor(diff / (1000 * 60)) % 60
+            let seconds = Math.floor(diff / 1000) % 60
             msg.channel.send(`${days} days, ${hours} hours, ${mins} minutes, ${seconds} seconds`)
             break
         default:
