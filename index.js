@@ -26,7 +26,7 @@ client.on("message", msg => {
     if (!new RegExp(`^${prefix}[a-z]+`).test(msg)) return
     lastchannel = msg.channel
     let message = msg.content.substr(prefix.length)
-    console.log(msg)
+    console.log(message, msg.author.username)
     let splitmsg = message.split(" ")
     let args = splitmsg.slice(1)
     let argstring = message.substr(message.indexOf(" "))
