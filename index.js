@@ -107,7 +107,7 @@ client.on("message", async msg => {
             }
             if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
             connection = await lastseenchannel.join()
-            dispatcher = connection.play(ytdl(argstring == "" ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : argstring, { filter: "audioonly" }))
+            dispatcher = connection.play(ytdl(argstring.indexOf("youtube") < 0 ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : argstring, { filter: "audioonly" }))
             break
         case "pause":
             try{
@@ -143,7 +143,7 @@ client.on("message", async msg => {
 })
 
 function sendLongMessage (channel, message, markup = "") {
-    // message.replace("\n", "甜").match(/.{1,1500}/g).forEach(part => channel.send(markup + part.replace("甜", "\n") + markup))
+
     let chunksize = 1500
     let lastindex = 0
     let i = 0
