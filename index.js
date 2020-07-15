@@ -4,6 +4,7 @@ const fs = require("fs")
 const path = process.cwd()
 
 const Settings = JSON.parse(fs.readFileSync(path + "/settings.json").toString())
+const emojis = JSON.parse(fs.readFileSync(path + "/emoji.json").toString())
 const prefix = Settings.prefix
 
 const client = new Discord.Client()
@@ -13,9 +14,34 @@ let startdate = new Date()
 let connection, dispatcher, lastseenchannel
 
 let helptext = `
-RTFM Time :partying_face:
+***S S H***
 
-ping, help, rtfm, say, scream, whisper, mock
+All commands prefixed with \`${prefix}\`, without additional spaces.
+
+general commands:
+    without arguments:
+        ping
+        help
+        rtfm
+        uptime
+
+    with arguments:
+        say [text]
+        scream [text]
+        whisper [text]
+        mock [text]
+        uwu [text]
+        emoji [max emojis per word] [text]
+
+music commands:
+    without arguments:
+        pause
+        resume
+        stop
+
+    with arguments:
+        play [youtube url]
+        volume [percentage]
 `
 
 let smallLetters = ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", "ᵠ", "ʳ", "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ"]
@@ -49,7 +75,7 @@ client.on("message", async msg => {
             msg.channel.send(argstring)
             break
         case "scream":
-            msg.channel.send("***" + argstring.toUpperCase().split("").join(" ") + "***")
+            sendLongMessage(msg.channel, argstring.toUpperCase().split("").join(" "), "***")
             break
         case "whisper":
             msg.channel.send(argstring.split("").map(char => {
@@ -76,12 +102,12 @@ client.on("message", async msg => {
             break
         case "play":
             if (lastseenchannel == null && !msg.member.voice.channel) {
-                msg.channel.send("join a channel yourself blyat")
+                msg.channel.send("join a channel yourself blyat") 
                 return
             }
             if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
             connection = await lastseenchannel.join()
-            dispatcher = connection.play(ytdl(argstring, { filter: "audioonly" }))
+            dispatcher = connection.play(ytdl(argstring == "" ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : argstring, { filter: "audioonly" }))
             break
         case "pause":
             try{
@@ -96,13 +122,17 @@ client.on("message", async msg => {
         case "stop":
             try{
                 dispatcher.destroy()
+                msg.channel.send("aight, imma head out")
                 await lastseenchannel.leave()
             } catch(e) { msg.channel.send("Nothing playing!") }            
             break
         case "volume":
             try{
-                dispatcher.setVolume(argstring)
-            } catch(e) { msg.channel.send("Nothing playing!") }            
+                dispatcher.setVolume(argstring / 100)
+            } catch(e) { msg.channel.send("Nothing playing!") }
+            break
+        case "emoji":
+            sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
             break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
@@ -111,6 +141,29 @@ client.on("message", async msg => {
             break
     }
 })
+
+function sendLongMessage (channel, message, markup = "") {
+    // message.replace("\n", "甜").match(/.{1,1500}/g).forEach(part => channel.send(markup + part.replace("甜", "\n") + markup))
+    let chunksize = 1500
+    let lastindex = 0
+    let i = 0
+    while (i <= message.length) {
+        i+= chunksize
+        channel.send(markup + message.slice(lastindex, i) + markup)
+        lastindex = i
+        
+    } 
+
+}
+
+function getEmoji(keyword, maxemoji) {
+    let candidates = emojis.filter(entry => entry[1].join(" ").indexOf(keyword.toLowerCase()) >= 0)
+    if (candidates.length > 0) {
+        let a = ""
+        for (let i=0; i < maxemoji && i < candidates.length; i++) a += candidates[i][0]
+        return a
+    } else return ""
+}
 
 console.log("logging in")
 client.login(Settings.token)
