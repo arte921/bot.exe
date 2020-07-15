@@ -1,13 +1,16 @@
+const Discord = require("discord.js")
+const ytdl = require('ytdl-core')
 const fs = require("fs")
 const path = process.cwd()
 
 const Settings = JSON.parse(fs.readFileSync(path + "/settings.json").toString())
 const prefix = Settings.prefix
 
-const Discord = require("discord.js")
 const client = new Discord.Client()
 
 let startdate = new Date()
+
+let connection, dispatcher, lastseenchannel
 
 let helptext = `
 RTFM Time :partying_face:
@@ -22,7 +25,7 @@ client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`)
 })
 
-client.on("message", msg => {
+client.on("message", async msg => {
     if (!new RegExp(`^${prefix}[a-z]+`).test(msg)) return
     lastchannel = msg.channel
     let message = msg.content.substr(prefix.length)
@@ -30,11 +33,6 @@ client.on("message", msg => {
     let splitmsg = message.split(" ")
     let args = splitmsg.slice(1)
     let argstring = message.substr(message.indexOf(" "))
-
-
-    //msg.channel.send("***S S H***")
-
-    let failedbefore = false
 
     switch (splitmsg[0]) {
         case "ping":
@@ -70,16 +68,57 @@ client.on("message", msg => {
             break
         case "uptime":
             let diff = new Date() - startdate
-            let days = Math.floor(diff / (1000 * 60 * 60 * 24))
-            let hours = Math.floor(diff / (1000 * 60 * 60)) % 24
-            let mins = Math.floor(diff / (1000 * 60)) % 60
-            let seconds = Math.floor(diff / 1000) % 60
-            msg.channel.send(`${days} days, ${hours} hours, ${mins} minutes, ${seconds} seconds`)
+            let seconds = Math.floor(diff / 1000)
+            let mins = Math.floor(seconds / 60)
+            let hours = Math.floor(mins / 60)
+            let days = Math.floor(hours / 24)
+            msg.channel.send(`${days} days, ${hours % 24} hours, ${mins % 60} minutes, ${seconds % 60} seconds`)
+            break
+        case "play":
+            if (lastseenchannel == null && !msg.member.voice.channel) {
+                msg.channel.send("join a channel yourself blyat")
+                // console.log(lastseenchannel)
+                return
+            }
+            if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
+            connection = await lastseenchannel.join()
+            dispatcher = connection.play(ytdl("https://www.youtube.com/watch?v=dQw4w9WgXcQ", { filter: "audioonly" }))
+            break
+        case "pause":
+            try{
+                dispatcher.pause()
+            } catch(e) {
+                msg.channel.send(e)
+            }            
+            break
+        case "resume":
+            try{
+                dispatcher.resume()
+            } catch(e) {
+                msg.channel.send(e)
+            }            
+            break
+        case "stop":
+            try{
+                dispatcher.destroy()
+            } catch(e) {
+                msg.channel.send(e)
+            }            
+            break
+        case "volume":
+            try{
+                dispatcher.setVolume(argstring)
+            } catch(e) {
+                msg.channel.send(e)
+            }            
             break
         default:
-            msg.channel.send("wdym")
+            msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
+                return (index % 2 == 0) ? char.toLowerCase() : char.toUpperCase()
+            }).join(""))
             break
     }
 })
 
+console.log("logging in")
 client.login(Settings.token)
