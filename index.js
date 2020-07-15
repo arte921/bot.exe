@@ -77,40 +77,32 @@ client.on("message", async msg => {
         case "play":
             if (lastseenchannel == null && !msg.member.voice.channel) {
                 msg.channel.send("join a channel yourself blyat")
-                // console.log(lastseenchannel)
                 return
             }
             if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
             connection = await lastseenchannel.join()
-            dispatcher = connection.play(ytdl("https://www.youtube.com/watch?v=dQw4w9WgXcQ", { filter: "audioonly" }))
+            dispatcher = connection.play(ytdl(argstring, { filter: "audioonly" }))
             break
         case "pause":
             try{
                 dispatcher.pause()
-            } catch(e) {
-                msg.channel.send(e)
-            }            
+            } catch(e) { msg.channel.send("Nothing playing!") }            
             break
         case "resume":
             try{
                 dispatcher.resume()
-            } catch(e) {
-                msg.channel.send(e)
-            }            
+            } catch(e) { msg.channel.send("Nothing playing!") }
             break
         case "stop":
             try{
                 dispatcher.destroy()
-            } catch(e) {
-                msg.channel.send(e)
-            }            
+                await lastseenchannel.leave()
+            } catch(e) { msg.channel.send("Nothing playing!") }            
             break
         case "volume":
             try{
                 dispatcher.setVolume(argstring)
-            } catch(e) {
-                msg.channel.send(e)
-            }            
+            } catch(e) { msg.channel.send("Nothing playing!") }            
             break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
