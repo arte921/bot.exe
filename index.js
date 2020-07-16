@@ -52,7 +52,10 @@ client.on("ready", () => {
 })
 
 client.on("message", async msg => {
-    if (!new RegExp(`^${prefix}[a-z]+`).test(msg)) return
+    let reactions = msg.guild.emojis.cache.filter(emoji => /(communism|stalin|lenin|helpmeplz|nightmare|linus_touch_tips|trollee|haha|gentoo|kirottu_muoto|bororororororooororoororrrroooo|AhHiii|obamaprism)/.test(emoji.name))
+    reactions.forEach(emoji => msg.react(emoji))
+    //if (/(my|his|her)/.test (msg.content)) msg.channel.send(`our ${/[\n\r].*(my|his|her)*([^\n\r]*)/.exec(msg.content)[0]}* ${stalin}`)
+    if (!new RegExp(`^${prefix}[a-z]+`).test(msg) || msg.author.bot) return
     lastchannel = msg.channel
     let message = msg.content.substr(prefix.length)
     console.log(msg.author.tag, "   ", message)
@@ -102,17 +105,17 @@ client.on("message", async msg => {
             break
         case "play":
             if (lastseenchannel == null && !msg.member.voice.channel) {
-                msg.channel.send("join a channel yourself blyat") 
+                msg.channel.send("join a channel yourself blyat")
                 return
             }
             if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
             connection = await lastseenchannel.join()
-            dispatcher = connection.play(ytdl(argstring.indexOf("youtube") < 0 ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : argstring, { filter: "audioonly" }))
+            dispatcher = connection.play(ytdl(argstring.indexOf("youtube") < 0 ? "https://www.youtube.com/watch?v=6xUnSVTh8fI" : argstring, { filter: "audioonly" }))
             break
         case "pause":
             try{
                 dispatcher.pause()
-            } catch(e) { msg.channel.send("Nothing playing!") }            
+            } catch(e) { msg.channel.send("Nothing playing!") }
             break
         case "resume":
             try{
@@ -124,7 +127,7 @@ client.on("message", async msg => {
                 dispatcher.destroy()
                 msg.channel.send("aight, imma head out")
                 await lastseenchannel.leave()
-            } catch(e) { msg.channel.send("Nothing playing!") }            
+            } catch(e) { msg.channel.send("Nothing playing!") }
             break
         case "volume":
             try{
@@ -151,8 +154,8 @@ function sendLongMessage (channel, message, markup = "") {
         i+= chunksize
         channel.send(markup + message.slice(lastindex, i) + markup)
         lastindex = i
-        
-    } 
+
+    }
 
 }
 
