@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const ytdl = require('ytdl-core')
 const fs = require("fs")
+const { indexOf } = require("ffmpeg-static")
 const path = process.cwd()
 
 const Settings = JSON.parse(fs.readFileSync(path + "/settings.json").toString())
@@ -10,6 +11,8 @@ const prefix = Settings.prefix
 const client = new Discord.Client()
 
 let startdate = new Date()
+
+let react, commie = false
 
 let connection, dispatcher, lastseenchannel
 
@@ -52,10 +55,26 @@ client.on("ready", () => {
 })
 
 client.on("message", async msg => {
-    let reactions = msg.guild.emojis.cache.filter(emoji => /(communism|stalin|lenin|helpmeplz|nightmare|linus_touch_tips|trollee|haha|gentoo|kirottu_muoto|bororororororooororoororrrroooo|AhHiii|obamaprism)/.test(emoji.name))
-    reactions.forEach(emoji => msg.react(emoji))
-    //if (/(my|his|her)/.test (msg.content)) msg.channel.send(`our ${/[\n\r].*(my|his|her)*([^\n\r]*)/.exec(msg.content)[0]}* ${stalin}`)
-    if (!new RegExp(`^${prefix}[a-z]+`).test(msg) || msg.author.bot) return
+    // let mention = msg.mentions.members.first().id
+    // if (mention == client.id) msg.channel.send("whomst has summoned the almighty one?")
+    
+    if (react) {
+        let reactions = msg.guild.emojis.cache.filter(emoji => /(communism|stalin|lenin|helpmeplz|nightmare|linus_touch_tips|trollee|haha|gentoo|kirottu_muoto|bororororororooororoororrrroooo|AhHiii|obamaprism)/.test(emoji.name))
+        reactions.forEach(emoji => msg.react(emoji))
+    }
+    
+    let match = /(my|his|her|your|mine)/.exec(msg.content)
+    if (match && commie) {
+        console.log(match.index, match.length)
+        let noun = msg.content.slice(match.index + match.length + 1)
+        console.log(noun)
+        //noun = noun.slice(0, noun.indexOf(" ") + 1)
+        msg.channel.send(`our ${noun}* ${getCustomEmote(msg.guild.emojis.cache, "stalin")}`)
+    }
+
+
+    if (msg.author.bot) return
+    if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content)) return
     lastchannel = msg.channel
     let message = msg.content.substr(prefix.length)
     console.log(msg.author.tag, "   ", message)
@@ -75,7 +94,8 @@ client.on("message", async msg => {
             msg.channel.send(helptext)
             break
         case "say":
-            msg.channel.send(argstring)
+
+            msg.channel.send(argstring == ":)" ? "(:" : argstring)
             break
         case "scream":
             sendLongMessage(msg.channel, argstring.toUpperCase().split("").join(" "), "***")
@@ -110,7 +130,7 @@ client.on("message", async msg => {
             }
             if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
             connection = await lastseenchannel.join()
-            dispatcher = connection.play(ytdl(argstring.indexOf("youtube") < 0 ? "https://www.youtube.com/watch?v=6xUnSVTh8fI" : argstring, { filter: "audioonly" }))
+            dispatcher = connection.play(ytdl(argstring.indexOf("youtube") < 0 ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : argstring, { filter: "audioonly" }))
             break
         case "pause":
             try{
@@ -137,16 +157,21 @@ client.on("message", async msg => {
         case "emoji":
             sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
             break
+        case "react":
+            react = !react
+            break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
                 return (index % 2 == 0) ? char.toLowerCase() : char.toUpperCase()
             }).join(""))
             break
+        case "commie":
+            commie = !commie
+            break
     }
 })
 
 function sendLongMessage (channel, message, markup = "") {
-
     let chunksize = 1500
     let lastindex = 0
     let i = 0
@@ -156,8 +181,9 @@ function sendLongMessage (channel, message, markup = "") {
         lastindex = i
 
     }
-
 }
+
+let getCustomEmote = (cache, name) => cache.find(emoji => emoji.name == name)
 
 function getEmoji(keyword, maxemoji) {
     let candidates = emojis.filter(entry => entry[1].join(" ").indexOf(keyword.toLowerCase()) >= 0)
