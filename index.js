@@ -160,13 +160,13 @@ client.on("message", async msg => {
         case "react":
             react = !react
             break
+        case "commie":
+            commie = !commie
+            break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
                 return (index % 2 == 0) ? char.toLowerCase() : char.toUpperCase()
             }).join(""))
-            break
-        case "commie":
-            commie = !commie
             break
     }
 })
