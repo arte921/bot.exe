@@ -63,7 +63,7 @@ client.on("message", async msg => {
         reactions.forEach(emoji => msg.react(emoji))
     }
     
-    let match = /(my|his|her|your|mine)/.exec(msg.content)
+    let match = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content)
     if (match && commie) {
         console.log(match.index, match.length)
         let noun = msg.content.slice(match.index + match.length + 1)
@@ -162,6 +162,7 @@ client.on("message", async msg => {
             break
         case "commie":
             commie = !commie
+            msg.channel.send(commie)
             break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
