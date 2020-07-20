@@ -13,20 +13,18 @@ const client = new Discord.Client()
 
 let startdate = new Date()
 
-let react, commie, simp, interject, anthem = true
+let react, commie, simp, interject, anthem, spam = false
 
 let connection, dispatcher, lastseenchannel
 
 let smallLetters = ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", "ᵠ", "ʳ", "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ"]
 let smallNumbers = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]
 
-client.on("ready", () => {
-    console.log(`Logged in as ${client.user.tag}`)
-})
+client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
 
 client.on("message", async msg => {
 
-    if (msg.author.bot) return
+    if (msg.author.bot && !spam) return
     
     if (react) {
         let reactions = msg.guild.emojis.cache.filter(emoji => /(communism|stalin|lenin|helpmeplz|nightmare|linus_touch_tips|trollee|haha|gentoo|kirottu_muoto|bororororororooororoororrrroooo|AhHiii|obamaprism)/.test(emoji.name))
@@ -161,13 +159,14 @@ client.on("message", async msg => {
                     anthem = !anthem
                     msg.channel.send(anthem)
                     break
+                case "spam":
+                    spam = !spam
+                    msg.channel.send(spam)
+                    break
                 default:
                     msg.channel.send(`Failed to enable unit, unit ${argstring}.service does not exist.`)
                     break
             }
-            break
-        case "anthem":
-            msg.channel.send(copypasta.anthem)
             break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
