@@ -6,13 +6,14 @@ const path = process.cwd()
 
 const Settings = JSON.parse(fs.readFileSync(path + "/settings.json").toString())
 const emojis = JSON.parse(fs.readFileSync(path + "/emoji.json").toString())
+const copypasta = JSON.parse(fs.readFileSync(path + "/copypasta.json").toString())
 const prefix = Settings.prefix
 
 const client = new Discord.Client()
 
 let startdate = new Date()
 
-let react, commie = false
+let react, commie, simp = true
 
 let connection, dispatcher, lastseenchannel
 
@@ -55,32 +56,34 @@ client.on("ready", () => {
 })
 
 client.on("message", async msg => {
-    // let mention = msg.mentions.members.first().id
-    // if (mention == client.id) msg.channel.send("whomst has summoned the almighty one?")
+
+    if (msg.author.bot) return
     
     if (react) {
         let reactions = msg.guild.emojis.cache.filter(emoji => /(communism|stalin|lenin|helpmeplz|nightmare|linus_touch_tips|trollee|haha|gentoo|kirottu_muoto|bororororororooororoororrrroooo|AhHiii|obamaprism)/.test(emoji.name))
         reactions.forEach(emoji => msg.react(emoji))
     }
     
-    let match = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content)
-    if (match && commie) {
-        console.log(match.index, match.length)
-        let noun = msg.content.slice(match.index + match.length + 1)
-        console.log(noun)
-        //noun = noun.slice(0, noun.indexOf(" ") + 1)
-        msg.channel.send(`our ${noun}* ${getCustomEmote(msg.guild.emojis.cache, "stalin")}`)
+    if (commie) {
+        let commiematch = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content)
+        if(commiematch) {
+            let noun = msg.content.slice(commiematch.index + commiematch.length - 1)
+            msg.channel.send(`our ${noun}* ${getCustomEmote(msg.guild.emojis.cache, "stalin")}`)
+        }
+    }
+        
+    if (simp) {
+        let simpmatch = /(^| )(girl|female|woman|lady)($| )/.exec(msg.content)
+        if (simpmatch) msg.channel.send (copypasta.simp)
     }
 
-
-    if (msg.author.bot) return
     if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content)) return
     lastchannel = msg.channel
     let message = msg.content.substr(prefix.length)
     console.log(msg.author.tag, "   ", message)
     let splitmsg = message.split(" ")
     let args = splitmsg.slice(1)
-    let argstring = message.substr(message.indexOf(" "))
+    let argstring = message.substr(message.indexOf(" ") + 1)
 
     switch (splitmsg[0]) {
         case "ping":
@@ -94,7 +97,6 @@ client.on("message", async msg => {
             msg.channel.send(helptext)
             break
         case "say":
-
             msg.channel.send(argstring == ":)" ? "(:" : argstring)
             break
         case "scream":
@@ -157,12 +159,25 @@ client.on("message", async msg => {
         case "emoji":
             sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
             break
-        case "react":
-            react = !react
-            break
-        case "commie":
-            commie = !commie
-            msg.channel.send(commie)
+        case "systemctl":
+            console.log(argstring)
+            switch (argstring){
+                case "commie":
+                    commie = !commie
+                    msg.channel.send(commie)
+                    break
+                case "simp":
+                    simp = !simp
+                    msg.channel.send(simp)
+                    break
+                case "react":
+                    react = !react
+                    msg.channel.send(react)
+                    break
+                default:
+                    msg.channel.send(`Failed to enable unit, unit ${argstring}.service does not exist.`)
+                    break
+            }
             break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
