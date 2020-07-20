@@ -13,40 +13,9 @@ const client = new Discord.Client()
 
 let startdate = new Date()
 
-let react, commie, simp = true
+let react, commie, simp, interject, anthem = true
 
 let connection, dispatcher, lastseenchannel
-
-let helptext = `
-***S S H***
-
-All commands prefixed with \`${prefix}\`, without additional spaces.
-
-general commands:
-    without arguments:
-        ping
-        help
-        rtfm
-        uptime
-
-    with arguments:
-        say [text]
-        scream [text]
-        whisper [text]
-        mock [text]
-        uwu [text]
-        emoji [max emojis per word] [text]
-
-music commands:
-    without arguments:
-        pause
-        resume
-        stop
-
-    with arguments:
-        play [youtube url]
-        volume [percentage]
-`
 
 let smallLetters = ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", "ᵠ", "ʳ", "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ"]
 let smallNumbers = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]
@@ -65,16 +34,26 @@ client.on("message", async msg => {
     }
     
     if (commie) {
-        let commiematch = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content)
-        if(commiematch) {
-            let noun = msg.content.slice(commiematch.index + commiematch.length - 1)
+        let match = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content)
+        if(match) {
+            let noun = msg.content.slice(match.index + match.length - 1)
             msg.channel.send(`our ${noun}* ${getCustomEmote(msg.guild.emojis.cache, "stalin")}`)
         }
     }
         
     if (simp) {
-        let simpmatch = /(^| )(girl|female|woman|lady)($| )/.exec(msg.content)
-        if (simpmatch) msg.channel.send (copypasta.simp)
+        let match = /(^| )(girl|female|woman|lady)($| )/.exec(msg.content)
+        if (match) msg.channel.send (copypasta.simp)
+    }
+
+    if (anthem) {
+        let match = /(^| )(anthem)($| )/.exec(msg.content)
+        if (match) msg.channel.send (copypasta.anthem)
+    }
+
+    if (interject) {
+        let match = /(^| )(linux|Linux)($| )/.exec(msg.content)
+        if (match) msg.channel.send (copypasta.interjection)
     }
 
     if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content)) return
@@ -94,7 +73,7 @@ client.on("message", async msg => {
             msg.channel.send("ssh-rtfm")
             break
         case "rtfm":
-            msg.channel.send(helptext)
+            msg.channel.send(copypasta.helptext)
             break
         case "say":
             msg.channel.send(argstring == ":)" ? "(:" : argstring)
@@ -132,7 +111,7 @@ client.on("message", async msg => {
             }
             if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
             connection = await lastseenchannel.join()
-            dispatcher = connection.play(ytdl(argstring.indexOf("youtube") < 0 ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : argstring, { filter: "audioonly" }))
+            dispatcher = connection.play(ytdl(argstring.indexOf("youtube") < 0 ? "https://www.youtube.com/watch?v=U06jlgpMtQs" : argstring, { filter: "audioonly" }))
             break
         case "pause":
             try{
@@ -174,10 +153,21 @@ client.on("message", async msg => {
                     react = !react
                     msg.channel.send(react)
                     break
+                case "gnu":
+                    interject = !interject
+                    msg.channel.send(interject)
+                    break
+                case "anthem":
+                    anthem = !anthem
+                    msg.channel.send(anthem)
+                    break
                 default:
                     msg.channel.send(`Failed to enable unit, unit ${argstring}.service does not exist.`)
                     break
             }
+            break
+        case "anthem":
+            msg.channel.send(copypasta.anthem)
             break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
