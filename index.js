@@ -3,6 +3,8 @@ const ytdl = require('ytdl-core')
 const fs = require("fs")
 const { indexOf } = require("ffmpeg-static")
 const path = process.cwd()
+const { exec } = require('child_process')
+
 
 const Settings = JSON.parse(fs.readFileSync(path + "/settings.json").toString())
 const emojis = JSON.parse(fs.readFileSync(path + "/emoji.json").toString())
@@ -32,7 +34,7 @@ client.on("message", async msg => {
     }
     
     if (commie) {
-        let match = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content)
+        let match = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content.toLowerCase)
         if(match) {
             let noun = msg.content.slice(match.index + match.length - 1)
             msg.channel.send(`our ${noun}* ${getCustomEmote(msg.guild.emojis.cache, "stalin")}`)
@@ -40,17 +42,17 @@ client.on("message", async msg => {
     }
         
     if (simp) {
-        let match = /(^| )(girl|female|woman|lady)($| )/.exec(msg.content)
+        let match = /(^| )(girl|female|woman|lady)($| )/.exec(msg.content.toLowerCase)
         if (match) msg.channel.send (copypasta.simp)
     }
 
     if (anthem) {
-        let match = /(^| )(anthem)($| )/.exec(msg.content)
+        let match = /(^| )(anthem)($| )/.exec(msg.content.toLowerCase)
         if (match) msg.channel.send (copypasta.anthem)
     }
 
     if (interject) {
-        let match = /(^| )(linux|Linux)($| )/.exec(msg.content)
+        let match = /(^| )(linux)($| )/.exec(msg.content.toLowerCase)
         if (match) msg.channel.send (copypasta.interjection)
     }
 
@@ -135,6 +137,12 @@ client.on("message", async msg => {
             break
         case "emoji":
             sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
+            break
+        case "ssh":
+            const child = exec(argstring,
+            (error, stdout, stderr) => {
+                msg.channel.send(error, stderr, stdout).catch(e => console.log(e))
+            })
             break
         case "systemctl":
             console.log(argstring)
