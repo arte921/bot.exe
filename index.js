@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const ytdl = require('ytdl-core')
 const fs = require("fs")
-const { indexOf } = require("ffmpeg-static")
+const { indexOf } = require("ffmpeg")
 const path = process.cwd()
 const { exec } = require('child_process')
 
