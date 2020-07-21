@@ -137,12 +137,12 @@ client.on("message", async msg => {
             break
         case "emoji":
             sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
-            break
+            break/*
         case "ssh":
             const child = exec(argstring, (error, stdout, stderr) => {
                 msg.channel.send(error + stderr + stdout).catch(e => console.log(e))
             })
-            break
+            break*/
         case "systemctl":
             console.log(argstring)
             switch (argstring){
