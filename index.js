@@ -6,10 +6,10 @@ const path = process.cwd()
 const { exec } = require('child_process')
 
 
-const Settings = JSON.parse(fs.readFileSync(path + "/settings.json").toString())
+const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
 const emojis = JSON.parse(fs.readFileSync(path + "/emoji.json").toString())
 const copypasta = JSON.parse(fs.readFileSync(path + "/copypasta.json").toString())
-const prefix = Settings.prefix
+const prefix = config.prefix
 
 const client = new Discord.Client()
 
@@ -139,9 +139,8 @@ client.on("message", async msg => {
             sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
             break
         case "ssh":
-            const child = exec(argstring,
-            (error, stdout, stderr) => {
-                msg.channel.send(error, stderr, stdout).catch(e => console.log(e))
+            const child = exec(argstring, (error, stdout, stderr) => {
+                msg.channel.send(error + stderr + stdout).catch(e => console.log(e))
             })
             break
         case "systemctl":
@@ -208,4 +207,4 @@ function getEmoji(keyword, maxemoji) {
 }
 
 console.log("logging in")
-client.login(Settings.token)
+client.login(config.token)

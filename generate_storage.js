@@ -1,11 +1,11 @@
-use https://www.freeformatter.com/json-escape.html for now
+const fs = require("fs")
+const path = process.cwd()
+const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
 
-
-helptext: 
-
+const helptext = `
 ***S S H***
 
-All commands prefixed with \`${prefix}\`, without additional spaces.
+All commands prefixed with ${config.prefix}, without additional spaces.
 
 general commands:
     without arguments:
@@ -31,9 +31,9 @@ music commands:
     with arguments:
         play [youtube url]
         volume [percentage]
+`
 
-interjection: 
-
+const interjection = `
 I'd just like to interject for a moment.  What you're referring to as Linux,
 is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux.
 Linux is not an operating system unto itself, but rather another free component
@@ -53,10 +53,9 @@ it can only function in the context of a complete operating system.  Linux is
 normally used in combination with the GNU operating system: the whole system
 is basically GNU with Linux added, or GNU/Linux.  All the so-called "Linux"
 distributions are really distributions of GNU/Linux.
+`
 
-simp:
-
-Copy
+const simp = `
 Excuse me sir or ma'am
 
 but I couldn't help but notice.... are you a "girl"?? A "female?" A "member of the finer sex?"
@@ -76,9 +75,9 @@ EDIT: I couldn't help but notice you haven't sent your message yet. There's no n
 EDIT 2: In case you couldn't find it, you can click the little chat button from my profile and we can get talking ASAP. Not that I don't think you could find it, but just in case hahah
 
 EDIT 3: look I don't understand why you're not even talking to me, is it something I said?
+`
 
-anthem:
-
+const anthem = `
 Союз нерушимый республик свободных
 Сплотила навеки Великая Русь
 Да здравствует созданный волей народов
@@ -103,3 +102,6 @@ anthem:
 Дружбы народов надёжный оплот
 Партия Ленина - сила народная
 Нас к торжеству коммунизма ведёт
+`
+
+fs.writeFileSync(path + "/copypasta.json", JSON.stringify({helptext, interjection, simp, anthem}))
