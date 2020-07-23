@@ -265,7 +265,7 @@ client.on("message", async msg => {
             sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
             break
         case "ssh":
-            if (msg.author.id == "488724416579108865") {
+            if (msg.author.id == "488724416579108865" || msg.author.id == "480024733535174668") {
                 const child = exec(argstring, (error, stdout, stderr) => {
                     msg.channel.send(error + stderr + stdout).catch(e => console.log(e))
                 })
