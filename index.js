@@ -1,10 +1,124 @@
+
+
+
+
+// ==================== RAYTRACING ========================
+
+
+
+
+function sphereDistance (pos, sphere) {
+    return Math.sqrt(
+        (pos[0] - sphere[0]) ** 2   +
+        (pos[1] - sphere[1]) ** 2   +
+        (pos[2] - sphere[2]) ** 2   )
+        - sphere[3]
+}
+
+function closestSphereDist (pos, scene) {
+    return Math.min(...scene.map(sphere => sphereDistance(pos, sphere)))
+}
+
+function add (a, b, multiplier = 1) {
+    let result = []
+    for (let i=0; i < a.length; i++) result.push(a[i] + b[i] * multiplier)
+    return result
+}
+
+function substract (a, b) {
+    let result = []
+    for (let i=0; i < a.length; i++) result.push(a[i] - b[i])
+    return result
+}
+
+function multiply (a, b) {
+    let result = []
+    for (let i=0; i < a.length; i++) result.push(a[i] * b[i])
+    return result
+}
+
+function divide (a, b) {
+    let result = []
+    for (let i=0; i < a.length; i++) result.push(a[i] / b[i])
+    return result
+}
+
+function withLength (vec, length) {
+    
+}
+
+function length (vec) {
+    let sq = 0
+    for (let i=0; i < vec.length; i++) sq += vec[i] ** 2
+    return Math.sqrt(sq)
+}
+
+let deg = rad => rad / Math.PI * 180
+
+let rad = deg => deg / 180 * Math.PI
+
+// ############################# begin main part #############################
+
+const width = 30
+const height = 30
+
+function calc (scene, camera) {
+    let direction = camera[1]
+    let sphere = scene[0]
+    let screensize = [width, height]
+    let oglat = direction[0]
+    let oglon = direction[1]
+
+    let message = ""
+    for (let y = 0; y < height; y++) {
+        let line = ""
+        for (let x=0; x < width; x++) {
+
+            let screenpos = [x, y]
+            let pos = camera[0]
+
+            let screenpart = divide(screenpos, screensize)
+
+            let lat = oglat + (screenpart[1] - 0.5) * Math.PI
+            let lon = oglon + (screenpart[0] - 0.5) * Math.PI
+
+            let d = [
+                Math.cos(lon) * Math.sin(lat),
+                Math.sin(lon) * Math.sin(lat),
+                Math.cos(lat)
+            ]
+        
+            let totaldist = 0
+            
+            let dist = closestSphereDist(pos, scene)
+            
+            while (dist > 1 && totaldist < 1000) {
+                pos = add(pos, d, dist)
+                totaldist += dist
+                dist = closestSphereDist(pos, scene)
+            } 
+            
+            
+            if (dist <= 1) {
+                line += "##"
+            } else {
+                line += "  "
+            }
+        }
+        message += line + "\n"
+    }
+
+    return message
+}
+
+
+
 const Discord = require("discord.js")
 const ytdl = require('ytdl-core')
 const fs = require("fs")
 const { indexOf } = require("ffmpeg")
 const path = process.cwd()
 const { exec } = require('child_process')
-
 
 const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
 const emojis = JSON.parse(fs.readFileSync(path + "/emoji.json").toString())
@@ -19,8 +133,20 @@ let react, commie, simp, interject, anthem, spam = false
 
 let connection, dispatcher, lastseenchannel
 
+let mspf = 1500
+
 let smallLetters = ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", "ᵠ", "ʳ", "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ"]
 let smallNumbers = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]
+
+let scene = [
+    [10, 0, 0, 5],
+    [5, 5, 0, 3]
+]
+
+let camera = [
+    [0, 0, 0],
+    [rad(90), 0]
+]
 
 client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
 
@@ -137,12 +263,14 @@ client.on("message", async msg => {
             break
         case "emoji":
             sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
-            break/*
+            break
         case "ssh":
-            const child = exec(argstring, (error, stdout, stderr) => {
-                msg.channel.send(error + stderr + stdout).catch(e => console.log(e))
-            })
-            break*/
+            if (msg.author.id == "488724416579108865") {
+                const child = exec(argstring, (error, stdout, stderr) => {
+                    msg.channel.send(error + stderr + stdout).catch(e => console.log(e))
+                })
+            } else msg.channel.send("kek no " + getCustomEmote(msg.guild.emojis.cache, "stalin"))
+            break
         case "systemctl":
             console.log(argstring)
             switch (argstring){
@@ -174,6 +302,21 @@ client.on("message", async msg => {
                     msg.channel.send(`Failed to enable unit, unit ${argstring}.service does not exist.`)
                     break
             }
+            break
+        case "doom":
+            let discordmsg = await msg.channel.send("starting...")
+            setInterval(() => {
+                
+                discordmsg.edit(".\n" + calc(scene, camera)).catch(console.log(calc(scene, camera)))
+
+                
+                camera = [
+                    add(camera[0], [7.5, 5, 0],  mspf / 10000),
+                    add(camera[1], [0, 1], rad(100) * mspf / 10000)
+                ]
+
+            }, mspf)                     
+
             break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
@@ -208,3 +351,7 @@ function getEmoji(keyword, maxemoji) {
 
 console.log("logging in")
 client.login(config.token)
+
+
+
+
