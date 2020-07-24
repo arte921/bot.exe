@@ -193,6 +193,10 @@ client.on("message", async msg => {
     let argstring = message.substr(message.indexOf(" ") + 1)
 
     switch (splitmsg[0]) {
+        case "helo":
+            let fun = require(path + "/commands/helo.js")
+            fun(msg)
+        break
         case "ping":
             msg.channel.send("helo " + msg.author.username)
             break
@@ -272,7 +276,7 @@ client.on("message", async msg => {
                     msg.channel.send(error + stderr + stdout).catch(e => console.log(e))
                 })
                 processes.push(child)
-            } else msg.channel.send("kek no " + getCustomEmote(msg.guild.emojis.cache, "stalin"))
+            } else msg.channel.send("kek no " + getCustomEmote(msg.guild.emojis.cache, "nightmare"))
             break
         case "systemctl":
             console.log(argstring)
@@ -361,4 +365,9 @@ client.login(config.token)
 
 
 
+
+let f = {
+    name: "helo",
+    fun: (msg) => msg.channel.send("bruh") 
+}
 
