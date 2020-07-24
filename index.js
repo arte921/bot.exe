@@ -135,6 +135,8 @@ let connection, dispatcher, lastseenchannel
 
 let mspf = 1500
 
+let processes = []
+
 let smallLetters = ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", "ᵠ", "ʳ", "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ"]
 let smallNumbers = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]
 
@@ -269,6 +271,7 @@ client.on("message", async msg => {
                 const child = exec(argstring, (error, stdout, stderr) => {
                     msg.channel.send(error + stderr + stdout).catch(e => console.log(e))
                 })
+                processes.push(child)
             } else msg.channel.send("kek no " + getCustomEmote(msg.guild.emojis.cache, "stalin"))
             break
         case "systemctl":
@@ -317,6 +320,10 @@ client.on("message", async msg => {
 
             }, mspf)                     
 
+            break
+        case "killall":
+            processes.forEach(process => process.kill('SIGINT'))
+            msg.channel.send("now thats a lotta damage")
             break
         default:
             msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
