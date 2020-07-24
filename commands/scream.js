@@ -1,4 +1,3 @@
-module.exports = msg => { 
-    sendLongMessage(msg.channel, argstring.toUpperCase().split("").join(" "), "***")
-    
+module.exports = (msg, argstring) => {
+    msg.channel.send("***" + argstring.toUpperCase().split("").join(" ") + "***")
 }

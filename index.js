@@ -3,11 +3,10 @@ const ytdl = require('ytdl-core')
 const fs = require("fs")
 const { indexOf } = require("ffmpeg")
 const path = process.cwd()
-const { exec } = require('child_process')
 
 const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
 const emojis = JSON.parse(fs.readFileSync(path + "/emoji.json").toString())
-const copypasta = JSON.parse(fs.readFileSync(path + "/copypasta.json").toString())
+const interjections = JSON.parse(fs.readFileSync(path + "/copypasta.json").toString())
 const prefix = config.prefix
 
 const client = new Discord.Client()
@@ -26,12 +25,11 @@ let smallLetters = ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ"
 let smallNumbers = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]
 
 
-
 client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
 
 client.on("message", async msg => {
 
-    if (msg.author.bot && !spam) return
+    // if (msg.author.bot && !spam) return
     
     if (react) {
         let reactions = msg.guild.emojis.cache.filter(emoji => /(communism|stalin|lenin|helpmeplz|nightmare|linus_touch_tips|trollee|haha|gentoo|kirottu_muoto|bororororororooororoororrrroooo|AhHiii|obamaprism)/.test(emoji.name))
@@ -39,27 +37,18 @@ client.on("message", async msg => {
     }
     
     if (commie) {
-        let match = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content.toLowerCase)
+        let match = /(^| )(my|his|her|your|mine)($| )/.exec(msg.content.toLowerCase())
         if(match) {
             let noun = msg.content.slice(match.index + match.length - 1)
             msg.channel.send(`our ${noun}* ${getCustomEmote(msg.guild.emojis.cache, "stalin")}`)
         }
     }
-        
-    if (simp) {
-        let match = /(^| )(girl|female|woman|lady)($| )/.exec(msg.content.toLowerCase)
-        if (match) msg.channel.send (copypasta.simp)
-    }
-
-    if (anthem) {
-        let match = /(^| )(anthem)($| )/.exec(msg.content.toLowerCase)
-        if (match) msg.channel.send (copypasta.anthem)
-    }
-
-    if (interject) {
-        let match = /(^| )(linux)($| )/.exec(msg.content.toLowerCase)
-        if (match) msg.channel.send (copypasta.interjection)
-    }
+    
+    interjections.forEach (interjectionobject => {
+        if (!interjectionobject.enabled) return
+        let match = new RegExp(interjectionobject.regex).exec(msg.content.toLowerCase())
+        if (match) msg.channel.send(interjectionobject.copypasta + "bruh")
+    })
 
     if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content)) return
 
@@ -73,7 +62,7 @@ client.on("message", async msg => {
     let commandfilepath = path + "/commands/" + splitmsg[0] + ".js"
     console.log(commandfilepath)
     if (fs.existsSync(commandfilepath)) {
-        require(commandfilepath)(msg)
+        require(commandfilepath)(msg, argstring)
     } else {
         msg.channel.send("wdym " + splitmsg[0].toLowerCase().split("").map((char, index) => {
             return (index % 2 == 0) ? char.toLowerCase() : char.toUpperCase()
@@ -93,7 +82,7 @@ function sendLongMessage (channel, message, markup = "") {
     }
 }
 
-let getCustomEmote = (cache, name) => cache.find(emoji => emoji.name == name)
+
 
 function getEmoji(keyword, maxemoji) {
     let candidates = emojis.filter(entry => entry[1].join(" ").indexOf(keyword.toLowerCase()) >= 0)
@@ -106,12 +95,3 @@ function getEmoji(keyword, maxemoji) {
 
 console.log("logging in")
 client.login(config.token)
-
-
-
-
-let f = {
-    name: "helo",
-    fun: (msg) => msg.channel.send("bruh") 
-}
-

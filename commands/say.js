@@ -1,2 +1,3 @@
-module.exports = msg => { 
-    msg.channel.send(argstring == }
+module.exports = (msg, argstring) => {
+    msg.channel.send(argstring)
+}

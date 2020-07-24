@@ -33,7 +33,7 @@ music commands:
         volume [percentage]
 `
 
-const interjection = `
+const gnu = `
 I'd just like to interject for a moment.  What you're referring to as Linux,
 is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux.
 Linux is not an operating system unto itself, but rather another free component
@@ -104,4 +104,20 @@ const anthem = `
 Нас к торжеству коммунизма ведёт
 `
 
-fs.writeFileSync(path + "/copypasta.json", JSON.stringify({helptext, interjection, simp, anthem}))
+let finalobject = [
+    {
+        regex: "/(^| )(girl|female|woman|lady)($| )/",
+        copypasta: simp,
+        enabled: true
+    }, {
+        regex: "/(^| )(anthem)($| )/",
+        copypasta: anthem,
+        enabled: true
+    }, {
+        regex: "/(^| )(linux)($| )/",
+        copypasta: gnu,
+        enabled: true
+    }
+]
+
+fs.writeFileSync(path + "/copypasta.json", JSON.stringify(finalobject))
