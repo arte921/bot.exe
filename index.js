@@ -6,7 +6,7 @@ const path = process.cwd()
 
 const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
 const emojis = JSON.parse(fs.readFileSync(path + "/emoji.json").toString())
-const interjections = JSON.parse(fs.readFileSync(path + "/copypasta.json").toString())
+const storage = JSON.parse(fs.readFileSync(path + "/storage.json").toString())
 const prefix = config.prefix
 
 const client = new Discord.Client()
@@ -14,16 +14,6 @@ const client = new Discord.Client()
 let startdate = new Date()
 
 let react, commie, simp, interject, anthem, spam = false
-
-let connection, dispatcher, lastseenchannel
-
-let mspf = 1500
-
-let processes = []
-
-let smallLetters = ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", "ᵠ", "ʳ", "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ"]
-let smallNumbers = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]
-
 
 client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
 
@@ -44,7 +34,7 @@ client.on("message", async msg => {
         }
     }
     
-    interjections.forEach (interjectionobject => {
+    storage.interjections.forEach (interjectionobject => {
         if (!interjectionobject.enabled) return
         let match = new RegExp(interjectionobject.regex).exec(msg.content.toLowerCase())
         if (match) msg.channel.send(interjectionobject.copypasta + "bruh")
@@ -81,8 +71,6 @@ function sendLongMessage (channel, message, markup = "") {
 
     }
 }
-
-
 
 function getEmoji(keyword, maxemoji) {
     let candidates = emojis.filter(entry => entry[1].join(" ").indexOf(keyword.toLowerCase()) >= 0)

@@ -104,20 +104,27 @@ const anthem = `
 Нас к торжеству коммунизма ведёт
 `
 
-let finalobject = [
-    {
-        regex: "/(^| )(girl|female|woman|lady)($| )/",
-        copypasta: simp,
-        enabled: true
-    }, {
-        regex: "/(^| )(anthem)($| )/",
-        copypasta: anthem,
-        enabled: true
-    }, {
-        regex: "/(^| )(linux)($| )/",
-        copypasta: gnu,
-        enabled: true
+let finalobject = {
+    interjections: [
+        {
+            regex: "/(^| )(girl|female|woman|lady)($| )/",
+            copypasta: simp,
+            enabled: true
+        }, {
+            regex: "/(^| )(anthem)($| )/",
+            copypasta: anthem,
+            enabled: true
+        }, {
+            regex: "/(^| )(linux)($| )/",
+            copypasta: gnu,
+            enabled: true
+        }
+    ],
+    misc: {
+        helptext: helptext,
+        smallLetters: ["ᵃ", "ᵇ", "ᶜ", "ᵈ", "ᵉ", "ᶠ", "ᵍ", "ʰ", "ⁱ", "ʲ", "ᵏ", "ˡ", "ᵐ", "ⁿ", "ᵒ", "ᵖ", "ᵠ", "ʳ", "ˢ", "ᵗ", "ᵘ", "ᵛ", "ʷ", "ˣ", "ʸ", "ᶻ"],
+        smallNumbers: ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"]
     }
-]
+}
 
 fs.writeFileSync(path + "/copypasta.json", JSON.stringify(finalobject))
