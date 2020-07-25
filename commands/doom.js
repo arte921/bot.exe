@@ -34,9 +34,6 @@ function divide (a, b) {
     return result
 }
 
-function withLength (vec, length) {
-    
-}
 
 function length (vec) {
     let sq = 0
@@ -52,6 +49,7 @@ let rad = deg => deg / 180 * Math.PI
 
 const width = 30
 const height = 30
+const mspf = 1200
 
 function calc (scene, camera) {
     let direction = camera[1]
@@ -107,14 +105,25 @@ let scene = [
     [5, 5, 0, 3]
 ]
 
-let camera = [
-    [0, 0, 0],
-    [rad(90), 0]
-]
+let camera
+
+function resetcamera () {
+    camera = [
+        [0, 0, 0],
+        [rad(90), 0]
+    ]
+}
 
 module.exports = async msg => { 
     let discordmsg = await msg.channel.send("starting...")
-    setInterval(() => {
+    resetcamera()
+    let runtime = 0
+    let interval = setInterval(() => {
+        runtime += mspf
+        if (runtime > 20000) {
+            clearInterval(interval)
+            resetcamera()
+        }
         
         discordmsg.edit(".\n" + calc(scene, camera)).catch(console.log(calc(scene, camera)))
 
@@ -124,7 +133,7 @@ module.exports = async msg => {
             add(camera[1], [0, 1], rad(100) * mspf / 10000)
         ]
 
-    }, mspf)                     
+    }, mspf)
 
     
 }

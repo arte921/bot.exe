@@ -12,14 +12,15 @@ let startdate = new Date()
 
 let commandcache = {}
 
-let spam = false
 const debug = false
 
 client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
 
+console.log(config.allowspam)
+
 client.on("message", async msg => {
 
-    if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content) || (msg.author.bot && !spam)) return
+    if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content) || (msg.author.bot && !config.allowspam)) return
 
     let message = msg.content.substr(prefix.length)
     let splitmsg = message.split(" ")
@@ -29,7 +30,7 @@ client.on("message", async msg => {
 
     console.log(msg.author.tag, "   ", message)
 
-    if (command in commandcache && !debug) {
+    if (command in commandcache && config.caching) {
         commandcache[command](msg, argstring)
         console.log("got from ram")
     } else {
