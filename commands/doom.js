@@ -112,7 +112,7 @@ let camera = [
     [rad(90), 0]
 ]
 
-module.exports = msg => { 
+module.exports = async msg => { 
     let discordmsg = await msg.channel.send("starting...")
     setInterval(() => {
         

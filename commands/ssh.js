@@ -20,7 +20,7 @@ function run (command, channel) {
 
 let killall = () => processes.forEach(child => child.kill('SIGINT'))
 
-module.exports = (msg, argstring) => {
+module.exports = async (msg, argstring) => {
     if (allowedids.includes(msg.author.id)) {
         if (argstring == "-k") {
             killall()

@@ -6,7 +6,7 @@ const objects = fs.readFileSync(path + "/scratch.js").toString().split("833aa26a
 objects.forEach (object => {
     let parts = object.split("94efc0176b3c1bcd9ffac92f70a88eb9350c5f903c381842625518109ecb366d")
     let outputpath = path + "/commands/" + parts[0] + ".js"
-    let preboilerplate = "module.exports = msg => {"
+    let preboilerplate = "module.exports = async (msg, argstring) => {"
     let postboilerplate = "}"
     let filecontents = preboilerplate + parts[1] + postboilerplate
 

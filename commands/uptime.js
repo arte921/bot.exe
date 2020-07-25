@@ -1,4 +1,4 @@
-module.exports = msg => { 
+module.exports = async (msg, argstring) => { 
     let diff = new Date() - startdate
     let seconds = Math.floor(diff / 1000)
     let mins = Math.floor(seconds / 60)

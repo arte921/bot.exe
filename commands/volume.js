@@ -1,4 +1,4 @@
-module.exports = msg => { 
+module.exports = async (msg, argstring) => { 
 
     
 }

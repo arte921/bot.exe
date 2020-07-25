@@ -14,7 +14,7 @@ function getEmoji(keyword, maxemoji) {
     } else return ""
 }
 
-module.exports = (msg, argstring) => {
+module.exports = async (msg, argstring) => {
     let args = argstring.split(" ")
     sendLongMessage(msg.channel, args.slice(1).map(word => word + getEmoji(word, args[0])).join(" "))
 }
