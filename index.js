@@ -12,14 +12,14 @@ let startdate = new Date()
 
 let commandcache = {}
 
-let react, spam = false
-const debug = true
+let spam = false
+const debug = false
 
 client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
 
 client.on("message", async msg => {
 
-    if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content)) return
+    if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content) || (msg.author.bot && !spam)) return
 
     let message = msg.content.substr(prefix.length)
     let splitmsg = message.split(" ")

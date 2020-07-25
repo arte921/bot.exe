@@ -2,7 +2,7 @@ const ytdl = require('ytdl-core')
 
 let dispatcher, lastseenchannel = null
 
-module.exports = (msg, argstring) => { 
+module.exports = async (msg, argstring) => { 
     let splitargstring = argstring.split(" ")
     switch (splitargstring[0]) {
         case "play":
@@ -11,8 +11,7 @@ module.exports = (msg, argstring) => {
                 return
             }
             if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
-            let connection = lastseenchannel.join()
-            console.log(connection)
+            let connection = await lastseenchannel.join()
             dispatcher = connection.play(ytdl(argstring.indexOf("youtube") < 0 ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : argstring, { filter: "audioonly" }))
             break
         case "pause":
@@ -30,6 +29,11 @@ module.exports = (msg, argstring) => {
                 dispatcher.destroy()
                 msg.channel.send("aight, imma head out")
                  lastseenchannel.leave()
+            } catch(e) { msg.channel.send("Nothing playing!") }
+            break
+        case "volume":
+            try{
+                dispatcher.setVolume(splitargstring[1] / 100)
             } catch(e) { msg.channel.send("Nothing playing!") }
             break
         default:
