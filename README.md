@@ -9,8 +9,10 @@ Template for config.json:
         "use with care"
     ],
     "allowspam":true,
-    "caching":false
+    "caching":false,
+    "enablemusic":false
 }
 
 allowspam: wether the bot will respond to other bots
 caching: wether the bot will cache commands in ram, improves performance but disabling will enable live reloading of commands, helpful when debugging
+enablemusic: enable/disable music command, useful when ffmpeg not supported on host/low resource server

@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const fs = require("fs")
+const { findSeries } = require("async")
 const path = process.cwd()
 
 const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
@@ -14,10 +15,11 @@ client.on("message", async msg => {
 
     if (!new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || (msg.author.bot && !config.allowspam)) return
 
-    let message = msg.content.substr(config.prefix.length)
+    const message = msg.content.substr(config.prefix.length)
     let firstspace = message.indexOf(" ")
-    let command = message.substr(0, firstspace)
-    let argstring = message.substr(firstspace + 1)
+    firstspace = firstspace < 0 ? message.length : firstspace
+    const command = message.substr(0, firstspace)
+    const argstring = message.substr(firstspace + 1)
 
     console.log(msg.author.tag, "   ", message)
 
