@@ -1,4 +1,5 @@
 const fs = require("fs")
+const ytdl = require('ytdl-core')
 const path = process.cwd()
 
 const { getCustomEmote } = require(path + "/util.js")
@@ -12,8 +13,6 @@ module.exports = async (msg, argstring) => {
         msg.channel.send(`this function is disabled ${getCustomEmote(msg.guild.emojis.cache, "trollee")}`)
         return
     }
-
-    const ytdl = require('ytdl-core')
 
     let splitargstring = argstring.split(" ")
     switch (splitargstring[0]) {
