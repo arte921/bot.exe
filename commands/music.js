@@ -9,7 +9,7 @@ let dispatcher, lastseenchannel
 
 module.exports = async (msg, argstring) => {
     if (!config.enablemusic) {
-        msg.channel.send(`this function is disabled ${getCustomEmote(msg.guild.emojis.cache, "helpmeplz")}`)
+        msg.channel.send(`this function is disabled ${getCustomEmote(msg.guild.emojis.cache, "meowmeow")}`)
         return
     }
 
