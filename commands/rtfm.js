@@ -1,7 +1,7 @@
 const fs = require("fs")
 const path = process.cwd()
-const copypasta = JSON.parse(fs.readFileSync(path + "/copypasta.json").toString())
+const copypasta = JSON.parse(fs.readFileSync(path + "/storage.json").toString())
 
-module.exports = () => { 
-    msg.channel.send(copypasta.helptext)
+module.exports = msg => { 
+    msg.channel.send(copypasta.misc.helptext)
 }

@@ -127,4 +127,4 @@ let finalobject = {
     }
 }
 
-fs.writeFileSync(path + "/copypasta.json", JSON.stringify(finalobject))
+fs.writeFileSync(path + "/storage.json", JSON.stringify(finalobject))
