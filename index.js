@@ -20,7 +20,7 @@ client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
 client.on("message", async msg => {
 
     // if (msg.author.bot && !spam) return
-    
+    /*
     if (react) {
         let reactions = msg.guild.emojis.cache.filter(emoji => /(communism|stalin|lenin|helpmeplz|nightmare|linus_touch_tips|trollee|haha|gentoo|kirottu_muoto|bororororororooororoororrrroooo|AhHiii|obamaprism)/.test(emoji.name))
         reactions.forEach(emoji => msg.react(emoji))
@@ -34,11 +34,11 @@ client.on("message", async msg => {
         }
     }
     
-    storage.interjections.forEach (interjectionobject => {
+    storage.interjections.forEach(interjectionobject => {
         if (!interjectionobject.enabled) return
         let match = new RegExp(interjectionobject.regex).exec(msg.content.toLowerCase())
         if (match) msg.channel.send(interjectionobject.copypasta + "bruh")
-    })
+    })*/
 
     if (!new RegExp(`^${prefix}[a-z]+`).test(msg.content)) return
 
@@ -50,7 +50,6 @@ client.on("message", async msg => {
     console.log(msg.author.tag, "   ", message)
 
     let commandfilepath = path + "/commands/" + splitmsg[0] + ".js"
-    console.log(commandfilepath)
     if (fs.existsSync(commandfilepath)) {
         require(commandfilepath)(msg, argstring)
     } else {
