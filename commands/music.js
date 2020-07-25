@@ -1,4 +1,3 @@
-const ytdl = require('ytdl-core')
 const fs = require("fs")
 const path = process.cwd()
 
@@ -9,11 +8,13 @@ const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
 let dispatcher, lastseenchannel
 
 module.exports = async (msg, argstring) => {
-    console.log(config.enablemusic)
     if (!config.enablemusic) {
         msg.channel.send(`this function is disabled ${getCustomEmote(msg.guild.emojis.cache, "helpmeplz")}`)
         return
     }
+
+    const ytdl = require('ytdl-core')
+
     let splitargstring = argstring.split(" ")
     switch (splitargstring[0]) {
         case "play":
