@@ -10,8 +10,6 @@ let commandcache = {}
 
 client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
 
-console.log(config.allowspam)
-
 client.on("message", async msg => {
 
     if (!new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || (msg.author.bot && !config.allowspam)) return
