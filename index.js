@@ -1,6 +1,5 @@
 const Discord = require("discord.js")
 const fs = require("fs")
-const { findSeries } = require("async")
 const path = process.cwd()
 
 const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
