@@ -4,16 +4,9 @@ const path = process.cwd()
 
 const { getCustomEmote } = require(path + "/util.js")
 
-const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
-
 let dispatcher, lastseenchannel
 
 module.exports = async (msg, argstring) => {
-    if (!config.enablemusic) {
-        msg.channel.send(`this function is disabled ${getCustomEmote(msg.guild.emojis.cache, "trollee")}`)
-        return
-    }
-
     let splitargstring = argstring.split(" ")
     switch (splitargstring[0]) {
         case "play":

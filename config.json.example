@@ -1,0 +1,19 @@
+{
+    "token":"discord bot token",
+    "prefix":"ssh-",
+    "sshusers":[
+        "488724416579108865",
+        "480024733535174668"
+    ],
+    "allowspam":true,
+    "caching":true,
+    "blocklist":[
+        "ssh",
+        "music"
+    ]
+}
+
+
+allowspam: wether the bot will respond to other bots (including itself)
+caching: wether the bot will cache commands in ram, improves performance but disabling will enable live reloading of commands, helpful when debugging
+blocklist: disabled commands

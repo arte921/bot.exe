@@ -26,7 +26,7 @@ client.on("message", async msg => {
         commandcache[command](msg, argstring)
     } else {
         let commandfilepath = path + "/commands/" + command + ".js"
-        if (fs.existsSync(commandfilepath)) {
+        if (!config.blocklist.includes(command) && fs.existsSync(commandfilepath)) {
             commandcache[command] = require(commandfilepath)
             commandcache[command](msg, argstring)
         } else {
