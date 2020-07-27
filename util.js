@@ -10,5 +10,8 @@ module.exports = {
             lastindex = i
 
         }
-    }
+    },
+    mock: text => text.split("").map((char, index) => {
+            return (index % 2 == 0) ? char.toLowerCase() : char.toUpperCase()
+        }).join("")    
 }

@@ -2,6 +2,8 @@ const Discord = require("discord.js")
 const fs = require("fs")
 const path = process.cwd()
 
+const { mock } = require(path + "/util.js")
+
 const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
 
 const client = new Discord.Client()
@@ -30,9 +32,7 @@ client.on("message", async msg => {
             commandcache[command] = require(commandfilepath)
             commandcache[command](msg, argstring)
         } else {
-            msg.channel.send("wdym " + command.toLowerCase().split("").map((char, index) => {
-                return (index % 2 == 0) ? char.toLowerCase() : char.toUpperCase()
-            }).join(""))
+            msg.channel.send("wdym " + mock(message))
         }
     }
 })
