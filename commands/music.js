@@ -2,7 +2,7 @@ const fs = require("fs")
 const ytdl = require('ytdl-core')
 const path = process.cwd()
 
-const { getCustomEmote } = require(path + "/util.js")
+const { getCustomEmote, mock } = require(path + "/util.js")
 
 let dispatcher, lastseenchannel
 
@@ -11,7 +11,7 @@ module.exports = async (msg, argstring) => {
     switch (splitargstring[0]) {
         case "play":
             if (!lastseenchannel && !msg.member.voice.channel) {
-                msg.channel.send("join a channel yourself blyat")
+                msg.channel.send(`join a channel yourself ${getCustomEmote(msg.guild.emojis.cache, "whatthecinnamon")}`)
                 return
             }
             if (msg.member.voice.channel) lastseenchannel = msg.member.voice.channel
@@ -41,7 +41,7 @@ module.exports = async (msg, argstring) => {
             } catch(e) { msg.channel.send("Nothing playing!") }
             break
         default:
-            msg.channel.send("wdym")
+            msg.channel.send(mock(splitargstring[0]))
             break
     }
 
