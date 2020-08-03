@@ -6,31 +6,6 @@ const helptext = `
 ***S S H***
 
 All commands prefixed with ${config.prefix}, without additional spaces.
-
-general commands:
-    without arguments:
-        ping
-        help
-        rtfm
-        uptime
-
-    with arguments:
-        say [text]
-        scream [text]
-        whisper [text]
-        mock [text]
-        uwu [text]
-        emoji [max emojis per word] [text]
-
-music commands:
-    without arguments:
-        pause
-        resume
-        stop
-
-    with arguments:
-        play [youtube url]
-        volume [percentage]
 `
 
 const gnu = `
