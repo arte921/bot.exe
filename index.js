@@ -32,10 +32,10 @@ client.on("message", async msg => {
         commandcache[command](msg, argstring)
     } else {
         let commandfilepath = path + "/commands/" + command + ".js"
-        if (!config.blocklist.includes(command) && fs.existsSync(commandfilepath)) {
-            commandcache[command] = require(commandfilepath)
-            commandcache[command](msg, argstring)
-            delete require.cache[require.resolve(commandfilepath)] // to enable live bot updates
+        if (!config.blocklist.includes(command) && fs.existsSync(commandfilepath)) {    // only if command is not blocked and installed
+            commandcache[command] = require(commandfilepath)    // get the code
+            commandcache[command](msg, argstring)   // run the code
+            delete require.cache[require.resolve(commandfilepath)]  // enable live bot updates
         } else {
             switch(command) {
                 case "reloadconfig":
