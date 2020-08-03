@@ -2,14 +2,16 @@
     "token":"discord bot token",
     "prefix":"ssh-",
     "sshusers":[
-        "488724416579108865",
-        "480024733535174668"
+        "488724416579108865"
     ],
     "allowspam":true,
     "caching":true,
     "blocklist":[
         "ssh",
         "music"
+    ],
+    "admins":[
+        "488724416579108865"
     ]
 }
 
