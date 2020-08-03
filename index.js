@@ -4,7 +4,11 @@ const path = process.cwd()
 
 const { mock } = require(path + "/util.js")
 
-const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
+let config
+
+let reloadconfig = () => config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
+
+reloadconfig()
 
 const client = new Discord.Client()
 
@@ -31,8 +35,20 @@ client.on("message", async msg => {
         if (!config.blocklist.includes(command) && fs.existsSync(commandfilepath)) {
             commandcache[command] = require(commandfilepath)
             commandcache[command](msg, argstring)
+            delete require.cache[require.resolve(commandfilepath)] // to enable live bot updates
         } else {
-            msg.channel.send("wdym " + mock(message))
+            switch(command) {
+                case "reloadconfig":
+                    reloadconfig()
+                    break
+                case "clearcache":
+                    commandcache = {}
+                    break
+                default:
+                    msg.channel.send("wdym " + mock(message))
+                    break
+            }
+            
         }
     }
 })
