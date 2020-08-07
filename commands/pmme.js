@@ -1,3 +1,4 @@
 module.exports = async (msg, argstring) => {
-    msg.author.send(argstring).catch((e) => {})
+    const message = argstring != "" ? argstring : "Hello :D"
+    msg.author.send(message).catch((e) => {})
 }
