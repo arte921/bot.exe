@@ -14,7 +14,10 @@ const client = new Discord.Client()
 
 let commandcache = {}
 
-client.on("ready", () => console.log(`Logged in as ${client.user.tag}`))
+client.on("ready", () => {
+    console.log(`Logged in as ${client.user.tag}`)
+    client.user.setActivity(config.gamestatus)
+})
 
 client.on("message", async msg => {
 
