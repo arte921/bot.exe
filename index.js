@@ -43,6 +43,7 @@ client.on("message", async msg => {
             switch(command) {
                 case "reloadconfig":
                     reloadconfig()
+                    client.user.setActivity(config.gamestatus)
                     break
                 case "clearcache":
                     commandcache = {}
