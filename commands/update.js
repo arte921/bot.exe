@@ -6,8 +6,9 @@ const path = process.cwd()
 const config = JSON.parse(fs.readFileSync(path + "/config.json").toString()) 
 
 module.exports = async (msg, argstring) => {
-    if (!config.sshusers.includes(msg.author.id)) return
+    if (!config.sysadmins.includes(msg.author.id)) return
     exec("git pull", (error, stdout, stderr) => {
-        msg.channel.send(error + stderr + stdout).catch(e => console.log(e))
+        console.log(error, stderr)
+        msg.channel.send(stdout).catch(e => console.log(e))
     })
 }

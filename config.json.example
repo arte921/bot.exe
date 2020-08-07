@@ -1,20 +1,21 @@
 {
     "token":"discord bot token",
-    "prefix":"ssh-",
-    "sshusers":[
+    "sysadmins":[
         "488724416579108865"
     ],
-    "allowspam":true,
-    "caching":true,
-    "blocklist":[
-        "ssh",
-        "music"
-    ],
-    "admins":[
-        "488724416579108865"
-    ]
+    "caching":false,
+    "gamestatus":"outside",
+    "default_config":{
+        "prefix":"ssh-",
+        "allowspam":false,
+        "blocklist":[
+            "kick",
+            "ban"
+        ],
+        "admins":[],
+        "allowed_channels":[]
+    }
 }
-
 
 allowspam: wether the bot will respond to other bots (including itself)
 caching: wether the bot will cache commands in ram, improves performance but disabling will enable live reloading of commands, helpful when debugging
