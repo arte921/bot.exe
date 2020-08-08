@@ -38,9 +38,11 @@ client.on("ready", () => {
     // set game status
     client.user.setActivity(globalconfig.gamestatus);
 
+    let changed = false;    // To only write when db changes
     // loops trough guilds, adds default config for new guilds
     client.guilds.cache.forEach((guild) => {
         if (!database[guild.id]) {  // only add new entry if didn't exist before
+            changed = true; // So it get's actually saved to disk
             database[guild.id] = globalconfig.default_config;   // add in default config
 
             database[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels
@@ -51,7 +53,7 @@ client.on("ready", () => {
         }
     });
 
-    savedatabase(); // Write the database to disk. TODO: only write when changed
+    if (changed) savedatabase(); // Write the database to disk if it changed.
 });
 
 client.on("message", async (msg) => {
@@ -77,7 +79,7 @@ client.on("message", async (msg) => {
         commandcache[command](msg, argstring, config);  // Run the command code from the cache
     } else {    // Otherwise get the command from disk
         let commandfilepath = "./commands/" + command + ".js";  // Compose the path to where the command should be
-        if (fs.existsSync(commandfilepath)) {   // Check if command exists. TODO: put switch case first, for optimisation when running a command from the switch case
+        if (fs.existsSync(commandfilepath)) {   // Check if command exists
             commandcache[command] = require(commandfilepath); // Get the code from disk
             commandcache[command](msg, argstring, config); // Run the code
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
