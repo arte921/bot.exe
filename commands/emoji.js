@@ -1,8 +1,8 @@
 const fs = require("fs");
 
-const { sendLongMessage } = require("./util.js");
+const { sendLongMessage } = require("../util.js");
 
-const emojis = JSON.parse(fs.readFileSync("./emoji.json").toString());
+const emojis = JSON.parse(fs.readFileSync("../emoji.json").toString());
 
 function getEmoji(keyword, maxemoji) {
     let candidates = emojis.filter(

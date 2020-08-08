@@ -1,20 +1,22 @@
 const ytdl = require("ytdl-core");
 
-const { getCustomEmote, mock } = require("./util.js");
+const { mock } = require("../util.js");
+
+const globalconfig = JSON.parse(fs.readFileSync("../config.json").toString());
 
 let dispatcher, lastseenchannel;
 
 module.exports = async (msg, argstring, config) => {
+    if (!globalconfig.caching) {
+        msg.channel.send("This command only works if command caching is enabled.")
+        return
+    }
+    
     let splitargstring = argstring.split(" ");
     switch (splitargstring[0]) {
         case "play":
             if (!lastseenchannel && !msg.member.voice.channel) {
-                msg.channel.send(
-                    `join a channel yourself ${getCustomEmote(
-                        msg.guild.emojis.cache,
-                        "whatthecinnamon"
-                    )}`
-                );
+                msg.channel.send("You need to join a voice channel to start the music command :)");
                 return;
             }
             if (msg.member.voice.channel)

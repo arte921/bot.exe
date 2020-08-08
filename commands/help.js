@@ -2,7 +2,7 @@ const fs = require("fs");
 
 module.exports = async (msg, argstring, config) => {
     let commands = fs
-    .readdirSync("./commands")
+    .readdirSync("../commands")
     .filter(
         (command) =>
             !config.blocklist.some((blockedcommand) =>
