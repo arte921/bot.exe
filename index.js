@@ -4,32 +4,24 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
-// load local libs
-const { mock } = require("./util.js");
-
 let globalconfig;
 
-// in a function to enable live reloading
-function reloadconfig() {
+function reloadconfig() {   // In a function to enable live reloading
     globalconfig = JSON.parse(fs.readFileSync("./config.json").toString());
 }
 
-// stores the database variable and creates a backup of the old copy
-function savedatabase() {
+function savedatabase() {   // stores the database variable and creates a backup of the old copy
     fs.writeFileSync("./backup.json", fs.readFileSync("./database.json"));  // backup db, in case of corruption
-    fs.writeFileSync("./database.json", JSON.stringify(database, null, 4));  // write the actual database
+    fs.writeFileSync("./database.json", JSON.stringify(database, null, 4)); // write the actual database
 }
 
-// initialize database from disk
-let database = JSON.parse(fs.readFileSync("./database.json").toString());
+let database = JSON.parse(fs.readFileSync("./database.json").toString());   // initialize database from disk
 
-// load the config for first time
-reloadconfig();
+reloadconfig(); // load the config for first time
 
 const client = new Discord.Client();
 
-// declare emtpy cache to prevent null errors
-let commandcache = {};
+let commandcache = {};  // declare emtpy cache to prevent null errors
 
 // runs at successful login to discord
 client.on("ready", () => {
@@ -38,18 +30,18 @@ client.on("ready", () => {
     // set game status
     client.user.setActivity(globalconfig.gamestatus);
 
-    let changed = false;    // To only write when db changes
+    let changed = false;    // Only write when db changes
     // loops trough guilds, adds default config for new guilds
     client.guilds.cache.forEach((guild) => {
         if (!database[guild.id]) {  // only add new entry if didn't exist before
-            changed = true; // So it get's actually saved to disk
+            changed = true; // So it get actually saved to disk
             database[guild.id] = globalconfig.default_config;   // add in default config
 
             database[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels
                 .filter((channel) => channel.type == "text")    // Only include text channels
                 .map((channel) => channel.id);  // Only save channel id's 
 
-            database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // To prevent js doing copy by refence and having same entry for every server
+            database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // Prevent js doing copy by refence and having same entry for every server
         }
     });
 
@@ -68,7 +60,7 @@ client.on("message", async (msg) => {
     ) return;   // Then stop
 
     const message = msg.content.substr(config.prefix.length);   // Only get the part after the prefix
-    const firstspace = message.indexOf(" ");    // Get the index of the first space in the message (= where the arguments begin)
+    let firstspace = message.indexOf(" ");    // Get the index of the first space in the message (= where the arguments begin)
     firstspace = firstspace < 0 ? message.length : firstspace;  // Set it to end of message if there aren't any arguments
     const command = message.substr(0, firstspace);  // Get the command name, eg. the part between prefix and first space
     if (config.blocklist.includes(command)) return; // Stop execution if the command is blocked on this server
@@ -96,11 +88,11 @@ client.on("message", async (msg) => {
                     database = JSON.parse(fs.readFileSync("./database.json").toString());
                     break;
                 default:
-                    msg.channel.send("TYPO! :D");   // Be friendly to the admin
+                    msg.channel.send("I didn't quite catch that");   // Slightly different text for debugging purposes
                     break;
             }
         } else {
-            msg.channel.send("wdym " + mock(message));  // Be rude to non admins
+            msg.channel.send("What do you mean 🙈");
         }
     }
 });

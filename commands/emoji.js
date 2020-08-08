@@ -1,7 +1,5 @@
 const fs = require("fs");
 
-const { sendLongMessage } = require("../util.js");
-
 const emojis = JSON.parse(fs.readFileSync("./emoji.json").toString());
 
 function getEmoji(keyword, maxemoji) {
@@ -13,17 +11,15 @@ function getEmoji(keyword, maxemoji) {
         let a = "";
         for (let i = 0; i < maxemoji && i < candidates.length; i++)
             a += candidates[i][0];
-        return a;
-    } else return "";
+        return a + " ";
+    } else return " ";
 }
-
+// TODO prevent errors on incorrect input
 module.exports = async (msg, argstring, config) => {
     let args = argstring.split(" ");
-    sendLongMessage(
-        msg.channel,
-        args
+        msg.channel.send(args
             .slice(1)
             .map((word) => word + getEmoji(word, args[0]))
-            .join(" ")
-    );
+            .join("")
+        ).catch((e) => msg.channel.send("Message too long!"))
 };
