@@ -12,12 +12,12 @@ module.exports = async (msg, argstring, config) => {
     .join("\n")
     .replace(/.js/g, "");
 
-    let starttext = `
-    All commands prefixed with ${config.prefix}, without additional spaces.
+let starttext = `
+All commands prefixed with ${config.prefix}, without additional spaces.
 
-    Available commands:
+Available commands:
 
-    `;
+`;
 
     msg.channel.send(starttext + commands);
 };

@@ -16,7 +16,7 @@ module.exports = async (msg, argstring, config) => {
         return;
     }
 
-    const channel = !msg.member.voice.channel.id;
+    const channel = msg.member.voice.channel.id;
     console.log(channel);
     
     let splitargstring = argstring.split(" ");
