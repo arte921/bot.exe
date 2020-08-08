@@ -1,25 +1,24 @@
-const fs = require("fs")
-const path = process.cwd()
-const copypasta = JSON.parse(fs.readFileSync(path + "/storage.json").toString())
-const config = JSON.parse(fs.readFileSync(path + "/config.json").toString())
+const fs = require("fs");
+const path = process.cwd();
 
-let commands = fs
+module.exports = async (msg, argstring, config) => {
+    let commands = fs
     .readdirSync(path + "/commands")
     .filter(
-        (command) => !config.blocklist.some(
-            blockedcommand => command.includes(blockedcommand)
-        )
+        (command) =>
+            !config.blocklist.some((blockedcommand) =>
+                command.includes(blockedcommand)
+            )
     )
     .join("\n")
-    .replace(/.js/g, "")
+    .replace(/.js/g, "");
 
-let starttext = `
-All commands prefixed with ${config.prefix}, without additional spaces.
+    let starttext = `
+    All commands prefixed with ${config.prefix}, without additional spaces.
 
-Available commands:
+    Available commands:
 
-`
+    `;
 
-module.exports = async (msg, argstring) => {
-    msg.channel.send(starttext + commands)
-}
+    msg.channel.send(starttext + commands);
+};
