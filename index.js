@@ -45,12 +45,13 @@ client.on("ready", () => {
 });
 
 client.on("message", async (msg) => {
-    const config = database[msg.guild.id.toString()];
+    const config = database[msg.guild.id.toString()].catch(() => {});   // to prevent errors on dm
 
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // starts with prefix
         (msg.author.bot && !config.allowspam) ||    // is not a bot if it's not allowed to respond to bots
-        !(config.allowed_channels.includes(msg.channel.id))   // if bot is allowed in channel
+        !(config.allowed_channels.includes(msg.channel.id)) ||  // if bot is allowed in channel
+        message.channel.type == "dm"    // if getting dm'd, to prevent errors
     ) return;
 
     const message = msg.content.substr(config.prefix.length);
