@@ -21,6 +21,9 @@ module.exports = async (msg, argstring, config) => {
     let splitargstring = argstring.split(" ");
     switch (splitargstring[0]) {
         case "play":
+            if (!splitargstring[1] || !splitargstring[1].includes("youtube")) { // don't invert the order of booleans
+                msg.channel.send("Please specify a youtube url 😅");
+            }
 
             channels[channel] = {}
 
@@ -28,9 +31,7 @@ module.exports = async (msg, argstring, config) => {
             let connection = await channels[channel].dcchannel.join();
             channels[channel].dispatcher = connection.play(
                 ytdl(
-                    argstring.indexOf("youtube") < 0
-                        ? "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                        : argstring,
+                    splitargstring[1],
                     { filter: "audioonly" }
                 )
             );
@@ -64,7 +65,7 @@ module.exports = async (msg, argstring, config) => {
             }
             break;
         default:
-            msg.channel.send("I didn't quite catch that.");
+            msg.channel.send("That's not a music command!");
             break;
     }
 };
