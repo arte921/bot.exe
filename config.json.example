@@ -1,22 +1,20 @@
+                                    // Copy to config.json, edit to your liking, and delete the comments.
+
 {
-    "token":"discord bot token",
+    "token":"discord bot token",    // token of discord bot you can get at discord.com/developers
     "sysadmins":[
-        "488724416579108865"
+        "488724416579108865"        // id's of people who have permission to update, clear the cache, reload config/databases from discord
     ],
-    "caching":false,
-    "gamestatus":"outside",
-    "default_config":{
-        "prefix":"ssh-",
-        "allowspam":false,
-        "blocklist":[
+    "caching":false,                // caching: wether the bot will cache commands in ram, improves performance but disabling will enable live reloading of commands, helpful when debugging
+    "gamestatus":"outside",         // the name of the game in discord rich precense game activity
+    "default_config":{              // default config new servers will have. edit after joining in database.json
+        "prefix":"ssh-",            // bot only responds to messages starting with this prefix, and interprets only the stuff after the prefix
+        "allowspam":false,          //  wether the bot will respond to other bots (including itself)
+        "blocklist":[               // commands which are disabled
             "kick",
             "ban"
         ],
-        "admins":[],
-        "allowed_channels":[]
+        "admins":[],                // id's of people with kick/ban permissions (if said commands are enabled)
+        "allowed_channels":[]       // channels the bot listend in
     }
 }
-
-allowspam: wether the bot will respond to other bots (including itself)
-caching: wether the bot will cache commands in ram, improves performance but disabling will enable live reloading of commands, helpful when debugging
-blocklist: disabled commands
