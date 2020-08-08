@@ -46,7 +46,6 @@ client.on("ready", () => {
 
 client.on("message", async (msg) => {
     const config = database[msg.guild.id];
-    console.log(config.allowed_channels, msg.channel.id)
 
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // starts with prefix
