@@ -16,7 +16,7 @@ function savedatabase() {
     fs.writeFileSync("./database.json", JSON.stringify(database, null, 4));  // write the actual database
 }
 
-const database = JSON.parse(fs.readFileSync("./database.json").toString());
+let database = JSON.parse(fs.readFileSync("./database.json").toString());
 
 reloadconfig();
 
@@ -45,7 +45,7 @@ client.on("ready", () => {
 });
 
 client.on("message", async (msg) => {
-    const config = database[msg.guild.id];
+    const config = database[msg.guild.id.toString()];
 
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // starts with prefix
