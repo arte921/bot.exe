@@ -1,7 +1,6 @@
 const fs = require("fs");
 const { exec } = require("child_process");
 
-const path = process.cwd();
 
 const globalconfig = JSON.parse(fs.readFileSync("./config.json").toString());
 

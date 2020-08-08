@@ -1,9 +1,8 @@
 const fs = require("fs");
-const path = process.cwd();
 
 module.exports = async (msg, argstring, config) => {
     let commands = fs
-    .readdirSync(path + "/commands")
+    .readdirSync("./commands")
     .filter(
         (command) =>
             !config.blocklist.some((blockedcommand) =>

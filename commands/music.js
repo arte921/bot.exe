@@ -1,7 +1,6 @@
 const ytdl = require("ytdl-core");
-const path = process.cwd();
 
-const { getCustomEmote, mock } = require(path + "/util.js");
+const { getCustomEmote, mock } = require("./util.js");
 
 let dispatcher, lastseenchannel;
 

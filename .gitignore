@@ -3,4 +3,3 @@ node_modules
 log.txt
 database.json
 backup.json
-package-lock.json

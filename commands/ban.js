@@ -1,6 +1,3 @@
-const fs = require("fs");
-const path = process.cwd();
-
 module.exports = async (msg, argstring, config) => {
     if (!config.admins.includes(msg.author.id)) return;
 

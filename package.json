@@ -1,0 +1,30 @@
+{
+  "name": "bot.exe",
+  "version": "1.0.0",
+  "description": "Extendable Discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arte921/bot.exe.git"
+  },
+  "keywords": [
+    "Discord.js"
+  ],
+  "author": "Ard-Jan van Etten",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arte921/bot.exe/issues"
+  },
+  "homepage": "https://github.com/arte921/bot.exe#readme",
+  "dependencies": {
+    "@discordjs/opus": "^0.3.2",
+    "discord.js": "^12.2.0",
+    "ffmpeg": "0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "request": "^2.88.2",
+    "ytdl-core": "^3.2.0"
+  }
+}
