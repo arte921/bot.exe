@@ -1,6 +1,6 @@
-const path = process.cwd()
-const { mock } = require(path + "/util.js")
+const path = process.cwd();
+const { mock } = require(path + "/util.js");
 
-module.exports = async (msg, argstring) => { 
-    msg.channel.send(mock(argstring))
-}
+module.exports = async (msg, argstring, config) => {
+    msg.channel.send(mock(argstring));
+};

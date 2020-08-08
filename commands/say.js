@@ -1,3 +1,3 @@
-module.exports = async (msg, argstring) => {
-    msg.channel.send(argstring)
-}
+module.exports = async (msg, argstring, config) => {
+    msg.channel.send(argstring);
+};
