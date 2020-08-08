@@ -59,6 +59,7 @@ client.on("message", async (msg) => {
     let firstspace = message.indexOf(" ");
     firstspace = firstspace < 0 ? message.length : firstspace;
     const command = message.substr(0, firstspace);
+    if (config.blocklist.includes(command)) return;
     const argstring = message.substr(firstspace + 1);
 
     console.log(msg.author.tag, "   ", message);
@@ -67,11 +68,7 @@ client.on("message", async (msg) => {
         commandcache[command](msg, argstring, config);
     } else {
         let commandfilepath = "./commands/" + command + ".js";
-        if (
-            !config.blocklist.includes(command) &&
-            fs.existsSync(commandfilepath)
-        ) {
-            // only if command is not blocked and installed
+        if (fs.existsSync(commandfilepath)) {
             commandcache[command] = require(commandfilepath); // get the code
             commandcache[command](msg, argstring, config); // run the code
             delete require.cache[require.resolve(commandfilepath)]; // enable live bot updates

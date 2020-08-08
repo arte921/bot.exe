@@ -47,10 +47,8 @@ module.exports = async (msg, argstring, config) => {
         case "stop":
             try {
                 dispatcher.destroy();
-                msg.channel.send("aight, imma head out");
+            } finally {
                 lastseenchannel.leave();
-            } catch (e) {
-                msg.channel.send("Nothing playing!");
             }
             break;
         case "volume":
