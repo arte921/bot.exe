@@ -16,5 +16,5 @@ module.exports = {
             .map((char, index) => {
                 return index % 2 == 0 ? char.toLowerCase() : char.toUpperCase();
             })
-            .join(""),
+            .join("")
 };

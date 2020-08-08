@@ -1,98 +1,107 @@
 "use strict";
 
+// load libs
 const Discord = require("discord.js");
 const fs = require("fs");
 
+// load local libs
 const { mock } = require("./util.js");
 
 let globalconfig;
 
+// in a function to enable live reloading
 function reloadconfig() {
     globalconfig = JSON.parse(fs.readFileSync("./config.json").toString());
 }
 
+// stores the database variable and creates a backup of the old copy
 function savedatabase() {
     fs.writeFileSync("./backup.json", fs.readFileSync("./database.json"));  // backup db, in case of corruption
     fs.writeFileSync("./database.json", JSON.stringify(database, null, 4));  // write the actual database
 }
 
+// initialize database from disk
 let database = JSON.parse(fs.readFileSync("./database.json").toString());
 
+// load the config for first time
 reloadconfig();
 
 const client = new Discord.Client();
 
+// declare emtpy cache to prevent null errors
 let commandcache = {};
 
+// runs at successful login to discord
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
 
+    // set game status
     client.user.setActivity(globalconfig.gamestatus);
 
+    // loops trough guilds, adds default config for new guilds
     client.guilds.cache.forEach((guild) => {
-        if (!database[guild.id]) {
-            database[guild.id] = globalconfig.default_config;
+        if (!database[guild.id]) {  // only add new entry if didn't exist before
+            database[guild.id] = globalconfig.default_config;   // add in default config
 
-            database[guild.id].allowed_channels = guild.channels.cache
-                .filter((channel) => channel.type == "text")
-                .map((channel) => channel.id);
+            database[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels
+                .filter((channel) => channel.type == "text")    // Only include text channels
+                .map((channel) => channel.id);  // Only save channel id's 
 
-            database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // to prevent js doing copy by refence and having same entry for every server
+            database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // To prevent js doing copy by refence and having same entry for every server
         }
     });
 
-    savedatabase();
+    savedatabase(); // Write the database to disk. TODO: only write when changed
 });
 
 client.on("message", async (msg) => {
-    if (msg.channel.type == "dm") return; // if getting dm'd, to prevent errors
+    if (msg.channel.type == "dm") return; // Stop if getting dm'd, to prevent errors
     
-    const config = database[msg.guild.id.toString()];
+    const config = database[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
     if (
-        !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // starts with prefix
-        (msg.author.bot && !config.allowspam) ||    // is not a bot if it's not allowed to respond to bots
-        !(config.allowed_channels.includes(msg.channel.id)) // if bot is allowed in channel
-    ) return;
+        !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
+        (msg.author.bot && !config.allowspam) ||    // Is not a bot if it's not allowed to respond to bots
+        !(config.allowed_channels.includes(msg.channel.id)) // If bot isn't allowed in channel
+    ) return;   // Then stop
 
-    const message = msg.content.substr(config.prefix.length);
-    let firstspace = message.indexOf(" ");
-    firstspace = firstspace < 0 ? message.length : firstspace;
-    const command = message.substr(0, firstspace);
-    if (config.blocklist.includes(command)) return;
-    const argstring = message.substr(firstspace + 1);
+    const message = msg.content.substr(config.prefix.length);   // Only get the part after the prefix
+    const firstspace = message.indexOf(" ");    // Get the index of the first space in the message (= where the arguments begin)
+    firstspace = firstspace < 0 ? message.length : firstspace;  // Set it to end of message if there aren't any arguments
+    const command = message.substr(0, firstspace);  // Get the command name, eg. the part between prefix and first space
+    if (config.blocklist.includes(command)) return; // Stop execution if the command is blocked on this server
+    const argstring = message.substr(firstspace + 1);   // Get the string of arguments
+    console.log(msg.author.tag, "   ", message);    // Log who runs what command
 
-    console.log(msg.author.tag, "   ", message);
-
-    if (command in commandcache && globalconfig.caching) {
-        commandcache[command](msg, argstring, config);
-    } else {
-        let commandfilepath = "./commands/" + command + ".js";
-        if (fs.existsSync(commandfilepath)) {
-            commandcache[command] = require(commandfilepath); // get the code
-            commandcache[command](msg, argstring, config); // run the code
-            delete require.cache[require.resolve(commandfilepath)]; // enable live bot updates
-        } else if (globalconfig.sysadmins.includes(msg.author.id)) {
-            switch (command) {
-                case "reloadconfig":
-                    reloadconfig();
-                    client.user.setActivity(globalconfig.gamestatus);
+    if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
+        commandcache[command](msg, argstring, config);  // Run the command code from the cache
+    } else {    // Otherwise get the command from disk
+        let commandfilepath = "./commands/" + command + ".js";  // Compose the path to where the command should be
+        if (fs.existsSync(commandfilepath)) {   // Check if command exists. TODO: put switch case first, for optimisation when running a command from the switch case
+            commandcache[command] = require(commandfilepath); // Get the code from disk
+            commandcache[command](msg, argstring, config); // Run the code
+            delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
+        } else if (globalconfig.sysadmins.includes(msg.author.id)) {    // Commands are only accessible by bot admins
+            switch (command) {  // These commands need to be run from this file
+                case "reloadconfig":    // Allow for live globalconfig reloading
+                    reloadconfig();     // Set the globalconfig var
+                    client.user.setActivity(globalconfig.gamestatus);   // Set the game status, which might have been changed in the config
                     break;
-                case "clearcache":
-                    commandcache = {};
-                    break;
-                case "reloaddatabase":
+                case "clearcache":  // Clear the command cache
+                    commandcache = {};  // Set it to empty object to prevent null errors
+                    break;  
+                case "reloaddatabase":  // Allow on the fly reloading of the database (which can be manually edited)
                     database = JSON.parse(fs.readFileSync("./database.json").toString());
                     break;
                 default:
-                    msg.channel.send("TYPO! :D");
+                    msg.channel.send("TYPO! :D");   // Be friendly to the admin
                     break;
             }
         } else {
-            msg.channel.send("wdym " + mock(message));
+            msg.channel.send("wdym " + mock(message));  // Be rude to non admins
         }
     }
 });
 
 console.log("logging in");
-client.login(globalconfig.token);
+client.login(globalconfig.token);   // Login to discord
