@@ -2,7 +2,7 @@ const fs = require("fs");
 const { exec } = require("child_process");
 
 
-const globalconfig = JSON.parse(fs.readFileSync("../config.json").toString());
+const globalconfig = JSON.parse(fs.readFileSync("./config.json").toString());
 
 module.exports = async (msg, argstring, config) => {
     if (!globalconfig.sysadmins.includes(msg.author.id)) return;

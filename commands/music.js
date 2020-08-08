@@ -1,13 +1,12 @@
 const ytdl = require("ytdl-core");
+const fs = require("fs");
 
-const { mock } = require("../util.js");
-
-const globalconfig = JSON.parse(fs.readFileSync("../config.json").toString());
+const globalconfig = JSON.parse(fs.readFileSync("./config.json").toString());
 
 let dispatcher, lastseenchannel;
 
 module.exports = async (msg, argstring, config) => {
-    if (!globalconfig.caching) {
+    if (!globalconfig.caching) {    // to prevent users from being able to start music, but not control it
         msg.channel.send("This command only works if command caching is enabled.")
         return
     }
@@ -62,7 +61,7 @@ module.exports = async (msg, argstring, config) => {
             }
             break;
         default:
-            msg.channel.send(mock(splitargstring[0]));
+            msg.channel.send("I didn't quite catch that.");
             break;
     }
 };
