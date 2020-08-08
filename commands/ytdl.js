@@ -3,6 +3,10 @@ const ytdl = require("ytdl-core");
 const path = process.cwd();
 
 module.exports = (msg, argstring, config) => {
+    if (argstring == "") {
+        msg.channel.send("Please specify a youtube url 😅");
+        return;
+    }
 
     const file = path + "/temp/" + argstring.substr(-11) + ".mp3";
     ytdl(argstring, { filter: "audioonly" }).pipe(fs.createWriteStream(file)).on("finish", async () => {

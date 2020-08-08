@@ -23,6 +23,7 @@ module.exports = async (msg, argstring, config) => {
         case "play":
             if (!splitargstring[1] || !splitargstring[1].includes("youtube")) { // don't invert the order of booleans
                 msg.channel.send("Please specify a youtube url 😅");
+                return;
             }
 
             channels[channel] = {}
