@@ -62,7 +62,7 @@ client.on("message", async (msg) => {
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
         (msg.author.bot && !config.allowspam) ||    // Is not a bot if it's not allowed to respond to bots
-        !(config.allowed_channels.includes(msg.channel.id)) // If bot isn't allowed in channel
+        !(config.allowed_channels.includes(msg.channel.id)) && !msg.member.permissions.has("KICK_MEMBERS")  // If bot isn't allowed in channel. Admins can use bot anywhere.
     ) return;   // Then stop
 
     const message = msg.content.substr(config.prefix.length);   // Only get the part after the prefix
@@ -101,15 +101,23 @@ client.on("message", async (msg) => {
                 }
             }
 
-            if (!done && config.admins.includes(msg.author.id)) {
+            if (!done) {
                 done = true;
                 switch (command) {
                     case "here":
-                        database[msg.guild.id.toString()].allowed_channels = [msg.channel.id];
+                        if (!config.allowed_channels.includes(msg.channel.id)) {
+                            database[msg.guild.id.toString()].allowed_channels.push(msg.channel.id);
+                        } else {
+                            msg.channel.send("Already allowed here.");
+                        }                        
                         savedatabase();
                         break;
                     case "anywhere":
                         allowEverywhere(msg.guild);
+                        break;
+                    case "nowhere":
+                        database[msg.guild.id.toString()].allowed_channels = [];
+                        savedatabase();
                         break;
                     default:
                         done = false;

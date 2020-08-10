@@ -1,5 +1,5 @@
 module.exports = async (msg, argstring, config) => {
-    if (!config.admins.includes(msg.author.id)) return;
+    if (!msg.member.permissions.has("BAN_MEMBERS")) return;
 
     let args = argstring.split(" ");
     if (!args[0]) return msg.channel.send("Who has been naughty?");
