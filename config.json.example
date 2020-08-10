@@ -9,12 +9,11 @@
     "gamestatus":"outside",         // the name of the game in discord rich precense game activity
     "default_config":{              // default config new servers will have. edit after joining in database.json
         "prefix":"ssh-",            // bot only responds to messages starting with this prefix, and interprets only the stuff after the prefix
-        "allowspam":false,          //  wether the bot will respond to other bots (including itself)
+        "allowspam":false,          // wether the bot will respond to other bots (including itself)
         "blocklist":[               // commands which are disabled
             "kick",
             "ban"
         ],
-        "admins":[],                // id's of people with kick/ban permissions (if said commands are enabled)
-        "allowed_channels":[]       // channels the bot listend in
+        "allowed_channels":[]       // channels the bot listend in. no need to edit this here, as it will be overwritten.
     }
 }
