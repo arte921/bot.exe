@@ -23,6 +23,17 @@ const client = new Discord.Client();
 
 let commandcache = {};  // declare emtpy cache to prevent null errors
 
+function newServer(guild) {
+    database[guild.id] = globalconfig.default_config;   // add in default config
+
+    database[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels
+        .filter((channel) => channel.type == "text")    // Only include text channels
+        .map((channel) => channel.id);  // Only save channel id's 
+
+    database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // Prevent js doing copy by refence and having same entry for every server
+    savedatabase();
+}
+
 // runs at successful login to discord
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
@@ -30,27 +41,17 @@ client.on("ready", () => {
     // set game status
     client.user.setActivity(globalconfig.gamestatus);
 
-    let changed = false;    // Only write when db changes
-    // loops trough guilds, adds default config for new guilds
+    //  In case bot is added to a new guild while it was offline
     client.guilds.cache.forEach((guild) => {
-        if (!database[guild.id]) {  // only add new entry if didn't exist before
-            changed = true; // So it get actually saved to disk
-            database[guild.id] = globalconfig.default_config;   // add in default config
-
-            database[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels
-                .filter((channel) => channel.type == "text")    // Only include text channels
-                .map((channel) => channel.id);  // Only save channel id's 
-
-            database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // Prevent js doing copy by refence and having same entry for every server
-        }
+        if (!database[guild.id]) newServer(guild);
     });
-
-    if (changed) savedatabase(); // Write the database to disk if it changed.
 });
+
+client.on("guildCreate", guild => newServer(guild));    // If bot is added to guild at runtime
 
 client.on("message", async (msg) => {
     if (msg.channel.type == "dm") return; // Stop if getting dm'd, to prevent errors
-    
+
     const config = database[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
     if (
