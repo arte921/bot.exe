@@ -26,11 +26,16 @@ let commandcache = {};  // declare emtpy cache to prevent null errors
 function newServer(guild) {
     database[guild.id] = globalconfig.default_config;   // add in default config
 
-    database[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels
-        .filter((channel) => channel.type == "text")    // Only include text channels
-        .map((channel) => channel.id);  // Only save channel id's 
+    allowEverywhere(guild);
 
     database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // Prevent js doing copy by refence and having same entry for every server
+    savedatabase();
+}
+
+function allowEverywhere(guild) {
+    database[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels
+        .filter((channel) => channel.type == "text")    // Only include text channels
+        .map((channel) => channel.id);  // Only save channel id's
     savedatabase();
 }
 
@@ -76,24 +81,43 @@ client.on("message", async (msg) => {
             commandcache[command] = require(commandfilepath); // Get the code from disk
             commandcache[command](msg, argstring, config); // Run the code
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
-        } else if (globalconfig.sysadmins.includes(msg.author.id)) {    // Commands are only accessible by bot admins
-            switch (command) {  // These commands need to be run from this file
-                case "reloadconfig":    // Allow for live globalconfig reloading
-                    reloadconfig();     // Set the globalconfig var
-                    client.user.setActivity(globalconfig.gamestatus);   // Set the game status, which might have been changed in the config
-                    break;
-                case "clearcache":  // Clear the command cache
-                    commandcache = {};  // Set it to empty object to prevent null errors
-                    break;  
-                case "reloaddatabase":  // Allow on the fly reloading of the database (which can be manually edited)
-                    database = JSON.parse(fs.readFileSync("./database.json").toString());
-                    break;
-                default:
-                    msg.channel.send("I didn't quite catch that");   // Slightly different text for debugging purposes
-                    break;
-            }
         } else {
-            msg.channel.send("What do you mean 🙈");
+            let done = true;
+            if (globalconfig.sysadmins.includes(msg.author.id)) {    // Commands are only accessible by bot admins
+                switch (command) {  // These commands need to be run from this file
+                    case "reloadconfig":    // Allow for live globalconfig reloading
+                        reloadconfig();     // Set the globalconfig var
+                        client.user.setActivity(globalconfig.gamestatus);   // Set the game status, which might have been changed in the config
+                        break;
+                    case "clearcache":  // Clear the command cache
+                        commandcache = {};  // Set it to empty object to prevent null errors
+                        break;  
+                    case "reloaddatabase":  // Allow on the fly reloading of the database (which can be manually edited)
+                        database = JSON.parse(fs.readFileSync("./database.json").toString());
+                        break;
+                    default:
+                        done = false;
+                        break;
+                }
+            }
+
+            if (!done && config.admins.includes(msg.author.id)) {
+                done = true;
+                switch (command) {
+                    case "here":
+                        database[msg.guild.id.toString()].allowed_channels = [msg.channel.id];
+                        savedatabase();
+                        break;
+                    case "anywhere":
+                        allowEverywhere(msg.guild);
+                        break;
+                    default:
+                        done = false;
+                        break;
+                }
+            }
+            
+            if (!done) msg.channel.send("What do you mean 🙈");
         }
     }
 });
