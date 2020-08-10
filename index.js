@@ -101,7 +101,7 @@ client.on("message", async (msg) => {
                 }
             }
 
-            if (!done) {
+            if (!done && msg.member.permissions.has("KICK_MEMBERS")) {
                 done = true;
                 switch (command) {
                     case "here":
