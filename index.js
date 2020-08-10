@@ -110,17 +110,26 @@ client.on("message", async (msg) => {
                 switch (command) {
                     case "here":
                         if (!config.allowed_channels.includes(msg.channel.id)) {
-                            database[msg.guild.id.toString()].allowed_channels.push(msg.channel.id);
+                            config.allowed_channels.push(msg.channel.id);
                         } else {
                             msg.channel.send("Already allowed here.");
                         }                        
                         savedatabase();
                         break;
+                    case "shut":
+                        if (config.allowed_channels.includes(msg.channel.id)) {
+                            const index = config.allowed_channels.indexOf(msg.channel.id);
+                            config.allowed_channels.splice(index, 1);
+                            savedatabase();
+                        } else {
+                            msg.channel.send("Was not allowed here already!");
+                        }
+                        break;
                     case "anywhere":
                         allowEverywhere(msg.guild);
                         break;
                     case "nowhere":
-                        database[msg.guild.id.toString()].allowed_channels = [];
+                        config.allowed_channels = [];
                         savedatabase();
                         break;
                     default:
