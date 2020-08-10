@@ -62,7 +62,7 @@ client.on("message", async (msg) => {
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
         (msg.author.bot && !config.allowspam) ||    // Is not a bot if it's not allowed to respond to bots
-        !(config.allowed_channels.includes(msg.channel.id)) && !msg.member.permissions.has("KICK_MEMBERS")  // If bot isn't allowed in channel. Admins can use bot anywhere.
+        !(config.allowed_channels.includes(msg.channel.id) || msg.member.permissions.has("KICK_MEMBERS"))  // If bot isn't allowed in channel. Admins can use bot anywhere.
     ) return;   // Then stop
 
     const message = msg.content.substr(config.prefix.length);   // Only get the part after the prefix
