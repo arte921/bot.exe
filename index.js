@@ -25,10 +25,10 @@ let commandcache = {};  // declare emtpy cache to prevent null errors
 
 function newServer(guild) {
     database[guild.id] = globalconfig.default_config;   // add in default config
-
+    database[guild.id].name = guild.name;
     allowEverywhere(guild);
 
-    database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // Prevent js doing copy by refence and having same entry for every server
+    database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // Prevent js doing copy by refence and having same entry for every server. Might not be needed anymore. TODO
     savedatabase();
 }
 
