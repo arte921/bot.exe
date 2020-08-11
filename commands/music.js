@@ -1,6 +1,8 @@
 const ytdl = require("ytdl-core");
 const fs = require("fs");
 
+const notplaying = "Nothing playing!";
+
 const globalconfig = JSON.parse(fs.readFileSync("./config.json").toString());
 
 let channels = {}
@@ -19,6 +21,12 @@ module.exports = async (msg, argstring, config) => {
     const channel = msg.member.voice.channel.id;
     
     let splitargstring = argstring.split(" ");
+
+    if (splitargstring[0] != "play" && !channels[channel]) {
+        msg.channel.send(notplaying);
+        return;
+    }
+
     switch (splitargstring[0]) {
         case "play":
             channels[channel] = {}
@@ -41,28 +49,30 @@ module.exports = async (msg, argstring, config) => {
             try {
                 channels[channel].dispatcher.pause();
             } catch (e) {
-                msg.channel.send("Nothing playing!");
+                msg.channel.send(notplaying);
             }
             break;
         case "resume":
             try {
                 channels[channel].dispatcher.resume();
             } catch (e) {
-                msg.channel.send("Nothing playing!");
+                msg.channel.send(notplaying);
             }
             break;
         case "stop":
             try {
                 channels[channel].dispatcher.destroy();
             } finally {
-                channels[channel].dcchannel.leave();
+                try {
+                    channels[channel].dcchannel.leave();
+                } catch(e) {}
             }
             break;
         case "volume":
             try {
                 channels[channel].dispatcher.setVolume(splitargstring[1] / 100);
             } catch (e) {
-                msg.channel.send("Nothing playing!");
+                msg.channel.send(notplaying);
             }
             break;
         default:
