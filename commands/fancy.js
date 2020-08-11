@@ -2,7 +2,7 @@ const letters = ["𝔸", "𝔹", "ℂ", "𝔻", "𝔼", "𝔽", "𝔾", "ℍ", "
 const numbers = ["𝟘", "𝟙", "𝟚", "𝟛", "𝟜", "𝟝", "𝟞", "𝟟", "𝟠", "𝟡"];
 
 module.exports = async (msg, argstring, config) => {
-    msg.channel.send("**" + 
+    msg.channel.send( 
         argstring
             .split("")
             .map((char) => {
@@ -14,6 +14,6 @@ module.exports = async (msg, argstring, config) => {
                     return numbers[char];
                 } else return char;
             })
-            .join("") + "**"
+            .join("")
     );
 };
