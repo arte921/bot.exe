@@ -21,21 +21,21 @@ module.exports = async (msg, argstring, config) => {
     let splitargstring = argstring.split(" ");
     switch (splitargstring[0]) {
         case "play":
-            if (!splitargstring[1] || !splitargstring[1].includes("youtube")) { // don't invert the order of booleans
-                msg.channel.send("Please specify a youtube url 😅");
-                return;
-            }
-
             channels[channel] = {}
 
             if (msg.member.voice.channel) channels[channel].dcchannel = msg.member.voice.channel;
             let connection = await channels[channel].dcchannel.join();
-            channels[channel].dispatcher = connection.play(
-                ytdl(
-                    splitargstring[1],
-                    { filter: "audioonly" }
-                )
-            );
+            try{
+                channels[channel].dispatcher = connection.play(
+                    ytdl(
+                        splitargstring[1],
+                        { filter: "audioonly" }
+                    )
+                );
+            } catch (e) {
+                msg.channel.send("Please specify a youtube url 😅");
+                channels[channel].dcchannel.leave();
+            }
             break;
         case "pause":
             try {
