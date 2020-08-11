@@ -4,7 +4,7 @@ This bot is made with the goal of being fun to use, and being easy to administra
 It has a simple plugin system, which can add, remove and update plugins (every plugin is a command) without restarting the bot.
 It can also reload the configuration from disk without restarting.
 
-If you don't need those live functions, you can enable a caching system which improves performance.
+If you don't need those live functions, you can enable a caching system which improves performance. You can still reload the commands live, by running the bot's `clearcache` command.
 
 # usage
 
