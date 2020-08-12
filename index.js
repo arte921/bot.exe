@@ -59,18 +59,9 @@ client.on("message", async (msg) => {
 
     const config = database[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
-    if (config.boldchannels.includes(msg.channel.id)) {
-        const botuser = msg.guild.members.cache.get(client.user.id);
-        let defaultname = botuser.nickname;
-        const pfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`;
-        client.user.setAvatar(pfp).catch((e) => {});
-        botuser.setNickname(msg.author.username);
-    
+    if (config.boldchannels.includes(msg.channel.id)) {    
         msg.delete().catch((e) => {});
         msg.channel.send("**" + msg.content + "**");
-
-        client.user.setAvatar("https://raw.githubusercontent.com/arte921/bot.exe/master/assets/pfp.png");
-        msg.guild.members.cache.get(client.user.id).setNickname(defaultname);
     }
 
 
