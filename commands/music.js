@@ -10,7 +10,7 @@ const notplaying = "Nothing playing!";
 
 const globalconfig = load("config");
 
-const channels = {}
+let channels = {}
 
 module.exports = async (msg, argstring, config) => {
     if (!globalconfig.caching) {    // to prevent users from being able to start music, but not control it

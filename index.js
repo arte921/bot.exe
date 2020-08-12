@@ -13,10 +13,10 @@ const bold = require(path.join(cwd, "errands", "bold.js"));
 let globalconfig, servers, commandcache;
 let online = false;
 
-function reload() {
+function reload(clearcache = true) {
     globalconfig = load("config");
     servers = load("servers");
-    commandcache = {};  // also clear the command cache to make sure the commands also use new config.
+    if (clearcache) commandcache = {};  // also clear the command cache to make sure the commands also use new config.
     if (online) client.user.setActivity(globalconfig.gamestatus); // set game status in case it changed in config. only when online to prevent error.
 }
 
@@ -60,16 +60,16 @@ client.on("message", async (msg) => {
     if (config.blocklist.commands.includes(command)) return; // Stop execution if the command is blocked on this server
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
-
+            console.log(commandcache);
     if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
         commandcache[command](msg, argstring, config);  // Run the command code from the cache
     } else {    // Otherwise get the command from disk
         let commandfilepath = path.join(cwd, "commands", command + ".js");  // Compose the path to where the command should be
         if (fs.existsSync(commandfilepath)) {   // Check if command exists
             commandcache[command] = require(commandfilepath); // Get the code from disk
-            const result = commandcache[command](msg, argstring, config); // Run the code
-            //if (result) servers = result;
-            reload();
+            commandcache[command](msg, argstring, config); // Run the code
+            console.log("got from disk");
+            reload(false);
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
         } else {
             let done = false;
