@@ -22,6 +22,7 @@ reloadconfig(); // load the config for first time
 const client = new Discord.Client();
 
 let commandcache = {};  // declare emtpy cache to prevent null errors
+let lastid;
 
 function newServer(guild) {
     database[guild.id] = globalconfig.default_config;   // add in default config
@@ -55,13 +56,25 @@ client.on("ready", () => {
 client.on("guildCreate", guild => newServer(guild));    // If bot is added to guild at runtime
 
 client.on("message", async (msg) => {
-    if (msg.channel.type == "dm") return; // Stop if getting dm'd, to prevent errors
+    if (msg.author.bot || msg.channel.type == "dm") return;
 
     const config = database[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
+    if (config.boldchannels.includes(msg.channel.id)) {
+        if (lastid != msg.author.id) {  // it's possible for an user to change their name/pfp after sending one message, then sending another, but that's unlikely and doesnt cause harm.
+            lastid = msg.author.id;
+            const pfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`;
+            client.user.setAvatar(pfp).catch((e) => {});
+            msg.guild.members.cache.get(client.user.id).setNickname(msg.author.username);
+        }
+        msg.delete().catch((e) => {});
+        msg.channel.send("**" + msg.content + "**");
+    }
+
+
+
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
-        (msg.author.bot && !config.allowspam) ||    // Is not a bot if it's not allowed to respond to bots
         !(
             config.allowed_channels.includes(msg.channel.id) ||
             msg.member.permissions.has("KICK_MEMBERS") ||
