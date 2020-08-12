@@ -64,8 +64,6 @@ client.on("message", async (msg) => {
         msg.channel.send("**" + msg.content + "**");
     }
 
-
-
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
         !(
