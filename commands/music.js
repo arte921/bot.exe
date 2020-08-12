@@ -1,9 +1,12 @@
 const ytdl = require("ytdl-core");
 const fs = require("fs");
+const path = require("path");
+
+const cwd = process.cwd();
 
 const notplaying = "Nothing playing!";
 
-const globalconfig = JSON.parse(fs.readFileSync("./config.json").toString());
+const globalconfig = JSON.parse(fs.readFileSync(path.join(cwd, "config.json")).toString());
 
 let channels = {}
 

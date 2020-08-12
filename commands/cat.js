@@ -1,6 +1,9 @@
 const fs = require("fs");
+const path = require("path");
 
-const catdir = "./assets/cats/"
+const cwd = process.cwd();
+
+const catdir = path.join(cwd, "assets", "cats");
 
 module.exports = async (msg, argstring, config) => {
     const cats = fs.readdirSync(catdir);

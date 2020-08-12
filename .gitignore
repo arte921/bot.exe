@@ -1,5 +1,2 @@
-config.json
 node_modules
-log.txt
-database.json
-backup.json
+database/*.json

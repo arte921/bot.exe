@@ -1,10 +1,14 @@
 const fs = require("fs");
-const details = JSON.parse(fs.readFileSync("./assets/help.json"));
+const path = require("path");
+
+const cwd = process.cwd();
+
+const details = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "help.json")));
 
 module.exports = async (msg, argstring, config) => {
     if (argstring == "") {
         let commands = fs
-        .readdirSync("./commands")
+        .readdirSync(path.join(cwd, "commands"))
         .filter(
             (command) =>
                 !config.blocklist.commands.some((blockedcommand) =>

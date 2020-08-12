@@ -1,43 +1,26 @@
-"use strict";
-
 // load libs
 const Discord = require("discord.js");
-const fs = require("fs");
+const path = require("path");
 
-let globalconfig;
+const cwd = process.cwd();
 
-function reloadconfig() {   // In a function to enable live reloading
-    globalconfig = JSON.parse(fs.readFileSync("./config.json").toString());
+const { save, load } = require(path.join(cwd, "database", "index.js"));
+
+const newserver = require(path.join(cwd, "errands", "newserver.js"));
+const bold = require(path.join(cwd, "errands", "bold.js"));
+
+let globalconfig, servers, commandcache;
+
+function reload() {
+    globalconfig = load("config");
+    servers = load("servers");
+    commandcache = {};  // also clear the command cache to make sure the commands also use new config.
+    client.user.setActivity(globalconfig.gamestatus); // set game status in case it changed in config.
 }
 
-function savedatabase() {   // stores the database variable and creates a backup of the old copy
-    fs.writeFileSync("./backup.json", fs.readFileSync("./database.json"));  // backup db, in case of corruption
-    fs.writeFileSync("./database.json", JSON.stringify(database, null, 4)); // write the actual database
-}
-
-let database = JSON.parse(fs.readFileSync("./database.json").toString());   // initialize database from disk
-
-reloadconfig(); // load the config for first time
+reload(); // load the configs for first time
 
 const client = new Discord.Client();
-
-let commandcache = {};  // declare emtpy cache to prevent null errors
-
-function newServer(guild) {
-    database[guild.id] = globalconfig.default_config;   // add in default config
-    database[guild.id].name = guild.name;
-    allowEverywhere(guild);
-
-    database[guild.id] = JSON.parse(JSON.stringify(database[guild.id])); // Prevent js doing copy by refence and having same entry for every server. Might not be needed anymore. TODO
-    savedatabase();
-}
-
-function allowEverywhere(guild) {
-    database[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels
-        .filter((channel) => channel.type == "text")    // Only include text channels
-        .map((channel) => channel.id);  // Only save channel id's
-    savedatabase();
-}
 
 // runs at successful login to discord
 client.on("ready", () => {
@@ -48,16 +31,16 @@ client.on("ready", () => {
 
     //  In case bot is added to a new guild while it was offline
     client.guilds.cache.forEach((guild) => {
-        if (!database[guild.id]) newServer(guild);
+        if (!servers[guild.id]) servers = newserver(guild);
     });
 });
 
-client.on("guildCreate", guild => newServer(guild));    // If bot is added to guild at runtime
+client.on("guildCreate", guild => servers = newserver(guild));    // If bot is added to guild at runtime
 
 client.on("message", async (msg) => {
     if (msg.author.bot || msg.channel.type == "dm") return;
 
-    const config = database[msg.guild.id.toString()];   // Load the config for the guild this message is from
+    const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
@@ -79,62 +62,16 @@ client.on("message", async (msg) => {
     if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
         commandcache[command](msg, argstring, config);  // Run the command code from the cache
     } else {    // Otherwise get the command from disk
-        let commandfilepath = "./commands/" + command + ".js";  // Compose the path to where the command should be
+        let commandfilepath = path.join("commands", command, ".js");  // Compose the path to where the command should be
         if (fs.existsSync(commandfilepath)) {   // Check if command exists
             commandcache[command] = require(commandfilepath); // Get the code from disk
             commandcache[command](msg, argstring, config); // Run the code
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
         } else {
-            let done = true;
-            if (globalconfig.sysadmins.includes(msg.author.id)) {    // Commands are only accessible by bot admins
-                switch (command) {  // These commands need to be run from this file
-                    case "reloadconfig":    // Allow for live globalconfig reloading
-                        reloadconfig();     // Set the globalconfig var
-                        client.user.setActivity(globalconfig.gamestatus);   // Set the game status, which might have been changed in the config
-                        break;
-                    case "clearcache":  // Clear the command cache
-                        commandcache = {};  // Set it to empty object to prevent null errors
-                        break;  
-                    case "reloaddatabase":  // Allow on the fly reloading of the database (which can be manually edited)
-                        database = JSON.parse(fs.readFileSync("./database.json").toString());
-                        break;
-                    default:
-                        done = false;
-                        break;
-                }
-            }
-
-            if (!done && (msg.member.permissions.has("KICK_MEMBERS") || globalconfig.sysadmins.includes(msg.author.id))) {
+            let done = false;
+            if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
+                reload();
                 done = true;
-                switch (command) {
-                    case "here":
-                        if (!config.allowed_channels.includes(msg.channel.id)) {
-                            config.allowed_channels.push(msg.channel.id);
-                        } else {
-                            msg.channel.send("Already allowed here.");
-                        }                        
-                        savedatabase();
-                        break;
-                    case "shut":
-                        if (config.allowed_channels.includes(msg.channel.id)) {
-                            const index = config.allowed_channels.indexOf(msg.channel.id);
-                            config.allowed_channels.splice(index, 1);
-                            savedatabase();
-                        } else {
-                            msg.channel.send("Was not allowed here already!");
-                        }
-                        break;
-                    case "anywhere":
-                        allowEverywhere(msg.guild);
-                        break;
-                    case "nowhere":
-                        config.allowed_channels = [];
-                        savedatabase();
-                        break;
-                    default:
-                        done = false;
-                        break;
-                }
             }
             
             if (!done) msg.channel.send("What do you mean 🙈");

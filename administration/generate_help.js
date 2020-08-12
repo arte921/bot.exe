@@ -112,4 +112,8 @@ Will return an mp3 file with the audio of the given youtube video. Will not work
 };
 
 const fs = require("fs");
-fs.writeFileSync("./help.json", JSON.stringify(helpobject));
+const path = require("path");
+
+const cwd = process.cwd();
+
+fs.writeFileSync(path.join(cwd, "help.json"), JSON.stringify(helpobject));
