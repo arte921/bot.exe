@@ -59,11 +59,6 @@ client.on("message", async (msg) => {
 
     const config = database[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
-    if (config.boldchannels.includes(msg.channel.id)) {    
-        msg.delete().catch((e) => {});
-        msg.channel.send("**" + msg.content + "**");
-    }
-
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
         !(
@@ -77,7 +72,7 @@ client.on("message", async (msg) => {
     let firstspace = message.indexOf(" ");    // Get the index of the first space in the message (= where the arguments begin)
     firstspace = firstspace < 0 ? message.length : firstspace;  // Set it to end of message if there aren't any arguments
     const command = message.substr(0, firstspace);  // Get the command name, eg. the part between prefix and first space
-    if (config.blocklist.includes(command)) return; // Stop execution if the command is blocked on this server
+    if (config.blocklist.commands.includes(command)) return; // Stop execution if the command is blocked on this server
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
 
