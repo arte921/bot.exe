@@ -10,13 +10,14 @@ const servers = load("servers");
 module.exports = async (msg, argstring, config) => {
     if (!msg.member.permissions.has("KICK_MEMBERS") || !globalconfig.sysadmins.includes(msg.author.id)) {
         msg.channel.send("This command requires administrator privileges.");
-        return;
+        return false;
     }
     
-    if (config.allowed_channels.includes(msg.channel.id)) {
-        const index = config.allowed_channels.indexOf(msg.channel.id);
-        globalconfig[msg.guild.id].allowed_channels.splice(index, 1);
+    if (servers[msg.guild.id].allowed_channels.includes(msg.channel.id)) {
+        const index = servers[msg.guild.id].allowed_channels.indexOf(msg.channel.id);
+        servers[msg.guild.id].allowed_channels.splice(index, 1);
         save("servers", servers);
+        return servers;
     } else {
         msg.channel.send("Was not allowed here already!");
     }

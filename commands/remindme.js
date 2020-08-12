@@ -6,7 +6,7 @@ module.exports = (msg, argstring, config) => {
     
     if (isNaN(time) || time == "") {
         msg.channel.send("Please provide an amount of minutes to wait!");
-        return;
+        return false;
     }
 
     console.log(time, note);

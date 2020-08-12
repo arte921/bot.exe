@@ -1,5 +1,6 @@
 // load libs
 const Discord = require("discord.js");
+const fs = require("fs");
 const path = require("path");
 
 const cwd = process.cwd();
@@ -10,12 +11,13 @@ const newserver = require(path.join(cwd, "errands", "newserver.js"));
 const bold = require(path.join(cwd, "errands", "bold.js"));
 
 let globalconfig, servers, commandcache;
+let online = false;
 
 function reload() {
     globalconfig = load("config");
     servers = load("servers");
     commandcache = {};  // also clear the command cache to make sure the commands also use new config.
-    client.user.setActivity(globalconfig.gamestatus); // set game status in case it changed in config.
+    if (online) client.user.setActivity(globalconfig.gamestatus); // set game status in case it changed in config. only when online to prevent error.
 }
 
 reload(); // load the configs for first time
@@ -25,7 +27,7 @@ const client = new Discord.Client();
 // runs at successful login to discord
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
-
+    online = true;
     // set game status
     client.user.setActivity(globalconfig.gamestatus);
 
@@ -62,10 +64,12 @@ client.on("message", async (msg) => {
     if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
         commandcache[command](msg, argstring, config);  // Run the command code from the cache
     } else {    // Otherwise get the command from disk
-        let commandfilepath = path.join("commands", command, ".js");  // Compose the path to where the command should be
+        let commandfilepath = path.join(cwd, "commands", command + ".js");  // Compose the path to where the command should be
         if (fs.existsSync(commandfilepath)) {   // Check if command exists
             commandcache[command] = require(commandfilepath); // Get the code from disk
-            commandcache[command](msg, argstring, config); // Run the code
+            const result = commandcache[command](msg, argstring, config); // Run the code
+            //if (result) servers = result;
+            reload();
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
         } else {
             let done = false;

@@ -5,7 +5,7 @@ const path = process.cwd();
 module.exports = (msg, argstring, config) => {
     if (argstring == "") {
         msg.channel.send("Please specify a youtube url 😅");
-        return;
+        return false;
     }
 
     const file = path + "/temp/" + argstring.substr(-11) + ".mp3";

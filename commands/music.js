@@ -4,21 +4,23 @@ const path = require("path");
 
 const cwd = process.cwd();
 
+const { save, load } = require(path.join(cwd, "database", "index.js"));
+
 const notplaying = "Nothing playing!";
 
-const globalconfig = JSON.parse(fs.readFileSync(path.join(cwd, "config.json")).toString());
+const globalconfig = load("config");
 
-let channels = {}
+const channels = {}
 
 module.exports = async (msg, argstring, config) => {
     if (!globalconfig.caching) {    // to prevent users from being able to start music, but not control it
-        msg.channel.send("This command only works if command caching is enabled.")
-        return
+        msg.channel.send("This command only works if command caching is enabled.");
+        return false;
     }
 
     if (!msg.member.voice.channel) {
         msg.channel.send("You need to join a voice channel to use the music command :)");
-        return;
+        return false;
     }
 
     const channel = msg.member.voice.channel.id;
@@ -27,7 +29,7 @@ module.exports = async (msg, argstring, config) => {
 
     if (splitargstring[0] != "play" && !channels[channel]) {
         msg.channel.send(notplaying);
-        return;
+        return false;
     }
 
     switch (splitargstring[0]) {
