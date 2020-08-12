@@ -44,6 +44,8 @@ client.on("message", async (msg) => {
 
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
+    require(path.join(cwd, "errands", "bold.js"))(msg, config); // nodejs will cache it
+
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
         !(
