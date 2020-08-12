@@ -1,5 +1,3 @@
-//
-
 module.exports = (msg, argstring, config) => {
     let firstspace = argstring.indexOf(" ");
     firstspace = firstspace < 0 ? argstring.length : firstspace;
