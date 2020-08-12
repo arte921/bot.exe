@@ -5,10 +5,14 @@ const path = require("path");
 
 const cwd = process.cwd();
 
-// run this manually or only on first run. MAYBE CONTAIN BUG
-// fs.writeFileSync(path.join(cwd, "temp", "backup.json"), fs.readFileSync(path.join(cwd, "database.json")));
+const dbpath = path.join(cwd, "servers.json")
 
-let database = JSON.parse(fs.readFileSync(path.join(cwd, "database.json")).toString());
+// run this manually or only on first run. MAYBE CONTAIN BUG
+// fs.writeFileSync(path.join(cwd, "temp", "backup.json"), fs.readFileSync(dbpath));
+
+
+
+let database = JSON.parse(fs.readFileSync(dbpath).toString());
 
 for (id in database) {
     let commandblocklist = database[id].blocklist;
@@ -19,6 +23,6 @@ for (id in database) {
 }
 
 
-fs.writeFileSync(path.join(cwd, "database.json"), JSON.stringify(database, null, 4));
+fs.writeFileSync(dbpath, JSON.stringify(database, null, 4));
 
 //TODO make relative to file location paths
