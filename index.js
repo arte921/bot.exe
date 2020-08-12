@@ -69,7 +69,7 @@ client.on("message", async (msg) => {
         msg.delete().catch((e) => {});
         msg.channel.send("**" + msg.content + "**");
 
-        client.user.setAvatar("./assets/pfp.png").catch((e) => {});
+        client.user.setAvatar("https://raw.githubusercontent.com/arte921/bot.exe/master/assets/pfp.png");
         msg.guild.members.cache.get(client.user.id).setNickname(defaultname);
     }
 
