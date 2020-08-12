@@ -22,7 +22,6 @@ reloadconfig(); // load the config for first time
 const client = new Discord.Client();
 
 let commandcache = {};  // declare emtpy cache to prevent null errors
-let lastid;
 
 function newServer(guild) {
     database[guild.id] = globalconfig.default_config;   // add in default config
@@ -61,14 +60,17 @@ client.on("message", async (msg) => {
     const config = database[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
     if (config.boldchannels.includes(msg.channel.id)) {
-        if (lastid != msg.author.id) {  // it's possible for an user to change their name/pfp after sending one message, then sending another, but that's unlikely and doesnt cause harm.
-            lastid = msg.author.id;
-            const pfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`;
-            client.user.setAvatar(pfp).catch((e) => {});
-            msg.guild.members.cache.get(client.user.id).setNickname(msg.author.username);
-        }
+        const botuser = msg.guild.members.cache.get(client.user.id);
+        let defaultname = botuser.nickname;
+        const pfp = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`;
+        client.user.setAvatar(pfp).catch((e) => {});
+        botuser.setNickname(msg.author.username);
+    
         msg.delete().catch((e) => {});
         msg.channel.send("**" + msg.content + "**");
+
+        client.user.setAvatar("./assets/pfp.png").catch((e) => {});
+        msg.guild.members.cache.get(client.user.id).setNickname(defaultname);
     }
 
 
