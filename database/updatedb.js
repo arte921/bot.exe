@@ -23,7 +23,7 @@ for (id in database) {
     }
     
     let blocklist = database[id].blocklist;
-    database[id].blocklist = blocklist;
+    database[id].blocklist = blocklist.commands;
 }
 
 
