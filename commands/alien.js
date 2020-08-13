@@ -1,3 +1,4 @@
 module.exports = async (msg, argstring, config) => {
-    msg.channel.send("✨👄👀");
+    const addition = argstring == "" ? "" : "**: " + argstring + "**";
+    msg.channel.send("✨👄👀" + addition);
 };
