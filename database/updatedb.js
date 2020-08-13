@@ -2,13 +2,15 @@
 
 const fs = require("fs");
 const path = require("path");
-
 const cwd = process.cwd();
 
-const dbpath = path.join(cwd, "servers.json")
+const database = "servers";
+
+const dbpath = path.join(__dirname, "storage", database + ".json");
+const backuppath = path.join(__dirname, "storage", database + ".json");
 
 // run this manually or only on first run. MAYBE CONTAIN BUG
-// fs.writeFileSync(path.join(cwd, "temp", "backup.json"), fs.readFileSync(dbpath));
+// fs.writeFileSync(backuppath, fs.readFileSync(dbpath));
 
 
 
