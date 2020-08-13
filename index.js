@@ -7,8 +7,8 @@ const cwd = process.cwd();
 
 const { save, load } = require(path.join(cwd, "database", "index.js"));
 
-const newserver = require(path.join(cwd, "errands", "newserver.js"));
-const bold = require(path.join(cwd, "errands", "bold.js"));
+const newserver = require(path.join(cwd, "utils", "newserver.js"));
+const bold = require(path.join(cwd, "utils", "bold.js"));
 
 let globalconfig, servers, commandcache;
 let online = false;
@@ -40,11 +40,12 @@ client.on("ready", () => {
 client.on("guildCreate", guild => servers = newserver(guild));    // If bot is added to guild at runtime
 
 client.on("message", async (msg) => {
+    console.log(msg.content);
     if (msg.author.bot || msg.channel.type == "dm") return;
 
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
-    require(path.join(cwd, "errands", "bold.js"))(msg, config); // nodejs will cache it
+    require(path.join(cwd, "utils", "bold.js"))(msg, config); // nodejs will cache it
 
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
@@ -69,16 +70,14 @@ client.on("message", async (msg) => {
         if (fs.existsSync(commandfilepath)) {   // Check if command exists
             commandcache[command] = require(commandfilepath); // Get the code from disk
             commandcache[command](msg, argstring, config); // Run the code
-            reload(false);
+            reload(false);  // TODO: use returned
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
         } else {
-            let done = false;
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
-                reload();
-                done = true;
+                reload(argstring == "all");
+            } else {
+                msg.channel.send("What do you mean 🙈");
             }
-            
-            if (!done) msg.channel.send("What do you mean 🙈");
         }
     }
 });

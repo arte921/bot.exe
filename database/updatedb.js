@@ -18,7 +18,7 @@ for (id in database) {
     let commandblocklist = database[id].blocklist;
     database[id].blocklist = {
         commands:commandblocklist,
-        errands:[]
+        utils:[]
     }
 }
 

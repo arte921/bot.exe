@@ -3,7 +3,7 @@ const path = require("path");
 const cwd = process.cwd();
 
 const { save, load } = require(path.join(cwd, "database", "index.js"));
-const alloweverywhere = require(path.join(cwd, "errands", "alloweverywhere.js"));
+const alloweverywhere = require(path.join(cwd, "utils", "alloweverywhere.js"));
 
 const globalconfig = load("config");
 
