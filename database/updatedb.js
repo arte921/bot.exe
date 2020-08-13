@@ -4,27 +4,29 @@ const fs = require("fs");
 const path = require("path");
 const cwd = process.cwd();
 
-const database = "servers";
+const { save, load } = require(path.join(__dirname, "index.js"));
 
-const dbpath = path.join(__dirname, "storage", database + ".json");
-const backuppath = path.join(__dirname, "storage", database + ".json");
+const dbname = "servers";
 
-// run this manually or only on first run. MAYBE CONTAIN BUG
-// fs.writeFileSync(backuppath, fs.readFileSync(dbpath));
-
-
-
-let database = JSON.parse(fs.readFileSync(dbpath).toString());
+let database = load(dbname);
 
 for (id in database) {
-    let commandblocklist = database[id].blocklist;
-    database[id].blocklist = {
-        commands:commandblocklist,
-        utils:[]
+    
+    let boldchannels = database[id].boldchannels;
+    delete database[id].boldchannels;
+    database[id].errands = {
+        enabled:[],
+        configs:{
+            boldchannels:boldchannels,
+            bumpchannels:[]
+        }
     }
+    
+    let blocklist = database[id].blocklist;
+    database[id].blocklist = blocklist;
 }
 
 
-fs.writeFileSync(dbpath, JSON.stringify(database, null, 4));
+save(dbname, database);
 
 //TODO make relative to file location paths

@@ -44,7 +44,11 @@ client.on("message", async (msg) => {
 
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
-    require(path.join(cwd, "utils", "bold.js"))(msg, config); // nodejs will cache it
+    config.errands.enabled.forEach((name) => {
+        const utilpath = path.join(cwd, "utils", name + ".js")
+        require(utilpath)(msg, config);
+        delete require.cache[require.resolve(utilpath)]; // no caching to allow live patching and they are rarely used anyway.
+    });
 
     if (
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
@@ -59,7 +63,7 @@ client.on("message", async (msg) => {
     let firstspace = message.indexOf(" ");    // Get the index of the first space in the message (= where the arguments begin)
     firstspace = firstspace < 0 ? message.length : firstspace;  // Set it to end of message if there aren't any arguments
     const command = message.substr(0, firstspace);  // Get the command name, eg. the part between prefix and first space
-    if (config.blocklist.commands.includes(command)) return; // Stop execution if the command is blocked on this server
+    if (config.blocklist.includes(command)) return; // Stop execution if the command is blocked on this server
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
     if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled

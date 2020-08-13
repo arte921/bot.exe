@@ -11,7 +11,7 @@ module.exports = async (msg, argstring, config) => {
         .readdirSync(path.join(cwd, "commands"))
         .filter(
             (command) =>
-                !config.blocklist.commands.some((blockedcommand) =>
+                !config.blocklist.some((blockedcommand) =>
                     command.includes(blockedcommand)
                 )
         )
@@ -27,7 +27,7 @@ Available commands:
     
         msg.channel.send(starttext + commands);
     } else {
-        if (!config.blocklist.commands.includes(argstring) && details[argstring]) {
+        if (!config.blocklist.includes(argstring) && details[argstring]) {
             msg.channel.send(details[argstring]);
         } else {
             msg.channel.send(`No help page found for "${argstring}"`);
