@@ -11,7 +11,8 @@ const globalconfig = load("config");
 module.exports = (guild) => {
     servers[guild.id] = globalconfig.default_config;   // add in default config
     servers[guild.id].name = guild.name;
-    alloweverywhere(guild);
+    save("servers", servers);
+    servers = alloweverywhere(guild);
 
     servers[guild.id] = JSON.parse(JSON.stringify(servers[guild.id])); // Prevent js doing copy by refence and having same entry for every server. Might not be needed anymore. TODO
     save("servers", servers);
