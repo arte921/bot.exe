@@ -40,7 +40,6 @@ client.on("ready", () => {
 client.on("guildCreate", guild => servers = newserver(guild));    // If bot is added to guild at runtime
 
 client.on("message", async (msg) => {
-    console.log(msg.content);
     if (msg.author.bot || msg.channel.type == "dm") return;
 
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
