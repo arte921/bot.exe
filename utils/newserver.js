@@ -6,6 +6,7 @@ const { save, load } = require(path.join(cwd, "database", "index.js"));
 const alloweverywhere = require(path.join(cwd, "utils", "alloweverywhere.js"));
 
 const servers = load("servers");
+const globalconfig = load("config");
 
 module.exports = (guild) => {
     servers[guild.id] = globalconfig.default_config;   // add in default config
