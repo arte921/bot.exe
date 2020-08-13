@@ -7,7 +7,7 @@ module.exports = async (msg, argstring, config) => {
     if (user) {
         const member = msg.guild.member(user);
         if (member) {
-            member.ban("bruh").catch((e) => {
+            member.ban(msg.author.tag).catch((e) => {
                 msg.channel.send("This bot doesn't have banning privileges!");
             });
         }
