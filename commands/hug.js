@@ -4,7 +4,7 @@ const midhugs = ["⊂（♡⌂♡）⊃", "⊂(◉‿◉)つ", "＼(^o^)／", "d
 
 const getrandom = (array) => array[Math.floor(Math.random() * array.length)];
 
-const approveemoji = "✅";
+const approveemoji = "✨";
 
 module.exports = async (msg, argstring, config) => {
     const reciever = msg.mentions.users.first();
