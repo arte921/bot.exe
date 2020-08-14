@@ -13,12 +13,14 @@ module.exports = async (msg, argstring, config) => {
         msg.channel.send(`**${msg.author.username}: ${starthug} ${argstring} ?**`).then(botmsg => {
             botmsg.react(approveemoji);
             botmsg.awaitReactions(
-                (reaction, reacter) => reaction.emoji.name == approveemoji && reacter.id == reciever.id,//
+                (reaction, reacter) => reaction.emoji.name == approveemoji && reacter.id == reciever.id,
                 { max: 1, time: 60000, errors: ['time'] }
             ).then(() => {
                 botmsg.edit(`**${msg.author.username} ${starthug} ${getrandom(righthugs)} ${reciever.username}**`);
             }).catch(() => {});
         });
+    } else if (argstring != "") {
+        msg.channel.send(`**${msg.author.username} ${getrandom(lefthugs)} ${getrandom(righthugs)} ${argstring}**`)
     } else {
         msg.channel.send(getrandom(midhugs));
     }
