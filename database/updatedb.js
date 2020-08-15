@@ -11,7 +11,16 @@ const dbname = "servers";
 let database = load(dbname);
 
 for (id in database) {
-    
+    database[id].storage = {};
+}
+
+
+save(dbname, database);
+
+//TODO make relative to file location paths
+
+
+    /*
     let boldchannels = database[id].boldchannels;
     delete database[id].boldchannels;
     database[id].errands = {
@@ -23,10 +32,4 @@ for (id in database) {
     }
     
     let blocklist = database[id].blocklist;
-    database[id].blocklist = blocklist.commands;
-}
-
-
-save(dbname, database);
-
-//TODO make relative to file location paths
+    database[id].blocklist = blocklist.commands;*/
