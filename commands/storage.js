@@ -16,7 +16,7 @@ module.exports = async (msg, argstring, config) => {
     switch (command) {
         case "save":
             const value = splitargstring.slice(2).join(" ");
-            if (key && value && storage[key]) {
+            if (key && value) {
                 storage[key] = value;
                 save("servers", servers);
                 msg.react("👍");
