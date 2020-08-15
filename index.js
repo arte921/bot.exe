@@ -77,7 +77,7 @@ client.on("message", async (msg) => {
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
         } else {
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
-                reload(argstring == "all");
+                reload(true);
             } else {
                 msg.channel.send("What do you mean 🙈");
             }
