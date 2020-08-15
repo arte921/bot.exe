@@ -1,5 +1,5 @@
 module.exports = async (msg, argstring, config) => {
-    if (!msg.member.permissions.has("KICK_MEMBERS")) return false;
+    if (!msg.member.permissions.has("KICK_MEMBERS")) return;
 
     let args = argstring.split(" ");
     if (!args[0]) return msg.channel.send("Please mention the lucky one.");

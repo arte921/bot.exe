@@ -15,12 +15,12 @@ let channels = {}
 module.exports = async (msg, argstring, config) => {
     if (!globalconfig.caching) {    // to prevent users from being able to start music, but not control it
         msg.channel.send("This command only works if command caching is enabled.");
-        return false;
+        return;
     }
 
     if (!msg.member.voice.channel) {
         msg.channel.send("You need to join a voice channel to use the music command :)");
-        return false;
+        return;
     }
 
     const channel = msg.member.voice.channel.id;
@@ -29,7 +29,7 @@ module.exports = async (msg, argstring, config) => {
 
     if (splitargstring[0] != "play" && !channels[channel]) {
         msg.channel.send(notplaying);
-        return false;
+        return;
     }
 
     switch (splitargstring[0]) {
@@ -45,6 +45,7 @@ module.exports = async (msg, argstring, config) => {
                         { filter: "audioonly" }
                     )
                 );
+                msg.react("👍");
             } catch (e) {
                 msg.channel.send("Please specify a youtube url 😅");
                 channels[channel].dcchannel.leave();
@@ -53,6 +54,7 @@ module.exports = async (msg, argstring, config) => {
         case "pause":
             try {
                 channels[channel].dispatcher.pause();
+                msg.react("👍");
             } catch (e) {
                 msg.channel.send(notplaying);
             }
@@ -60,6 +62,7 @@ module.exports = async (msg, argstring, config) => {
         case "resume":
             try {
                 channels[channel].dispatcher.resume();
+                msg.react("👍");
             } catch (e) {
                 msg.channel.send(notplaying);
             }
@@ -67,6 +70,7 @@ module.exports = async (msg, argstring, config) => {
         case "stop":
             try {
                 channels[channel].dispatcher.destroy();
+                msg.react("👍");
             } finally {
                 try {
                     channels[channel].dcchannel.leave();
@@ -76,6 +80,7 @@ module.exports = async (msg, argstring, config) => {
         case "volume":
             try {
                 channels[channel].dispatcher.setVolume(splitargstring[1] / 100);
+                msg.react("👍");
             } catch (e) {
                 msg.channel.send(notplaying);
             }
