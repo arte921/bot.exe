@@ -40,7 +40,8 @@ module.exports = async (msg, argstring, config) => {
             msg.channel.send(table);
             break;
         default:
-            msg.channel.send("That is not a command.")
+            msg.channel.send("That is not a command.");
+            break;
     }
     
     servers[msg.guild.id].storage = storage;
