@@ -1,10 +1,10 @@
+const fs = require("fs");
 const path = require("path");
+
 const cwd = process.cwd();
 
-const { save, load } = require(path.join(cwd, "database", "index.js"));
+const cuteness = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "cuteness.json")));
 
 module.exports = async (msg, argstring, config) => {
-    const cuteness = load("config").cuteness;
-    
     msg.channel.send(cuteness[Math.floor(Math.random() * cuteness.length)]);
 };
