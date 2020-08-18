@@ -1,5 +1,4 @@
 const path = require("path");
-const Discord = require("discord.js");
 
 const cwd = process.cwd();
 
@@ -8,10 +7,9 @@ const { save, load } = require(path.join(cwd, "database", "index.js"));
 module.exports = async (msg, argstring, config) => {
     const servers = load("servers");
     const storage = servers[msg.guild.id].storage;
-    
-    let table = new Discord.MessageEmbed();
-    for (key in storage) {
-        table.addField(key, storage[key]);
+    if (storage[argstring]) {
+        msg.channel.send(storage[argstring]);
+    } else {
+        msg.channel.send(`No entry for "${argstring}"`);
     }
-    msg.channel.send(table);
-};
+}
