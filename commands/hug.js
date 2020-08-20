@@ -14,7 +14,7 @@ module.exports = async (msg, argstring, config) => {
             botmsg.react(approveemoji);
             botmsg.awaitReactions(
                 (reaction, reacter) => reaction.emoji.name == approveemoji && reacter.id == reciever.id,
-                { max: 1, time: 60000, errors: ['time'] }
+                { max: 1, time: 600000, errors: ['time'] }
             ).then(() => {
                 botmsg.edit(`**${msg.author.username} ${starthug} ${getrandom(righthugs)} ${reciever.username}**`);
             }).catch(() => {});
