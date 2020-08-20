@@ -5,7 +5,7 @@ const cwd = process.cwd();
 const { save, load } = require(path.join(cwd, "database", "index.js"));
 const alloweverywhere = require(path.join(cwd, "utils", "alloweverywhere.js"));
 
-const servers = load("servers");
+let servers = load("servers");
 const globalconfig = load("config");
 
 module.exports = (guild) => {
