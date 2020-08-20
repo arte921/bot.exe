@@ -33,8 +33,8 @@ const definitions = [
 
 
 module.exports = async (msg, argstring, config) => {
-    if (isNaN(argstring) || argstring == "") {
-        msg.channel.send("Please provide a decimal number to convert to romans!");
+    if (isNaN(argstring) || argstring == "" || argstring <= 0 || !Number.isInteger(argstring)) {
+        msg.channel.send("Please provide a positive integer to convert to romans!");
         return;
     }
 
