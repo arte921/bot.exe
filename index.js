@@ -51,7 +51,7 @@ client.on("message", async (msg) => {
     });
 
     if (
-        !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content) || // Does it start with prefix?
+        !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content.toLowerCase()) || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
         !(
             config.allowed_channels.includes(msg.channel.id) ||
             msg.member.permissions.has("KICK_MEMBERS") ||
