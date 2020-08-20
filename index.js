@@ -79,7 +79,7 @@ client.on("message", async (msg) => {
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
                 reload(true);
             } else {
-                msg.channel.send("What do you mean 🙈");
+                msg.channel.send(config.storage[command] || "What do you mean 🙈");                
             }
         }
     }
