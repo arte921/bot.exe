@@ -5,7 +5,7 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 
 module.exports = {
     help: ``,
-    permission: permissions.member,
+    permission: permissions.moderator,
     code: async (msg, argstring, config) => {
         if (!msg.member.permissions.has("KICK_MEMBERS")) return;
 
