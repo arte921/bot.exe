@@ -9,12 +9,7 @@ const servers = load("servers");
 module.exports = {
     help: ``,
     permission: permissions.moderator,
-    code: async (msg, argstring, config) => {
-        if (!msg.member.permissions.has("KICK_MEMBERS") && !globalconfig.sysadmins.includes(msg.author.id)) {
-            msg.channel.send("This command requires administrator privileges.");
-            return;
-        }
-        
+    code: async (msg, argstring, config) => {        
         servers[msg.guild.id].allowed_channels = [];
         save("servers", servers);
         msg.react("👍");

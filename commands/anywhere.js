@@ -10,12 +10,7 @@ const globalconfig = load("config");
 module.exports = {
     help: ``,
     permission: permissions.moderator,
-    code: async (msg, argstring, config) => {
-        if (!msg.member.permissions.has("KICK_MEMBERS") && !globalconfig.sysadmins.includes(msg.author.id)) {
-            msg.channel.send("This command requires administrator privileges.");
-            return;
-        }
-        
+    code: async (msg, argstring, config) => {        
         msg.react("👍");
         return alloweverywhere(msg.guild);
     }

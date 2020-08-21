@@ -25,7 +25,7 @@ function reload(clearcache = true) {
 reload(); // load the configs for first time
 
 async function runcommand (command, msg, argstring, config) {
-    if (commandcache[command].permission > permissions) {
+    if (permissions < commandcache[command].permission) {
         msg.channel.send("You aren't allowed to use this command!");
     } else {
         servers = await commandcache[command].code(msg, argstring, config) || servers; // Run the code, maybe use returned value
