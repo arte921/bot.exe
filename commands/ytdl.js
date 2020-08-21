@@ -1,7 +1,7 @@
-const fs = require("fs");
 const ytdl = require("ytdl-core");
-const path = process.cwd();
 
+const path = require("path");
+const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const permissions = file([cwd, "utils", "permissions.json"]);
 

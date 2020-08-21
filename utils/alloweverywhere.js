@@ -2,8 +2,7 @@ const path = require("path");
 
 const cwd = process.cwd();
 
-
-
+const { save, load } = require(path.join(cwd, "database", "index.js"));
 
 module.exports = (guild, servers = load("servers")) => {
     servers[guild.id].allowed_channels = guild.channels.cache  // loop trough channels, add all channels to approved channels

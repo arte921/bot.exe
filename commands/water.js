@@ -1,9 +1,8 @@
 const path = require("path");
 const cwd = process.cwd();
-const worter = path.resolve(cwd, "assets", "water.png");
-
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const permissions = file([cwd, "utils", "permissions.json"]);
+const worter = path.resolve(cwd, "assets", "water.png");
 
 module.exports = {
     help: ``,

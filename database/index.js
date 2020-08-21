@@ -4,9 +4,6 @@ const path = require("path");
 const storagedir = path.join(__dirname, "storage");
 const backupdir = path.join(__dirname, "backup");
 
-const { save, load, file } = require(path.join(cwd, "database", "index.js"));
-const permissions = file([cwd, "utils", "permissions.json"]);
-
 module.exports = {
     save: (database, contents) => {   // stores the database variable and creates a backup of the old copy
         const dbpath = path.join(storagedir, database + ".json");

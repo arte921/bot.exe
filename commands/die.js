@@ -1,14 +1,10 @@
 const fs = require("fs");
 const { exec } = require("child_process");
 const path = require("path");
-
 const cwd = process.cwd();
-
-
-
-const globalconfig = load("config");
-
+const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const permissions = file([cwd, "utils", "permissions.json"]);
+const globalconfig = load("config");
 
 module.exports = {
     help: ``,

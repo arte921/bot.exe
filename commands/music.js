@@ -1,10 +1,9 @@
 const ytdl = require("ytdl-core");
 const fs = require("fs");
 const path = require("path");
-
 const cwd = process.cwd();
-
-
+const { save, load, file } = require(path.join(cwd, "database", "index.js"));
+const permissions = file([cwd, "utils", "permissions.json"]);
 
 const notplaying = "Nothing playing!";
 
@@ -12,8 +11,7 @@ const globalconfig = load("config");
 
 let channels = {}
 
-const { save, load, file } = require(path.join(cwd, "database", "index.js"));
-const permissions = file([cwd, "utils", "permissions.json"]);
+
 
 module.exports = {
     help: ``,
