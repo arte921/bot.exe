@@ -4,13 +4,16 @@ const path = require("path");
 
 const cwd = process.cwd();
 
-const { save, load } = require(path.join(cwd, "database", "index.js"));
+
 
 const notplaying = "Nothing playing!";
 
 const globalconfig = load("config");
 
 let channels = {}
+
+const { save, load, file } = require(path.join(cwd, "database", "index.js"));
+const permissions = file([cwd, "utils", "permissions.json"]);
 
 module.exports = {
     help: ``,

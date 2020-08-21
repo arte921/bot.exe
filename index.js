@@ -5,10 +5,12 @@ const path = require("path");
 
 const cwd = process.cwd();
 
-const { save, load } = require(path.join(cwd, "database", "index.js"));
+const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 
 const newserver = require(path.join(cwd, "utils", "newserver.js"));
 const bold = require(path.join(cwd, "utils", "bold.js"));
+
+const permissions = file([cwd, "utils", "permissions.json"]);
 
 let globalconfig, servers, commandcache;
 let online = false;
@@ -21,6 +23,14 @@ function reload(clearcache = true) {
 }
 
 reload(); // load the configs for first time
+
+async function runcommand (command, msg, argstring, config) {
+    if (commandcache[command].permission > permissions) {
+        msg.channel.send("You aren't allowed to use this command!");
+    } else {
+        servers = await commandcache[command].code(msg, argstring, config) || servers; // Run the code, maybe use returned value
+    }
+}
 
 const client = new Discord.Client();
 
@@ -44,6 +54,10 @@ client.on("message", async (msg) => {
 
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
+    let permission_level = permissions.member;
+    if (msg.member.permissions.has("KICK_MEMBERS")) permission_level = permissions.moderator;
+    if (globalconfig.sysadmins.includes(msg.author.id)) permission_level = permissions.sysadmin;
+
     config.errands.enabled.forEach((name) => {
         const utilpath = path.join(cwd, "utils", name + ".js")
         require(utilpath)(msg, config);
@@ -54,9 +68,8 @@ client.on("message", async (msg) => {
         !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content.toLowerCase()) || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
         !(
             config.allowed_channels.includes(msg.channel.id) ||
-            msg.member.permissions.has("KICK_MEMBERS") ||
-            globalconfig.sysadmins.includes(msg.author.id)
-        )  // If bot isn't allowed in channel. Admins can use bot anywhere.
+            permission_level >= permissions.moderator 
+        )  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
     ) return;   // Then stop
 
     const message = msg.content.substr(config.prefix.length);   // Only get the part after the prefix
@@ -67,18 +80,18 @@ client.on("message", async (msg) => {
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
     if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
-        servers = await commandcache[command](msg, argstring, config) || servers;  // Run the command code from the cache
+        runcommand (command, msg, argstring, config);
     } else {    // Otherwise get the command from disk
         let commandfilepath = path.join(cwd, "commands", command + ".js");  // Compose the path to where the command should be
         if (fs.existsSync(commandfilepath)) {   // Check if command exists
-            commandcache[command] = require(commandfilepath).code; // Get the code from disk
-            servers = await commandcache[command](msg, argstring, config) || servers; // Run the code, maybe use returned value
-            delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
+            commandcache[command] = require(commandfilepath); // Get the code from disk
+            delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates.
+            runcommand (command, msg, argstring, config);
         } else {
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
                 reload(true);
             } else {
-                msg.channel.send(config.storage[command] || "What do you mean 🙈");                
+                msg.channel.send(config.storage[command] || "What do you mean 🙈");
             }
         }
     }
