@@ -32,22 +32,26 @@ const definitions = [
 ].reverse();
 
 
-module.exports = async (msg, argstring, config) => {
-    
+module.exports = {
+    help: ``,
+    permission: 0,
+    code: async (msg, argstring, config) => {
+        
 
-    if (isNaN(argstring) || argstring == "" || argstring <= 0 || !Number.isInteger(argstring - 1)) {
-        msg.channel.send("Please provide a positive integer to convert to romans!");
-        return;
-    }
-
-    let leftover = argstring;
-    let result = "";
-    definitions.forEach(candidate => {
-        while (candidate.value <= leftover) {
-            result += candidate.letter;
-            leftover -= candidate.value;
+        if (isNaN(argstring) || argstring == "" || argstring <= 0 || !Number.isInteger(argstring - 1)) {
+            msg.channel.send("Please provide a positive integer to convert to romans!");
+            return;
         }
-    });
-    
-    msg.channel.send(result);
+
+        let leftover = argstring;
+        let result = "";
+        definitions.forEach(candidate => {
+            while (candidate.value <= leftover) {
+                result += candidate.letter;
+                leftover -= candidate.value;
+            }
+        });
+        
+        msg.channel.send(result);
+    }
 }

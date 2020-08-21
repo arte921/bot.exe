@@ -18,11 +18,15 @@ function getEmoji(keyword, maxemoji) {
     } else return " ";
 }
 // TODO prevent errors on incorrect input
-module.exports = async (msg, argstring, config) => {
-    let args = argstring.split(" ");
-        msg.channel.send(args
-            .slice(1)
-            .map((word) => word + getEmoji(word, args[0]))
-            .join("")
-        ).catch((e) => msg.channel.send("Message too long!"))
-};
+module.exports = {
+    help: ``,
+    permission: 0,
+    code: async (msg, argstring, config) => {
+        let args = argstring.split(" ");
+            msg.channel.send(args
+                .slice(1)
+                .map((word) => word + getEmoji(word, args[0]))
+                .join("")
+            ).catch((e) => msg.channel.send("Message too long!"))
+    }
+}

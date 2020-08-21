@@ -5,6 +5,10 @@ const cwd = process.cwd();
 
 const cuteness = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "cuteness.json")));
 
-module.exports = async (msg, argstring, config) => {
-    msg.channel.send(cuteness[Math.floor(Math.random() * cuteness.length)]);
-};
+module.exports = {
+    help: ``,
+    permission: 0,
+    code: async (msg, argstring, config) => {
+        msg.channel.send(cuteness[Math.floor(Math.random() * cuteness.length)]);
+    }
+}

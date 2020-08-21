@@ -12,81 +12,85 @@ const globalconfig = load("config");
 
 let channels = {}
 
-module.exports = async (msg, argstring, config) => {
-    if (!globalconfig.caching) {    // to prevent users from being able to start music, but not control it
-        msg.channel.send("This command only works if command caching is enabled.");
-        return;
-    }
+module.exports = {
+    help: ``,
+    permission: 0,
+    code: async (msg, argstring, config) => {
+        if (!globalconfig.caching) {    // to prevent users from being able to start music, but not control it
+            msg.channel.send("This command only works if command caching is enabled.");
+            return;
+        }
 
-    if (!msg.member.voice.channel) {
-        msg.channel.send("You need to join a voice channel to use the music command :)");
-        return;
-    }
+        if (!msg.member.voice.channel) {
+            msg.channel.send("You need to join a voice channel to use the music command :)");
+            return;
+        }
 
-    const channel = msg.member.voice.channel.id;
-    
-    let splitargstring = argstring.split(" ");
+        const channel = msg.member.voice.channel.id;
+        
+        let splitargstring = argstring.split(" ");
 
-    if (splitargstring[0] != "play" && !channels[channel]) {
-        msg.channel.send(notplaying);
-        return;
-    }
+        if (splitargstring[0] != "play" && !channels[channel]) {
+            msg.channel.send(notplaying);
+            return;
+        }
 
-    switch (splitargstring[0]) {
-        case "play":
-            channels[channel] = {}
+        switch (splitargstring[0]) {
+            case "play":
+                channels[channel] = {}
 
-            if (msg.member.voice.channel) channels[channel].dcchannel = msg.member.voice.channel;
-            let connection = await channels[channel].dcchannel.join();
-            try{
-                channels[channel].dispatcher = connection.play(
-                    ytdl(
-                        splitargstring[1],
-                        { filter: "audioonly" }
-                    )
-                );
-                msg.react("👍");
-            } catch (e) {
-                msg.channel.send("Please specify a youtube url 😅");
-                channels[channel].dcchannel.leave();
-            }
-            break;
-        case "pause":
-            try {
-                channels[channel].dispatcher.pause();
-                msg.react("👍");
-            } catch (e) {
-                msg.channel.send(notplaying);
-            }
-            break;
-        case "resume":
-            try {
-                channels[channel].dispatcher.resume();
-                msg.react("👍");
-            } catch (e) {
-                msg.channel.send(notplaying);
-            }
-            break;
-        case "stop":
-            try {
-                channels[channel].dispatcher.destroy();
-                msg.react("👍");
-            } finally {
-                try {
+                if (msg.member.voice.channel) channels[channel].dcchannel = msg.member.voice.channel;
+                let connection = await channels[channel].dcchannel.join();
+                try{
+                    channels[channel].dispatcher = connection.play(
+                        ytdl(
+                            splitargstring[1],
+                            { filter: "audioonly" }
+                        )
+                    );
+                    msg.react("👍");
+                } catch (e) {
+                    msg.channel.send("Please specify a youtube url 😅");
                     channels[channel].dcchannel.leave();
-                } catch(e) {}
-            }
-            break;
-        case "volume":
-            try {
-                channels[channel].dispatcher.setVolume(splitargstring[1] / 100);
-                msg.react("👍");
-            } catch (e) {
-                msg.channel.send(notplaying);
-            }
-            break;
-        default:
-            msg.channel.send("That's not a music command!");
-            break;
+                }
+                break;
+            case "pause":
+                try {
+                    channels[channel].dispatcher.pause();
+                    msg.react("👍");
+                } catch (e) {
+                    msg.channel.send(notplaying);
+                }
+                break;
+            case "resume":
+                try {
+                    channels[channel].dispatcher.resume();
+                    msg.react("👍");
+                } catch (e) {
+                    msg.channel.send(notplaying);
+                }
+                break;
+            case "stop":
+                try {
+                    channels[channel].dispatcher.destroy();
+                    msg.react("👍");
+                } finally {
+                    try {
+                        channels[channel].dcchannel.leave();
+                    } catch(e) {}
+                }
+                break;
+            case "volume":
+                try {
+                    channels[channel].dispatcher.setVolume(splitargstring[1] / 100);
+                    msg.react("👍");
+                } catch (e) {
+                    msg.channel.send(notplaying);
+                }
+                break;
+            default:
+                msg.channel.send("That's not a music command!");
+                break;
+        }
     }
-};
+}
