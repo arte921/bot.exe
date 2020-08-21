@@ -72,8 +72,7 @@ client.on("message", async (msg) => {
         let commandfilepath = path.join(cwd, "commands", command + ".js");  // Compose the path to where the command should be
         if (fs.existsSync(commandfilepath)) {   // Check if command exists
             commandcache[command] = require(commandfilepath); // Get the code from disk
-            servers = await commandcache[command](msg, argstring, config) || servers; // Run the code
-            console.log(servers);
+            servers = await commandcache[command](msg, argstring, config) || servers; // Run the code, maybe use returned value
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
         } else {
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
