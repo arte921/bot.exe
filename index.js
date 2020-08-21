@@ -24,8 +24,8 @@ function reload(clearcache = true) {
 
 reload(); // load the configs for first time
 
-async function runcommand (command, msg, argstring, config) {
-    if (permissions < commandcache[command].permission) {
+async function runcommand (command, msg, argstring, config, permission_level) {
+    if (permission_level < commandcache[command].permission) {
         msg.channel.send("You aren't allowed to use this command!");
     } else {
         servers = await commandcache[command].code(msg, argstring, config) || servers; // Run the code, maybe use returned value
@@ -80,13 +80,13 @@ client.on("message", async (msg) => {
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
     if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
-        runcommand (command, msg, argstring, config);
+        runcommand (command, msg, argstring, config, permission_level);
     } else {    // Otherwise get the command from disk
         let commandfilepath = path.join(cwd, "commands", command + ".js");  // Compose the path to where the command should be
         if (fs.existsSync(commandfilepath)) {   // Check if command exists
             commandcache[command] = require(commandfilepath); // Get the code from disk
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates.
-            runcommand (command, msg, argstring, config);
+            runcommand (command, msg, argstring, config, permission_level);
         } else {
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
                 reload(true);
