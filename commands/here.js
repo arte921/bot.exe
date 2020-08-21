@@ -10,7 +10,7 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 
 module.exports = {
     help: ``,
-    permission: 0,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         if (!msg.member.permissions.has("KICK_MEMBERS") && !globalconfig.sysadmins.includes(msg.author.id)) {
             msg.channel.send("This command requires administrator privileges.");

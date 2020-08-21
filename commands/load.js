@@ -5,7 +5,7 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 
 module.exports = {
     help: ``,
-    permission: 0,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         const servers = load("servers");
         const storage = servers[msg.guild.id].storage;

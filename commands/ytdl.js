@@ -7,7 +7,7 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 
 module.exports = {
     help: ``,
-    permission: 0,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         if (argstring == "") {
             msg.channel.send("Please specify a youtube url 😅");

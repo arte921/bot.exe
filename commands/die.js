@@ -8,7 +8,7 @@ const globalconfig = load("config");
 
 module.exports = {
     help: ``,
-    permission: 0,
+    permission: permissions.sysadmin,
     code: async (msg, argstring, config) => {
         if (!globalconfig.sysadmins.includes(msg.author.id)) return;
         await msg.react("👋");

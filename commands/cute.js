@@ -8,7 +8,7 @@ const cuteness = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "cuteness.j
 
 module.exports = {
     help: ``,
-    permission: 0,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         msg.channel.send(cuteness[Math.floor(Math.random() * cuteness.length)]);
     }

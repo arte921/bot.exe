@@ -7,7 +7,7 @@ const details = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "help.json")
 
 module.exports = {
     help: ``,
-    permission: 0,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         if (argstring == "") {
             let commands = fs

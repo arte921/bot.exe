@@ -23,7 +23,7 @@ function getEmoji(keyword, maxemoji) {
 // TODO prevent errors on incorrect input
 module.exports = {
     help: ``,
-    permission: 0,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         let args = argstring.split(" ");
             msg.channel.send(args

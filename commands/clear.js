@@ -6,7 +6,7 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 
 module.exports = {
     help: ``,
-    permission: 0,
+    permission: permissions.moderator,
     code: async (msg, argstring, config) => {
         if (!msg.member.permissions.has("BAN_MEMBERS")) return;
 
