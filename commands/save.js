@@ -21,4 +21,5 @@ module.exports = async (msg, argstring, config) => {
         msg.channel.send(`Please provide a key and some info to store at the key.`);
     }
 
+    return servers;
 }

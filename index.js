@@ -67,13 +67,13 @@ client.on("message", async (msg) => {
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
     if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
-        commandcache[command](msg, argstring, config);  // Run the command code from the cache
+        servers = await commandcache[command](msg, argstring, config) || servers;  // Run the command code from the cache
     } else {    // Otherwise get the command from disk
         let commandfilepath = path.join(cwd, "commands", command + ".js");  // Compose the path to where the command should be
         if (fs.existsSync(commandfilepath)) {   // Check if command exists
             commandcache[command] = require(commandfilepath); // Get the code from disk
-            commandcache[command](msg, argstring, config); // Run the code
-            reload(false);  // TODO: use returned
+            servers = await commandcache[command](msg, argstring, config) || servers; // Run the code
+            console.log(servers);
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates
         } else {
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
