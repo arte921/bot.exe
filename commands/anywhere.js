@@ -13,5 +13,5 @@ module.exports = {
         msg.react("👍");
         return alloweverywhere(msg.guild);
     },
-    help: 
+    help: ``
 }

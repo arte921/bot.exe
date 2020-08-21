@@ -12,5 +12,5 @@ module.exports = {
         msg.react("👍");
         return servers;
     },
-    help: 
+    help: ``
 }

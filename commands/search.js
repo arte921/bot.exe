@@ -13,5 +13,9 @@ module.exports = {
             argstring.replace(/ /g, "+")
         );
     },
-    help: 
+    help: `
+    Usage: \`search [search query]\`.
+    
+    Helps you search for the query.
+    `
 }

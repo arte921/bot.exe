@@ -8,5 +8,9 @@ module.exports = {
     code: async (msg, argstring, config) => {
         msg.channel.send(Math.random() < 0.5);
     },
-    help: 
+    help: `
+    "Flips a coin".
+    
+    Has a 50% chance of returning \`true\`, returns \`false\` otherwise.
+    `
 }

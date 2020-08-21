@@ -31,5 +31,6 @@ module.exports = {
         } else {
             msg.channel.send(getrandom(midhugs));
         }
-    }
+    },
+    help: ``
 }

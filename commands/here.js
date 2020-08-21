@@ -17,5 +17,7 @@ module.exports = {
 
         return servers;
     },
-    help: 
+    help: `
+    Allows the bot in the channel the command is ran from for all users.
+    `
 }

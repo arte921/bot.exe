@@ -11,5 +11,7 @@ module.exports = {
     code: async (msg, argstring, config) => {
         msg.channel.send(cuteness[Math.floor(Math.random() * cuteness.length)]);
     },
-    help: 
+    help: `
+    Returns a random cute image.
+    `
 }

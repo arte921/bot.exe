@@ -10,5 +10,7 @@ module.exports = {
         msg.channel.send("**I HAVE ARE HAS OBTAINED THE CRAVED *W A T E R***");
         msg.channel.send({files: [worter]});
     },
-    help: 
+    help: `
+    Obtains ***W A T E R***
+    `
 }

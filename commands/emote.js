@@ -15,5 +15,10 @@ module.exports = {
         } else {
             msg.channel.send("Please provide a custom server emote!");
         }
-    }
+    },
+    help: `
+    Usage: \`emote [discord server custom emote]\`.
+    
+    This will not work with unicode or default discord emotes.
+    `
 }

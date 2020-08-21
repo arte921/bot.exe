@@ -92,5 +92,26 @@ module.exports = {
                 msg.channel.send("That's not a music command!");
                 break;
         }
-    }
+    },
+    help: `
+    Usage: \`music [command]\`.
+    
+    Available music commands:
+        play [youtube url or video id]
+            Plays the track from youtube to the voice channel the user is in.
+        
+        pause
+            Pauses the track playing in the voice channel the user is in.
+        
+        resume
+            Resumes the track paused in the voice channel the user is in.
+        
+        volume [percentage]
+            Sets the volume from a percentage. Raising the percentage above 100 is possible, but will decrease sound quality.
+        
+        stop
+            Stops playback and lets the bot leave the channel it's currently in
+        
+    Requires command caching to be enabled by the bot sysadmin due to technical reasons.
+    `
 }

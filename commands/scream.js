@@ -10,5 +10,9 @@ module.exports = {
             "***" + argstring.toUpperCase().split("").join(" ") + "***"
         ).catch(e => msg.channel.send("Your message is too big!"));
     },
-    help: 
+    help: `
+    Usage: \`scream [text]\`.
+    
+    Returns the given text but stylized ***L I K E   T H I S***.
+    `
 }

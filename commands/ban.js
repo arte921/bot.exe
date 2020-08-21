@@ -19,5 +19,10 @@ module.exports = {
                 });
             }
         }
-    }
+    },
+    help: `
+    Usage: \`ban [mention of user to ban]\`.
+    
+    Requires banning privilege for both the bot and whoever issues the command.
+    `
 }

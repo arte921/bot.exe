@@ -28,5 +28,9 @@ module.exports = {
             }
         );
     },
-    help: 
+    help: `
+    "Flips a coin", but does it using the ANU Quantum Random Numbers Server api.
+    
+    This guarantees a fully random result, as per laws of physics. Result might be a bit slower than the normal flip command, but is more ~~overkill~~ random. 
+    `
 }

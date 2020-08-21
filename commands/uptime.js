@@ -14,5 +14,7 @@ module.exports = {
             `${days} days, ${hours % 24} hours, ${mins % 60} minutes, ${seconds % 60} seconds`
         );
     },
-    help: 
+    help: `
+    Returns the uptime of the bot.
+    `
 }

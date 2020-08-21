@@ -17,5 +17,10 @@ module.exports = {
                 });
             }
         }
-    }
+    },
+    help: `
+    Usage: \`kick [metion of user to kick]\`.
+    
+    Requires kicking privilege for both the bot and whoever issues the command.
+    `
 }

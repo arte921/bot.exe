@@ -24,5 +24,9 @@ module.exports = {
                 .join("")
         );
     },
-    help: 
+    help: `
+    Usage: \`whisper [text]\`.
+    
+    Returns the given text but stylized ˡⁱᵏᵉ ᵗʰⁱˢ.
+    `
 }

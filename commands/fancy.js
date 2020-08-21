@@ -24,5 +24,9 @@ module.exports = {
                 .join("")
         );
     },
-    help: 
+    help: `
+    Usage: \`fancy [text to stylize]\`.
+    
+    Returns the text but stylized 𝕃𝕀𝕂𝔼 𝕋ℍ𝕀𝕊.
+    `
 }

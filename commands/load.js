@@ -13,5 +13,6 @@ module.exports = {
         } else {
             msg.channel.send(`No entry for "${argstring}"`);
         }
-    }
+    },
+    help: ``
 }

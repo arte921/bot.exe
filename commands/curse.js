@@ -24,5 +24,9 @@ module.exports = {
                 .join("")
         );
     },
-    help: 
+    help: `
+    Usage: \`curse [text to curse]\`.
+    
+    Returns all text behind the command, but stylized ̷͗͘L̷̓͐I̸͗͝K̵̓̓E̴̾̔ ̴̆͠T̶̛̾H̷̋̈́I̸͗͝Ś̷͐.
+    `
 }

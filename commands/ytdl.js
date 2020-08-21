@@ -21,5 +21,9 @@ module.exports = {
             fs.unlinkSync(file);
         });
     },
-    help: 
+    help: `
+    Usage: \`ytdl [youtube url/video id]\`.
+    
+    Returns an mp3 file with the audio of the given youtube video. Will not work on longer tracks thanks do the discord 8mb file size limit.
+    `
 }

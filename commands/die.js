@@ -11,5 +11,5 @@ module.exports = {
         await msg.react("👋");
         process.exit();
     },
-    help: 
+    help: ``
 }

@@ -22,5 +22,10 @@ module.exports = {
         }, time * 1000 * 60);
         msg.react("👍");
         
-    }
+    },
+    help: `
+    Usage: \`remindme [time] (note)\`.
+    
+    Pings you with an optional note you give after the specified amount of *minutes*.
+    `
 }

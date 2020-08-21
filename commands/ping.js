@@ -8,5 +8,7 @@ module.exports = {
     code: async (msg, argstring, config) => {
         msg.channel.send("Hello " + msg.author.username);
     },
-    help: 
+    help: `
+    Returns a text plus the name of who sent the text.
+    `
 }

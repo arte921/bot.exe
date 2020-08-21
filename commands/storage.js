@@ -17,5 +17,5 @@ module.exports = {
         }
         msg.channel.send(table);
     },
-    help: 
+    help: ``
 }

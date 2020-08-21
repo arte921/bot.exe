@@ -58,5 +58,5 @@ module.exports = {
         
         msg.channel.send(result);
     },
-    help: 
+    help: ``
 }

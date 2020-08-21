@@ -10,5 +10,9 @@ module.exports = {
         const url = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=4096`;
         msg.channel.send(url);
     },
-    help: 
+    help: `
+    Usage: \`pfp (mention)\`
+    
+    Returns a full res version of the mentioned user's profile picture, or the message author if none is given.
+    `
 }

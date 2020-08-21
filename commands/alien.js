@@ -10,5 +10,9 @@ module.exports = {
         const addition = argstring == "" ? "" : "**: " + argstring + "**";
         msg.channel.send("✨👄👀" + addition);
     },
-    help: 
+    help: `
+    Usage: alien (message)
+    
+    Summons a cute alien, which can optionally say a message.
+    `
 }

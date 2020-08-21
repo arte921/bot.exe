@@ -13,5 +13,9 @@ module.exports = {
                 .join("")
         );
     },
-    help: 
+    help: `
+    Usage: \`mock [text to mock]\`.
+    
+    Returns the given text stylized lIkE ThIs
+    `
 }

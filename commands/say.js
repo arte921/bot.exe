@@ -8,5 +8,9 @@ module.exports = {
     code: async (msg, argstring, config) => {
         msg.channel.send(argstring);
     },
-    help: 
+    help: `
+    Usage: \`say [text]\`.
+    
+    Simply repeats you by sending the given text.
+    `
 }

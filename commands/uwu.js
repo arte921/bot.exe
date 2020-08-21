@@ -8,5 +8,9 @@ module.exports = {
     code: async (msg, argstring, config) => {
         msg.channel.send(argstring.replace(/[prl]/g, "w"));
     },
-    help: 
+    help: `
+    Usage: \`uwu [text]\`.
+    
+    Returns the given text but stylized wike this.
+    `
 }

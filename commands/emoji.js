@@ -30,5 +30,10 @@ module.exports = {
                 .map((word) => word + getEmoji(word, args[0]))
                 .join("")
             ).catch((e) => msg.channel.send("Message too long!"))
-    }
+    },
+    help: `
+    Usage: \`emoji [maximum amount of emoji per word] [text to put emojis in]\`.
+    
+    Note that too long messages with too much emojis will not be returned, as per discord character limit.
+    `
 }

@@ -16,5 +16,6 @@ module.exports = {
         } else {
             msg.channel.send("Was not allowed here already!");
         }
-    }
+    },
+    help: ``
 }

@@ -9,5 +9,10 @@ module.exports = {
         const message = argstring != "" ? argstring : "Hello :D";
         msg.author.send(message).catch((e) => {});
     },
-    help: 
+    help: `
+    Usage: \`dmme (text to send\`)
+    
+    Will send a dm (private message) to the user who issued the command.
+    The message will contain the given text, or alternatively a placeholder text.
+    `
 }

@@ -8,5 +8,5 @@ module.exports = {
     code: async (msg, argstring, config) => {
         msg.channel.send("https://dontasktoask.com/");
     },
-    help: 
+    help: ``
 }
