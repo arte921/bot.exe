@@ -1,0 +1,3 @@
+0: average user
+10: discord server admin (can kick/ban, change bot settings)
+20: sysadmin (can do everything)
