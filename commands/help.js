@@ -6,7 +6,6 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 const details = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "help.json")));
 
 module.exports = {
-    help: ``,
     permission: permissions.member,
     code: async (msg, argstring, config) => {
         if (argstring == "") {

@@ -9,7 +9,6 @@ const globalconfig = load("config");
 
 
 module.exports = {
-    help: ``,
     permission: permissions.sysadmin,
     code: async (msg, argstring, config) => {
         if (!globalconfig.sysadmins.includes(msg.author.id)) return;
@@ -17,5 +16,6 @@ module.exports = {
             console.log(error, stderr);
             msg.channel.send(stdout).catch((e) => console.log(e));
         });
-    }
+    },
+    help: 
 }

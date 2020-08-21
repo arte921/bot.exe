@@ -14,7 +14,6 @@ let channels = {}
 
 
 module.exports = {
-    help: ``,
     permission: permissions.member,
     code: async (msg, argstring, config) => {
         if (!globalconfig.caching) {    // to prevent users from being able to start music, but not control it

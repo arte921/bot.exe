@@ -8,10 +8,10 @@ const alloweverywhere = require(path.join(cwd, "utils", "alloweverywhere.js"));
 const globalconfig = load("config");
 
 module.exports = {
-    help: ``,
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {        
         msg.react("👍");
         return alloweverywhere(msg.guild);
-    }
+    },
+    help: 
 }

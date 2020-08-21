@@ -4,7 +4,6 @@ const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const permissions = file([cwd, "utils", "permissions.json"]);
 
 module.exports = {
-    help: ``,
     permission: permissions.member,
     code: async (msg, argstring, config) => {
         let seconds = Math.floor(process.uptime());
@@ -14,5 +13,6 @@ module.exports = {
         msg.channel.send(
             `${days} days, ${hours % 24} hours, ${mins % 60} minutes, ${seconds % 60} seconds`
         );
-    }
+    },
+    help: 
 }
