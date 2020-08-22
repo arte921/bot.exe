@@ -11,6 +11,7 @@ const newserver = require(path.join(cwd, "utils", "newserver.js"));
 const bold = require(path.join(cwd, "utils", "bold.js"));
 
 const permissions = file([cwd, "utils", "permissions.json"]);
+const errors = file([cwd, "utils", "errors.json"]);
 
 let globalconfig, servers, commandcache;
 let online = false;
@@ -29,7 +30,13 @@ async function runcommand (command, msg, argstring, config, permission_level) {
         msg.channel.send("You aren't allowed to use this command!");
     } else {
         const result = await commandcache[command].code(msg, argstring, config).catch(e => {
-            msg.channel.send(e);
+            if (e == Discord.DiscordAPIError) {
+                msg.channel.send(errors.internal);
+                console.log(e);
+            } else {
+                msg.channel.send(e);
+            }
+            
         });
         servers = result || servers; // Run the code, maybe use returned value
     }

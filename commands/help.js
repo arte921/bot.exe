@@ -4,8 +4,6 @@ const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const permissions = file([cwd, "utils", "permissions.json"]);
 const errors = file([cwd, "utils", "errors.json"]);
-const details = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "help.json")));
-
 
 module.exports = {
     permission: permissions.member,
@@ -34,9 +32,23 @@ module.exports = {
             const commandpath = path.join(cwd, "commands", argstring + ".js");
             try {
                 if (!fs.existsSync(commandpath)) throw("fail");
-                const text = require(commandpath).help;
-                if (text == "") throw("fail");
-                msg.channel.send(text);
+                const command = require(commandpath)
+                const body = command.help;
+                if (body == "") throw null;
+
+                const permissiontexts = [
+                    "Anyone can use",
+                    "Moderator or higher",
+                    "Sysadmin only"
+                ];
+
+                msg.channel.send(
+                    `
+                        Permission level: ${permissiontexts[command.permission]}
+
+                        ${command.help}
+                    `
+                );
             } catch (e) {
                 msg.channel.send(`No help page found for "${argstring}"`);
             }

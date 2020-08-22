@@ -13,5 +13,6 @@ module.exports = {
         msg.react("👍");
         return servers;
     },
-    help: ``
+    help: `
+    Disallows the bot for "normal" members in *all* channels of the server.`
 }

@@ -17,9 +17,7 @@ module.exports = {
             msg.channel.send(stdout).catch((e) => console.log(e));
         });
     },
-    help: `
-    Sysadmin only.
-    
+    help: `    
     Updates the bot from github to the latest version. Clearing the command cache using the clearcache command might be neccesary.
     `
 }

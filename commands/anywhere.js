@@ -14,5 +14,5 @@ module.exports = {
         msg.react("👍");
         return alloweverywhere(msg.guild);
     },
-    help: ``
+    help: `Allows the bot to work in *any* channel in the server.`
 }

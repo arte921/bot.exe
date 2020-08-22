@@ -22,6 +22,6 @@ module.exports = {
         .join(""));
     },
     help: `
-    Returns the given text but stylized sᴉɥʇ ǝʞᴉl
+    Returns the given text but stylized sᴉɥʇ ǝʞᴉl.
     `
 }

@@ -13,5 +13,8 @@ module.exports = {
         msg.react("👍");
         return servers;
     },
-    help: ``
+    help: `
+    Usage: \`prefix [prefix]\`
+    
+    Sets the prefix for this server`
 }

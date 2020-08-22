@@ -18,5 +18,7 @@ module.exports = {
         }
         msg.channel.send(table);
     },
-    help: ``
+    help: `
+    Returns all saved key/value pairs
+    `
 }

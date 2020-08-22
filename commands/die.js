@@ -11,5 +11,6 @@ module.exports = {
         await msg.react("👋");
         process.exit();
     },
-    help: ``
+    help: `
+    Turns off the bot, which will then automatically restart.`
 }

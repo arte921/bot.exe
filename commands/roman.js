@@ -43,7 +43,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        
+
         if (!isint(argstring)) throw errors.syntax;
 
         let leftover = argstring;
@@ -57,5 +57,6 @@ module.exports = {
         
         msg.channel.send(result);
     },
-    help: ``
+    help: `
+    Returns the number, but in roman notation. Not very advanced.`
 }

@@ -18,5 +18,6 @@ module.exports = {
             throw "I wasn't allowed here already!";
         }
     },
-    help: ``
+    help: `
+    Disallows the bot for "normal" members in the current channel`
 }

@@ -33,5 +33,15 @@ module.exports = {
             msg.channel.send(getrandom(midhugs));
         }
     },
-    help: ``
+    help: `
+    Usage 1: hug @mention
+        Asks the mentioned one for a hug
+        If the mentioned person reacts with ${approveemoji} within 10 minutes, the hug is accepted and will be completed.
+    
+    Usage 2: hug [text]
+        Will hug what's provided
+    
+    Usage 3: hug
+        Will send an ascci hug.
+    `
 }

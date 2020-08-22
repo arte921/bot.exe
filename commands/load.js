@@ -15,5 +15,8 @@ module.exports = {
             msg.channel.send(`No entry for "${argstring}"`);
         }
     },
-    help: ``
+    help: `
+    Usage: \`load [key]\`
+    
+    Returns the value saved at the requested key`
 }

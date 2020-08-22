@@ -22,7 +22,10 @@ module.exports = {
 
         return servers;
     },
-    help: ``
+    help: `
+    Usage: save [key] [value]
+    
+    Saves the value (any string of text) at the given key (a single word)`
 }
 
 

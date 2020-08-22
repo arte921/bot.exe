@@ -17,6 +17,6 @@ module.exports = {
     help: `
     Usage: \`search [search query]\`.
     
-    Helps you search for the query.
+    Sends a semi-sarcastic reminder to do research yourself before asking for help.
     `
 }
