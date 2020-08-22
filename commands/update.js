@@ -1,4 +1,5 @@
 const fs = require("fs");
+
 const { exec } = require("child_process");
 const path = require("path");
 const cwd = process.cwd();
@@ -7,7 +8,6 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 const errors = file([cwd, "utils", "errors.json"]);
 
 const globalconfig = load("config");
-
 
 module.exports = {
     permission: permissions.sysadmin,
