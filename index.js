@@ -30,7 +30,8 @@ async function runcommand (command, msg, argstring, config, permission_level) {
         msg.channel.send("You aren't allowed to use this command!");
     } else {
         const result = await commandcache[command].code(msg, argstring, config).catch(e => {
-            msg.channel.send(e);
+            //msg.channel.send(e);
+            console.log(e);
         });
         servers = result || servers; // Run the code, maybe use returned value
     }
@@ -62,6 +63,7 @@ client.on("message", async (msg) => {
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
     let permission_level = permissions.member;
+    if (config.trialmods.includes(msg.author.id)) permission_level = permissions.trialmod;
     if (msg.member.permissions.has("KICK_MEMBERS")) permission_level = permissions.moderator;
     if (globalconfig.sysadmins.includes(msg.author.id)) permission_level = permissions.sysadmin;
 

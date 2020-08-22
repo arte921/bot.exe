@@ -7,7 +7,7 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
-    permission: permissions.moderator,
+    permission: permissions.trialmod,
     code: async (msg, argstring, config) => {
         
         if (!isint(argstring) || argstring > 100) throw errors.syntax;
