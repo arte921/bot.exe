@@ -9,7 +9,7 @@ module.exports = {
     code: async (msg, argstring, config) => {
         msg.channel.send(
             "***" + argstring.toUpperCase().split("").join(" ") + "***"
-        ).catch(e => msg.channel.send("Your message is too big!"));
+        ).catch(e => {throw errors.overflow});
     },
     help: `
     Usage: \`scream [text]\`.

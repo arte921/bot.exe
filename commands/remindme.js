@@ -12,10 +12,7 @@ module.exports = {
         const time = argstring.substr(0, firstspace);
         const note = argstring.substr(firstspace + 1);
         
-        if (isNaN(time) || time == "") {
-            msg.channel.send("Please provide an amount of minutes to wait!");
-            return;
-        }
+        if (isNaN(time) || time == "") throw errors.syntax;
 
         console.log(time, note);
         setTimeout(() => {

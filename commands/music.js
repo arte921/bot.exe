@@ -23,7 +23,7 @@ module.exports = {
         }
 
         if (!msg.member.voice.channel) {
-            msg.channel.send("You need to join a voice channel to use the music command :)");
+            msg.channel.send("You need to join a voice channel to use the music command");
             return;
         }
 

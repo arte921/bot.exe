@@ -17,14 +17,10 @@ module.exports = {
                     if (info.success) {
                         msg.channel.send(info.data[0] % 2 == 0);
                     } else {
-                        msg.channel.send(
-                            "Quantum randomness api returned an error. Please use the peasant normal javacsript Math.random() based `flip` command."
-                        );
+                        throw errors.internal;
                     }
                 } else {
-                    msg.channel.send(
-                        "Connection to quantum randomness api failed. Please use the peasant normal javacsript Math.random() based `flip` command."
-                    );
+                    throw errors.internal;
                 }
             }
         );

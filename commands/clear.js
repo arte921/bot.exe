@@ -13,7 +13,7 @@ module.exports = {
         if (!isint(argstring)) throw errors.syntax;
         
         msg.channel.bulkDelete(argstring).catch(() => {
-            throw errors.nobotperms;
+            throw errors.botperms;
         });
     },
     help: ``

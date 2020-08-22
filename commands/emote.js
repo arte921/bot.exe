@@ -14,7 +14,7 @@ module.exports = {
             const url = `https://cdn.discordapp.com/emojis/${id}.png`;
             msg.channel.send(url);
         } else {
-            msg.channel.send("Please provide a custom server emote!");
+            throw errors.syntax;
         }
     },
     help: `

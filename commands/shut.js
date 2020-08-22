@@ -15,7 +15,7 @@ module.exports = {
             msg.react("👍");
             return servers;
         } else {
-            msg.channel.send("Was not allowed here already!");
+            throw "I wasn't allowed here already!";
         }
     },
     help: ``

@@ -1,4 +1,6 @@
 {
-    "nobotperms": "This bot doesn't have permissions to do that here!",
-    "syntax": "Syntax error. Please use the help command."
+    "botperms": "This bot doesn't have permissions to do that here!",
+    "syntax": "Syntax error. Please use the help command.",
+    "internal": "The bot has encountered an error. Sorry! :(",
+    "overflow": "The response is too long for Discord!"
 }

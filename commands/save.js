@@ -15,13 +15,10 @@ module.exports = {
         const storage = servers[msg.guild.id].storage;
 
         console.log(key, value);
-        if (key && value) {
-            storage[key] = value;
-            save("servers", servers);
-            msg.react("👍");
-        } else {
-            msg.channel.send(`Please provide a key and some info to store at the key.`);
-        }
+        if (!(key && value)) throw errors.syntax;
+        storage[key] = value;
+        save("servers", servers);
+        msg.react("👍");
 
         return servers;
     },

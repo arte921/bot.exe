@@ -44,11 +44,7 @@ module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
         
-
-        if (!isint(argstring)) {
-            msg.channel.send("Please provide a positive integer to convert to romans!");
-            return;
-        }
+        if (!isint(argstring)) throw errors.syntax;
 
         let leftover = argstring;
         let result = "";
