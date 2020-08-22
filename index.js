@@ -48,7 +48,10 @@ client.on("ready", () => {
     //  In case bot is added to a new guild while it was offline
     client.guilds.cache.forEach((guild) => {
         if (!servers[guild.id]) servers = newserver(guild);
+        servers[guild.id].name = guild.name
     });
+
+    save("servers", servers);
 });
 
 client.on("guildCreate", guild => servers = newserver(guild));    // If bot is added to guild at runtime
@@ -70,10 +73,7 @@ client.on("message", async (msg) => {
 
     if (
         msg.content.slice(0, config.prefix.length).toLowerCase() != config.prefix.toLowerCase() || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
-        !(
-            config.allowed_channels.includes(msg.channel.id) ||
-            permission_level >= permissions.moderator 
-        )  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
+        !(permission_level >= permissions.moderator || config.allowed_channels.includes(msg.channel.id))  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
     ) return;   // Then stop
 
     const message = msg.content.substr(config.prefix.length);   // Only get the part after the prefix
