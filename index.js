@@ -69,7 +69,7 @@ client.on("message", async (msg) => {
     });
 
     if (
-        !new RegExp(`^${config.prefix}[a-z]+`).test(msg.content.toLowerCase()) || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
+        !msg.content.slice(0, config.prefix.length).toLowerCase == config.prefix.toLowerCase || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
         !(
             config.allowed_channels.includes(msg.channel.id) ||
             permission_level >= permissions.moderator 
