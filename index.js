@@ -1,22 +1,20 @@
 // load libs
-const Discord = require("discord.js");
 const fs = require("fs");
 const path = require("path");
+
+const Discord = require("discord.js");
 
 const cwd = process.cwd();
 
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
-
 const newserver = require(path.join(cwd, "utils", "newserver.js"));
-const bold = require(path.join(cwd, "utils", "bold.js"));
 
 const permissions = file([cwd, "utils", "permissions.json"]);
-const errors = file([cwd, "utils", "errors.json"]);
 
 let globalconfig, servers, commandcache;
 let online = false;
 
-function reload(clearcache = true) {
+function reload (clearcache = true) {
     globalconfig = load("config");
     servers = load("servers");
     if (clearcache) commandcache = {};  // also clear the command cache to make sure the commands also use new config.
