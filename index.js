@@ -62,7 +62,7 @@ client.on("message", async (msg) => {
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
 
     let permission_level = permissions.member;
-    if (config.trialmods.includes(msg.author.id)) permission_level = permissions.trialmod;
+    if (msg.member.roles.cache.find(r => r.name == config.trialmodrole)) permission_level = permissions.trialmod;
     if (msg.member.permissions.has("KICK_MEMBERS")) permission_level = permissions.moderator;
     if (globalconfig.sysadmins.includes(msg.author.id)) permission_level = permissions.sysadmin;
 
@@ -74,7 +74,7 @@ client.on("message", async (msg) => {
 
     if (
         msg.content.slice(0, config.prefix.length).toLowerCase() != config.prefix.toLowerCase() || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
-        !(permission_level >= permissions.moderator || config.allowed_channels.includes(msg.channel.id))  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
+        !(permission_level >= permissions.trialmod || config.allowed_channels.includes(msg.channel.id))  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
     ) return;   // Then stop
 
     const message = msg.content.substr(config.prefix.length);   // Only get the part after the prefix
