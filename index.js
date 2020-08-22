@@ -48,7 +48,7 @@ client.on("ready", () => {
     //  In case bot is added to a new guild while it was offline
     client.guilds.cache.forEach((guild) => {
         if (!servers[guild.id]) servers = newserver(guild);
-        servers[guild.id].name = guild.name
+        servers[guild.id].name = guild.name;
     });
 
     save("servers", servers);
