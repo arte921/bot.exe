@@ -28,7 +28,10 @@ async function runcommand (command, msg, argstring, config, permission_level) {
     if (permission_level < commandcache[command].permission) {
         msg.channel.send("You aren't allowed to use this command!");
     } else {
-        servers = await commandcache[command].code(msg, argstring, config) || servers; // Run the code, maybe use returned value
+        const result = await commandcache[command].code(msg, argstring, config).catch(e => {
+            msg.channel.send(e);
+        });
+        servers = result || servers; // Run the code, maybe use returned value
     }
 }
 

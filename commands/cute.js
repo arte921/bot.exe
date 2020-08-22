@@ -3,6 +3,7 @@ const path = require("path");
 const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const permissions = file([cwd, "utils", "permissions.json"]);
+const errors = file([cwd, "utils", "errors.json"]);
 
 const cuteness = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "cuteness.json")));
 
