@@ -13,7 +13,7 @@ function sync (object, example) {
     for (key in example) {
         if (!object[key] && example[key]) {
             object[key] = example[key];
-        } else if (typeof(object[key]) == "object" && !Array.isArray(object[key]) && !object[key].placeholder) {
+        } else if (typeof(object[key]) == "object" && !Array.isArray(object[key]) && !example[key].placeholder) {
             sync (object[key], example[key]);
         }
     }
