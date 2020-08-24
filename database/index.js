@@ -19,8 +19,7 @@ module.exports = {
         return JSON.parse(fs.readFileSync(dbpath).toString());
     },
     file: (location, relative = false) => {
-        const file = relative ? path.join(...location) : path.join(process.cwd(), ...location);
-        throw file;
+        const file = relative ? path.join(process.cwd(), ...location) : path.join(...location);
         return JSON.parse(fs.readFileSync(file).toString());
     }
 }
