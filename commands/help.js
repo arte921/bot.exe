@@ -38,6 +38,7 @@ module.exports = {
 
                 const permissiontexts = [
                     "Anyone can use",
+                    "Trialadmin or higher",
                     "Moderator or higher",
                     "Sysadmin only"
                 ];
