@@ -1,0 +1,21 @@
+{
+    "name": "placeholder",
+    "prefix": "test-",
+    "blocklist": [
+        "kick",
+        "ban"
+    ],
+    "allowed_channels": [],
+    "errands": {
+        "enabled": [],
+        "configs": {
+            "boldchannels": [],
+            "bumpchannels": [],
+            "reactchannels": []
+        }
+    },
+    "storage": {
+        "placeholder": true
+    },
+    "trialmodrole": "trialmod"
+}

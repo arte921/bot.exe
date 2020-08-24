@@ -2,12 +2,12 @@
 
 const path = require("path");
 
-const { save, load } = require(path.join(__dirname, "index.js"));
+const { save, load, file } = require(path.join(__dirname, "index.js"));
 
 const dbname = "servers";
 
 let database = load(dbname);
-let exampledb = load("config").default_config;
+let exampledb = load("config").default_config || file(["default_config.json"]);
 
 function sync (object, example) {
     for (key in example) {
@@ -22,7 +22,7 @@ function sync (object, example) {
         if (!example[key]) {
             delete object[key];
         }
-    } // clears storage, TODO
+    }
 }
 
 for (id in database) {

@@ -18,7 +18,9 @@ module.exports = {
         const dbpath = path.join(storagedir, database + ".json");
         return JSON.parse(fs.readFileSync(dbpath).toString());
     },
-    file: (location) => {
-        return JSON.parse(fs.readFileSync(path.join(...location)).toString());
+    file: (location, relative = false) => {
+        const file = relative ? path.join(...location) : path.join(process.cwd(), ...location);
+        throw file;
+        return JSON.parse(fs.readFileSync(file).toString());
     }
 }
