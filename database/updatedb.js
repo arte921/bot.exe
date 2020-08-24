@@ -11,9 +11,9 @@ let exampledb = load("config").default_config;
 
 function sync (object, example) {
     for (key in example) {
-        if (!object[key]) {
+        if (!object[key] && example[key]) {
             object[key] = example[key];
-        } else if (typeof(object[key]) == "object" && !Array.isArray(object[key])) {
+        } else if (typeof(object[key]) == "object" && !Array.isArray(object[key]) && !object[key].placeholder) {
             sync (object[key], example[key]);
         }
     }
@@ -22,7 +22,7 @@ function sync (object, example) {
         if (!example[key]) {
             delete object[key];
         }
-    }
+    } // clears storage, TODO
 }
 
 for (id in database) {
@@ -30,4 +30,4 @@ for (id in database) {
 }
 
 
-save(dbname, database);
+save(dbname, database, true);
