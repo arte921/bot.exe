@@ -29,5 +29,4 @@ for (id in database) {
     sync(database[id], exampledb);
 }
 
-
 save(dbname, database, true);
