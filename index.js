@@ -11,6 +11,8 @@ const newserver = require(path.join(cwd, "utils", "newserver.js"));
 
 const permissions = file([cwd, "utils", "permissions.json"]);
 
+const maxlength = 2000;
+
 let globalconfig, servers, commandcache;
 let online = false;
 
@@ -33,7 +35,17 @@ async function runcommand (command, msg, argstring, config, permission_level) {
             
         if (result == undefined); else if (typeof(result) == "object") {
             servers = result;
-        } else msg.channel.send(result);
+        } else {
+            if (result.length < maxlength) msg.channel.send(result);
+            else {
+                let last = 0;
+                for (let i = maxlength; i < result.length; i += maxlength) {
+                    msg.channel.send(result.substr(last, i));
+                    last = i;
+                }
+            }
+            
+        }
     }
 }
 
