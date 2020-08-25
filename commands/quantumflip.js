@@ -15,13 +15,9 @@ module.exports = {
                 if (!error && response.statusCode == 200) {
                     let info = JSON.parse(body);
                     if (info.success) {
-                        return info.data[0] % 2 == 0;
-                    } else {
-                        return errors.internal;
-                    }
-                } else {
-                    return errors.internal;
-                }
+                        msg.channel.send(info.data[0] % 2 == 0);
+                    } else msg.channel.send(errors.internal);
+                } else msg.channel.send(errors.internal);
             }
         );
     },
