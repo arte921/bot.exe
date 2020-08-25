@@ -6,7 +6,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
     permission: permissions.member,
-    code: async (msg, argstring, config) => msg.guild.iconURL(),
+    code: async (msg, argstring, config) => msg.guild.iconURL({size: 4096}),
     help: `
     Returns a text plus the name of who sent the text.
     `
