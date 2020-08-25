@@ -14,7 +14,7 @@ module.exports = {
             const url = `https://cdn.discordapp.com/emojis/${id}.png`;
             msg.channel.send(url);
         } else {
-            throw errors.syntax;
+            return errors.syntax;
         }
     },
     help: `

@@ -9,7 +9,7 @@ module.exports = {
     permission: permissions.trialmod,
     code: async (msg, argstring, config) => {
         const user = msg.mentions.users.first();
-        if (!user) throw errors.syntax;
+        if (!user) return errors.syntax;
         const member = msg.guild.member(user);
         if (member) {
             const role = msg.guild.roles.cache.find(role => role.name == "muted");

@@ -8,13 +8,13 @@ module.exports = {
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {
         let args = argstring.split(" ");
-        if (!args[0]) throw errors.syntax;
+        if (!args[0]) return errors.syntax;
         const user = msg.mentions.users.first();
         if (user) {
             const member = msg.guild.member(user);
             if (member) {
                 member.kick(msg.author.tag).catch((e) => {
-                    throw errors.botperms;
+                    return errors.botperms;
                 });
             }
         }

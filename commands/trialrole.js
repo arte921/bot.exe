@@ -9,7 +9,7 @@ module.exports = {
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {
         const servers = load("servers");  
-        if (!argstring || argstring == "") throw "`" + servers[msg.guild.id].trialmodrole + "`";
+        if (!argstring || argstring == "") return "`" + servers[msg.guild.id].trialmodrole + "`";
         servers[msg.guild.id].trialmodrole = argstring;
         save("servers", servers);
         msg.react("👍");

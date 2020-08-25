@@ -10,10 +10,10 @@ module.exports = {
     permission: permissions.trialmod,
     code: async (msg, argstring, config) => {
         
-        if (!isint(argstring) || argstring > 100) throw errors.syntax;
+        if (!isint(argstring) || argstring > 100) return errors.syntax;
         
         msg.channel.bulkDelete(argstring).catch(() => {
-            throw errors.botperms;
+            return errors.botperms;
         });
     },
     help: `

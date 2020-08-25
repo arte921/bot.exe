@@ -10,8 +10,8 @@ module.exports = {
         const servers = load("servers");
         const storage = servers[msg.guild.id].storage;
         
-        if (!argstring || argstring == "") throw errors.syntax;
-        if (!storage[argstring]) throw "That entry doesn't exist already";
+        if (!argstring || argstring == "") return errors.syntax;
+        if (!storage[argstring]) return "That entry doesn't exist already";
         delete storage[argstring];
         save("servers", servers);
         msg.react("👍");

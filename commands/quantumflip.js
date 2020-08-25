@@ -17,10 +17,10 @@ module.exports = {
                     if (info.success) {
                         msg.channel.send(info.data[0] % 2 == 0);
                     } else {
-                        throw errors.internal;
+                        return errors.internal;
                     }
                 } else {
-                    throw errors.internal;
+                    return errors.internal;
                 }
             }
         );

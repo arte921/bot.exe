@@ -12,7 +12,7 @@ module.exports = {
         const time = argstring.substr(0, firstspace);
         const note = argstring.substr(firstspace + 1);
         
-        if (isNaN(time) || time == "") throw errors.syntax;
+        if (isNaN(time) || time == "") return errors.syntax;
 
         console.log(time, note);
         setTimeout(() => {

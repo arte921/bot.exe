@@ -9,7 +9,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        if (argstring == "") throw errors.syntax;
+        if (argstring == "") return errors.syntax;
 
         const file = path + "/temp/" + argstring.substr(-11) + ".mp3";
         ytdl(argstring, { filter: "audioonly" }).pipe(fs.createWriteStream(file)).on("finish", async () => {

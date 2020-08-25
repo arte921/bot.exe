@@ -10,9 +10,9 @@ module.exports = {
     code: async (msg, argstring, config) => {
         const servers = load("servers");
         const allcommands = fs.readdirSync(path.join(cwd, "commands")).map(command => command.replace(".js", ""));
-        if (!argstring || argstring == "") throw errors.syntax;
-        if (!allcommands.includes(argstring)) throw "That command doesn't exist!";
-        if (!config.blocklist.includes(argstring)) throw "Already installed";
+        if (!argstring || argstring == "") return errors.syntax;
+        if (!allcommands.includes(argstring)) return "That command doesn't exist!";
+        if (!config.blocklist.includes(argstring)) return "Already installed";
         servers[msg.guild.id].blocklist = servers[msg.guild.id].blocklist.filter(command => command != argstring);
         save("servers", servers);
         msg.react("👍");

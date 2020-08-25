@@ -44,7 +44,7 @@ module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
 
-        if (!isint(argstring)) throw errors.syntax;
+        if (!isint(argstring)) return errors.syntax;
 
         let leftover = argstring;
         let result = "";

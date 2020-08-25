@@ -15,7 +15,7 @@ module.exports = {
         const storage = servers[msg.guild.id].storage;
 
         console.log(key, value);
-        if (!(key && value)) throw errors.syntax;
+        if (!(key && value)) return errors.syntax;
         storage[key] = value;
         save("servers", servers);
         msg.react("👍");

@@ -14,7 +14,7 @@ module.exports = {
             const member = msg.guild.member(user);
             if (member) {
                 member.ban(msg.author.tag).catch((e) => {
-                    throw errors.botperms;
+                    return errors.botperms;
                 });
             }
         }

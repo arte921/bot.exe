@@ -7,7 +7,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 module.exports = {
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {  
-        const servers = load("servers");      
+        const servers = load("servers");
         if (servers[msg.guild.id].blocked_channels.includes(msg.channel.id)) {
             const index = servers[msg.guild.id].blocked_channels.indexOf(msg.channel.id);
             servers[msg.guild.id].blocked_channels.splice(index, 1);
@@ -15,7 +15,7 @@ module.exports = {
             msg.react("👍");
             return servers;
         } else {
-            throw "I was allowed here already!";
+            return "I was allowed here already!";
         }
     },
     help: `
