@@ -18,5 +18,8 @@ module.exports = {
             });
         } 
     },
-    help: ``
+    help: `
+    Usage: unmute [mention].
+    
+    Removes the \`muted\` role from the mentioned user.`
 }

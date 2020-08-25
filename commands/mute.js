@@ -18,5 +18,8 @@ module.exports = {
             });
         }        
     },
-    help: ``
+    help: `
+    Usage: \`mute [mention]\`.
+    
+    Assigns the \`muted\` role to the mentioned user. Note that to actually make this command useful, you will also need to create a role called \`muted\`, and revoke it's permissions to speak.`
 }
