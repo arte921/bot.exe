@@ -29,7 +29,7 @@ async function runcommand (command, msg, argstring, config, permission_level) {
     } else {    
         const result = await commandcache[command]
             .code(msg, argstring, config)
-            .catch(globalconfig.debugging ? console.log : msg.channel.send);
+            .catch(globalconfig.debug ? console.log : msg.channel.send);
         servers = result || servers; // Run the code, maybe use returned value
     }
 }
