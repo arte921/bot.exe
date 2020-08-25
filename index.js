@@ -29,7 +29,7 @@ async function runcommand (command, msg, argstring, config, permission_level) {
     } else {    
         const result = await commandcache[command]
             .code(msg, argstring, config)
-            .catch(console.log); // client.users.cache.get('<id>').send('<message>');
+            .catch(console.log);
             
         if (result == undefined); else if (typeof(result) == "object") {
             servers = result;
