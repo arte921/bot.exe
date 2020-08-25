@@ -1,5 +1,3 @@
-const start = "http://letmegooglethat.com/?q=";
-
 const path = require("path");
 const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
@@ -8,12 +6,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
     permission: permissions.member,
-    code: async (msg, argstring, config) => {
-        msg.channel.send(
-            start +
-            argstring.replace(/ /g, "+")
-        );
-    },
+    code: async (msg, argstring, config) => "http://letmegooglethat.com/?q=" + argstring.replace(/ /g, "+"),
     help: `
     Usage: \`search [search query]\`.
     

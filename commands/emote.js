@@ -11,8 +11,7 @@ module.exports = {
         if (match) {
             const emote = match[0];
             const id = emote.split(":")[2].slice(0, -1);
-            const url = `https://cdn.discordapp.com/emojis/${id}.png`;
-            msg.channel.send(url);
+            return `https://cdn.discordapp.com/emojis/${id}.png`;
         } else {
             return errors.syntax;
         }

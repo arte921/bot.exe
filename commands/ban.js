@@ -8,7 +8,7 @@ module.exports = {
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {
         let args = argstring.split(" ");
-        if (!args[0]) return msg.channel.send("Please mention the lucky one.");
+        if (!args[0]) return errors.syntax;
         const user = msg.mentions.users.first();
         if (user) {
             const member = msg.guild.member(user);

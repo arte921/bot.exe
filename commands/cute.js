@@ -9,10 +9,6 @@ const cuteness = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "cuteness.j
 
 module.exports = {
     permission: permissions.member,
-    code: async (msg, argstring, config) => {
-        msg.channel.send(cuteness[Math.floor(Math.random() * cuteness.length)]);
-    },
-    help: `
-    Returns a random cute image.
-    `
+    code: async (msg, argstring, config) => cuteness[Math.floor(Math.random() * cuteness.length)],
+    help: `Returns a random cute image.`
 }

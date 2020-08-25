@@ -28,10 +28,8 @@ module.exports = {
                 }).catch(() => {});
             });
         } else if (argstring != "") {
-            msg.channel.send(`**${msg.author.username} ${getrandom(lefthugs)} ${getrandom(righthugs)} ${argstring}**`)
-        } else {
-            msg.channel.send(getrandom(midhugs));
-        }
+            return `**${msg.author.username} ${getrandom(lefthugs)} ${getrandom(righthugs)} ${argstring}**`;
+        } else return getrandom(midhugs);
     },
     help: `
     Usage 1: hug @mention

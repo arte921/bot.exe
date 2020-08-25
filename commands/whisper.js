@@ -10,20 +10,18 @@ const errors = file([cwd, "utils", "errors.json"]);
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        msg.channel.send(
-            argstring
-                .split("")
-                .map((char) => {
-                    if (/([a-zA-Z])/.test(char)) {
-                        return smallLetters[
-                            char.toLowerCase().charCodeAt(0) - 97
-                        ];
-                    } else if (/([0-9])/.test(char)) {
-                        return smallNumbers[char];
-                    } else return char;
-                })
-                .join("")
-        );
+        return argstring
+            .split("")
+            .map((char) => {
+                if (/([a-zA-Z])/.test(char)) {
+                    return smallLetters[
+                        char.toLowerCase().charCodeAt(0) - 97
+                    ];
+                } else if (/([0-9])/.test(char)) {
+                    return smallNumbers[char];
+                } else return char;
+            })
+            .join("");
     },
     help: `
     Usage: \`whisper [text]\`.

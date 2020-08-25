@@ -15,7 +15,7 @@ module.exports = {
                 if (!error && response.statusCode == 200) {
                     let info = JSON.parse(body);
                     if (info.success) {
-                        msg.channel.send(info.data[0] % 2 == 0);
+                        return info.data[0] % 2 == 0;
                     } else {
                         return errors.internal;
                     }

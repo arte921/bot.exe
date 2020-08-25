@@ -10,9 +10,9 @@ module.exports = {
         const servers = load("servers");
         const storage = servers[msg.guild.id].storage;
         if (storage[argstring]) {
-            msg.channel.send(storage[argstring]);
+            return storage[argstring];
         } else {
-            msg.channel.send(`No entry for "${argstring}"`);
+            return `No entry for "${argstring}"`;
         }
     },
     help: `

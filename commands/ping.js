@@ -7,7 +7,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        msg.channel.send("Hello " + msg.author.username);
+        msg.channel.send("Hello " + msg.author.username);   // no return, for reliability
     },
     help: `
     Returns a text plus the name of who sent the text.

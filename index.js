@@ -30,10 +30,10 @@ async function runcommand (command, msg, argstring, config, permission_level) {
         const result = await commandcache[command]
             .code(msg, argstring, config)
             .catch(console.log); // client.users.cache.get('<id>').send('<message>');
-        
-        if (!result); else if (typeof(result) == "string") {
-            msg.channel.send(result);
-        } else servers = result;
+            
+        if (result == undefined); else if (typeof(result) == "object") {
+            servers = result;
+        } else msg.channel.send(result);
     }
 }
 

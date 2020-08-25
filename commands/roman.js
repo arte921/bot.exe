@@ -55,7 +55,7 @@ module.exports = {
             }
         });
         
-        msg.channel.send(result);
+        return result;
     },
     help: `
     Returns the number, but in roman notation. Not very advanced.`

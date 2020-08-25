@@ -7,12 +7,11 @@ const errors = file([cwd, "utils", "errors.json"]);
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        msg.channel.send(
-            argstring
-                .split("")
-                .map((char, index) => index % 2 == 0 ? char.toLowerCase() : char.toUpperCase())
-                .join("")
-        );
+        return argstring
+            .split("")
+            .map((char, index) => index % 2 == 0 ? char.toLowerCase() : char.toUpperCase())
+            .join("")
+            
     },
     help: `
     Usage: \`mock [text to mock]\`.

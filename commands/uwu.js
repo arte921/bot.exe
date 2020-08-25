@@ -6,9 +6,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
     permission: permissions.member,
-    code: async (msg, argstring, config) => {
-        msg.channel.send(argstring.replace(/[prl]/g, "w"));
-    },
+    code: async (msg, argstring, config) => argstring.replace(/[prl]/g, "w"),
     help: `
     Usage: \`uwu [text]\`.
     

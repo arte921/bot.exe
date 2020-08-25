@@ -27,32 +27,26 @@ module.exports = {
                 .join("\n")
                 .replace(/.js/g, "");
                 
-            msg.channel.send(starttext + commands);
+            return starttext + commands;
         } else {
             const commandpath = path.join(cwd, "commands", argstring + ".js");
-            try {
-                if (!fs.existsSync(commandpath)) throw("fail");
-                const command = require(commandpath)
-                const body = command.help;
-                if (body == "") throw null;
+            if (!fs.existsSync(commandpath)) return `Command "${argstring}" doesn't exist.`;
+            const command = require(commandpath)
+            const body = command.help;
+            if (body == "") return `No help page found for "${argstring}".`;
 
-                const permissiontexts = [
-                    "Anyone can use",
-                    "Trialadmin or higher",
-                    "Moderator or higher",
-                    "Sysadmin only"
-                ];
+            const permissiontexts = [
+                "Anyone can use",
+                "Trialadmin or higher",
+                "Moderator or higher",
+                "Sysadmin only"
+            ];
 
-                msg.channel.send(
-                    `
-                        Permission level: ${permissiontexts[command.permission]}
+            return `
+                Permission level: ${permissiontexts[command.permission]}
 
-                        ${command.help}
-                    `
-                );
-            } catch (e) {
-                msg.channel.send(`No help page found for "${argstring}"`);
-            }
+                ${command.help}
+            `;
         }
 
     },

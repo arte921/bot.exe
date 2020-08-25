@@ -6,9 +6,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
     permission: permissions.member,
-    code: async (msg, argstring, config) => {
-        msg.channel.send(argstring);
-    },
+    code: async (msg, argstring, config) => argstring,
     help: `
     Usage: \`say [text]\`.
     

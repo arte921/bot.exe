@@ -14,7 +14,7 @@ module.exports = {
     code: async (msg, argstring, config) => {
         exec("git pull", (error, stdout, stderr) => {
             console.log(error, stderr);
-            msg.channel.send(stdout).catch((e) => console.log(e));
+            msg.channel.send(stdout).catch(console.error);
         });
     },
     help: `    

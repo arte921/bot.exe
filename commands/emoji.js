@@ -5,8 +5,6 @@ const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const permissions = file([cwd, "utils", "permissions.json"]);
 const errors = file([cwd, "utils", "errors.json"]);
 
-const cwd = process.cwd();
-
 const emojis = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "emoji.json")).toString());
 
 function getEmoji(keyword, maxemoji) {
@@ -26,11 +24,10 @@ module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
         let args = argstring.split(" ");
-            msg.channel.send(args
+            return args
                 .slice(1)
                 .map((word) => word + getEmoji(word, args[0]))
                 .join("")
-            ).catch((e) => msg.channel.send("Message too long!"))
     },
     help: `
     Usage: \`emoji [maximum amount of emoji per word] [text to put emojis in]\`.

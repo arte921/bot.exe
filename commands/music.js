@@ -17,24 +17,16 @@ let channels = {}
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        if (!globalconfig.caching) {    // to prevent users from being able to start music, but not control it
-            msg.channel.send("This command only works if command caching is enabled.");
-            return;
-        }
+        // to prevent users from being able to start music, but not control it
+        if (!globalconfig.caching) return "This command only works if command caching is enabled.";
 
-        if (!msg.member.voice.channel) {
-            msg.channel.send("You need to join a voice channel to use the music command");
-            return;
-        }
+        if (!msg.member.voice.channel) return "You need to join a voice channel to use the music command";
 
         const channel = msg.member.voice.channel.id;
         
         let splitargstring = argstring.split(" ");
 
-        if (splitargstring[0] != "play" && !channels[channel]) {
-            msg.channel.send(notplaying);
-            return;
-        }
+        if (splitargstring[0] != "play" && !channels[channel]) return notplaying;
 
         switch (splitargstring[0]) {
             case "play":
@@ -60,7 +52,7 @@ module.exports = {
                     channels[channel].dispatcher.pause();
                     msg.react("👍");
                 } catch (e) {
-                    msg.channel.send(notplaying);
+                    return notplaying;
                 }
                 break;
             case "resume":
@@ -68,7 +60,7 @@ module.exports = {
                     channels[channel].dispatcher.resume();
                     msg.react("👍");
                 } catch (e) {
-                    msg.channel.send(notplaying);
+                    return notplaying;
                 }
                 break;
             case "stop":
@@ -86,12 +78,11 @@ module.exports = {
                     channels[channel].dispatcher.setVolume(splitargstring[1] / 100);
                     msg.react("👍");
                 } catch (e) {
-                    msg.channel.send(notplaying);
+                    return notplaying;
                 }
                 break;
             default:
-                msg.channel.send("That's not a music command!");
-                break;
+                return "That's not a music command!";
         }
     },
     help: `

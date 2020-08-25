@@ -6,9 +6,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
     permission: permissions.member,
-    code: async (msg, argstring, config) => {
-        msg.channel.send(Math.random() < 0.5);
-    },
+    code: async (msg, argstring, config) => Math.random() < 0.5,
     help: `
     "Flips a coin".
     

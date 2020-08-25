@@ -9,7 +9,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        msg.channel.send(argstring
+        return argstring
             .split("")
             .reverse()
             .map((char) => {
@@ -19,7 +19,7 @@ module.exports = {
                     ];
                 } else return char;
             })
-        .join(""));
+        .join("");
     },
     help: `
     Returns the given text but stylized sᴉɥʇ ǝʞᴉl.

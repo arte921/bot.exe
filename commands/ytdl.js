@@ -1,4 +1,5 @@
 const ytdl = require("ytdl-core");
+const fs = require("fs");
 
 const path = require("path");
 const cwd = process.cwd();
@@ -14,7 +15,7 @@ module.exports = {
         const file = path + "/temp/" + argstring.substr(-11) + ".mp3";
         ytdl(argstring, { filter: "audioonly" }).pipe(fs.createWriteStream(file)).on("finish", async () => {
             await msg.channel.send({files: [file]}).catch((e) => {
-                msg.channel.send("file too large!");
+                return "File too large for Discord!";
             });
             fs.unlinkSync(file);
         });

@@ -6,11 +6,7 @@ const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
     permission: permissions.member,
-    code: async (msg, argstring, config) => {
-        msg.channel.send(
-            "***" + argstring.toUpperCase().split("").join(" ") + "***"
-        ).catch(e => {return errors.overflow});
-    },
+    code: async (msg, argstring, config) => "***" + argstring.toUpperCase().split("").join(" ") + "***",
     help: `
     Usage: \`scream [text]\`.
     
