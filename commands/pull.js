@@ -9,13 +9,16 @@ module.exports = {
     code: async (msg, argstring, config) => {
         if (!argstring || argstring == "") return errors.syntax;
         const servers = load("servers");
+        if (!servers[argstring]) return "This bot doesn't seem to be in the given server!"
         const current = servers[msg.guild.id].storage;
         const other = servers[argstring].storage;
+
+        
 
         servers[msg.guild.id].storage = {
             ...other,
             ...current
-        }        
+        };
 
         save("servers", servers);
         msg.react("👍");
@@ -23,9 +26,9 @@ module.exports = {
         return servers;
     },
     help: `
-    Usage: save [key] [value]
+    Usage: pull [server id]
     
-    Saves the value (any string of text) at the given key (a single word)`
+    Pulls all custom commands from the discord server with given id. Keeps current entries.`
 }
 
 
