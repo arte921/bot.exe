@@ -10,7 +10,7 @@ module.exports = {
     code: async (msg, argstring, config) => {
         if (!argstring || argstring == "") return errors.syntax;
         globalconfig.sysadmins.forEach(adminid => msg.client.users.cache.get(adminid).send(
-            `\`${msg.author.tag}\` from \`${msg.guild.name}\`
+            `\`${msg.author.tag}\` from \`${msg.guild.name}\` sent a bug report:
             \`\`\`${argstring}\`\`\``
         ));
         msg.react("👍");
