@@ -31,7 +31,7 @@ async function runcommand (command, msg, argstring, config, permission_level) {
             .code(msg, argstring, config)
             .catch(console.log); // client.users.cache.get('<id>').send('<message>');
         
-        if (!result) {} else if (typeof(result) == "string") {
+        if (!result); else if (typeof(result) == "string") {
             msg.channel.send(result);
         } else servers = result;
     }
