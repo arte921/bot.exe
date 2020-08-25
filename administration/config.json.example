@@ -1,19 +1,9 @@
-                                    // Copy to config.json, edit to your liking, and delete the comments.
+// Copy to database/storage/config.json, edit to your liking, and delete the comments.
 
 {
-    "token":"discord bot token",    // token of discord bot you can get at discord.com/developers
-    "sysadmins":[
-        "488724416579108865"        // id's of people who have permission to update, clear the cache, reload config/databases from discord
-    ],
-    "caching":false,                // caching: wether the bot will cache commands in ram, improves performance but disabling will enable live reloading of commands, helpful when debugging
-    "gamestatus":"outside",         // the name of the game in discord rich precense game activity
-    "default_config":{              // default config new servers will have. edit after joining in database.json
-        "prefix":"ssh-",            // bot only responds to messages starting with this prefix, and interprets only the stuff after the prefix
-        "allowspam":false,          // wether the bot will respond to other bots (including itself)
-        "blocklist":[               // commands which are disabled
-            "kick",
-            "ban"
-        ],
-        "allowed_channels":[]       // channels the bot listend in. no need to edit this here, as it will be overwritten.
-    }
+    "token":"discord bot token",    // Token of discord bot. You can get one at discord.com/developers
+    "sysadmins":[],                 // Discord user id's of people who have all permissions, including permissions to do technical commands like updating, live reloading, restarting
+    "caching":false,                // Caching: wether the bot will cache commands in ram, improves performance but disabling will enable live reloading of commands, helpful when debugging
+    "gamestatus":"outside",         // Name of game in discord rich precense game activity
+    "default_config":{}             // Optional, override config values from database/default_config.json
 }

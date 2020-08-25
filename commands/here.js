@@ -6,16 +6,18 @@ const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
     permission: permissions.moderator,
-    code: async (msg, argstring, config) => {
-        const servers = load("servers");  
-        if (config.allowed_channels.includes(msg.channel.id)) throw "Already allowed here.";
-        servers[msg.guild.id].allowed_channels.push(msg.channel.id);
-        save("servers", servers);
-        msg.react("👍");
-
-        return servers;
+    code: async (msg, argstring, config) => {  
+        const servers = load("servers");      
+        if (servers[msg.guild.id].blocked_channels.includes(msg.channel.id)) {
+            const index = servers[msg.guild.id].blocked_channels.indexOf(msg.channel.id);
+            servers[msg.guild.id].blocked_channels.splice(index, 1);
+            save("servers", servers);
+            msg.react("👍");
+            return servers;
+        } else {
+            throw "I was allowed here already!";
+        }
     },
     help: `
-    Allows the bot in the channel the command is ran from for all users.
-    `
+    Allows the bot for "normal" members in the current channel`
 }

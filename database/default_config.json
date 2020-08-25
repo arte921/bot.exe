@@ -1,11 +1,11 @@
 {
     "name": "placeholder",
-    "prefix": "test-",
+    "prefix": "ssh-",
     "blocklist": [
         "kick",
         "ban"
     ],
-    "allowed_channels": [],
+    "blocked_channels": [],
     "errands": {
         "enabled": [],
         "configs": {

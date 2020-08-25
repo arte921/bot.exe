@@ -8,7 +8,9 @@ module.exports = {
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {     
         const servers = load("servers");   
-        servers[msg.guild.id].allowed_channels = [];
+        servers[msg.guild.id].blocked_channels = msg.guild.channels.cache  // loop trough channels, add all channels to approved channels
+            .filter((channel) => channel.type == "text")    // Only include text channels
+            .map((channel) => channel.id);  // Only save channel id's
         save("servers", servers);
         msg.react("👍");
         return servers;

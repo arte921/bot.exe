@@ -26,10 +26,10 @@ reload(); // load the configs for first time
 async function runcommand (command, msg, argstring, config, permission_level) {
     if (permission_level < commandcache[command].permission) {
         msg.channel.send("You aren't allowed to use this command!");
-    } else {
-        const result = await commandcache[command].code(msg, argstring, config).catch(e => {
-            msg.channel.send(e).catch(console.log);
-        });
+    } else {    
+        const result = await commandcache[command]
+            .code(msg, argstring, config)
+            .catch(globalconfig.debugging ? console.log : msg.channel.send);
         servers = result || servers; // Run the code, maybe use returned value
     }
 }
@@ -72,7 +72,7 @@ client.on("message", async (msg) => {
 
     if (
         msg.content.slice(0, config.prefix.length).toLowerCase() != config.prefix.toLowerCase() || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
-        !(permission_level >= permissions.trialmod || config.allowed_channels.includes(msg.channel.id))  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
+        (permission_level < permissions.trialmod && config.blocked_channels.includes(msg.channel.id))  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
     ) return;   // Then stop
 
     const message = msg.content.substr(config.prefix.length);   // Only get the part after the prefix

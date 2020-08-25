@@ -6,18 +6,16 @@ const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
     permission: permissions.moderator,
-    code: async (msg, argstring, config) => {  
-        const servers = load("servers");      
-        if (servers[msg.guild.id].allowed_channels.includes(msg.channel.id)) {
-            const index = servers[msg.guild.id].allowed_channels.indexOf(msg.channel.id);
-            servers[msg.guild.id].allowed_channels.splice(index, 1);
-            save("servers", servers);
-            msg.react("👍");
-            return servers;
-        } else {
-            throw "I wasn't allowed here already!";
-        }
+    code: async (msg, argstring, config) => {
+        const servers = load("servers");  
+        if (config.blocked_channels.includes(msg.channel.id)) throw "Not allowed here already";
+        servers[msg.guild.id].blocked_channels.push(msg.channel.id);
+        save("servers", servers);
+        msg.react("👍");
+
+        return servers;
     },
     help: `
-    Disallows the bot for "normal" members in the current channel`
+    Disallows the bot in the channel the current chanel for "normal" members.
+    `
 }
