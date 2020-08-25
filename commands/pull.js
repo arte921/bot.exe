@@ -13,8 +13,6 @@ module.exports = {
         const current = servers[msg.guild.id].storage;
         const other = servers[argstring].storage;
 
-        
-
         servers[msg.guild.id].storage = {
             ...other,
             ...current

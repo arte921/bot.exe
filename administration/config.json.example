@@ -1,9 +1,0 @@
-// Copy to database/storage/config.json, edit to your liking, and delete the comments.
-
-{
-    "token":"discord bot token",    // Token of discord bot. You can get one at discord.com/developers
-    "sysadmins":[],                 // Discord user id's of people who have all permissions, including permissions to do technical commands like updating, live reloading, restarting
-    "caching":false,                // Caching: wether the bot will cache commands in ram, improves performance but disabling will enable live reloading of commands, helpful when debugging
-    "gamestatus":"outside",         // Name of game in discord rich precense game activity
-    "default_config":{}             // Optional, override config values from database/default_config.json
-}

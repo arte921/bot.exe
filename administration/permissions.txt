@@ -1,3 +1,0 @@
-user: only can use probably non potentially harmful commands
-moderator: can kick/ban, change server specific bot settings
-sysadmin: can do anything
