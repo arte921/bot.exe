@@ -17,7 +17,7 @@ module.exports = {
             table.addField(key, storage[key]);
         }
         
-        return table;
+        msg.channel.send(table);
     },
     help: `
     Returns all saved key/value pairs
