@@ -46,7 +46,6 @@ async function runcommand (command, msg, argstring, config, permission_level) {
                     last = i;
                 }
             }
-            
         }
     }
 }
@@ -61,15 +60,15 @@ client.on("ready", () => {
     client.user.setActivity(globalconfig.gamestatus);
 
     //  In case bot is added to a new guild while it was offline
-    client.guilds.cache.forEach((guild) => {
+    client.guilds.cache.forEach(async guild => {
         if (!servers[guild.id]) servers = newserver(guild);
         servers[guild.id].name = guild.name;
-
+/*
         // load timers
         const current = Date.now();
         for (timestamp in servers[guild.id].reminders) {
             const timer = servers[guild.id].reminders[timestamp];
-            const channel = client.channels.cache.get(timer.channel);
+            const channel = await client.channels.fetch(timer.channel);
             console.log(channel);
             if (timestamp > current) {
                 setTimeout(() => {
@@ -82,10 +81,8 @@ client.on("ready", () => {
             } else {
                 channel.send(`<@${timer.user}>, here is a reminder for ${timer.message} you set for ${humandate(current - timestamp)} ago :)`);
             }
-        }
+        }*/
     });
-
-
 
     save("servers", servers);
 });
