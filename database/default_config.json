@@ -20,5 +20,6 @@
     "trialmodrole": "trialmod",
     "reminders": {
         "placeholder": true
-    }
+    },
+    "selfroles": []
 }
