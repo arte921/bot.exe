@@ -8,7 +8,6 @@ const { time } = require("console");
 const cwd = process.cwd();
 
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
-const newserver = require(path.join(cwd, "utils", "newserver.js"));
 const humandate = require(path.join(cwd, "utils", "humandate.js"));
 
 const permissions = file([cwd, "utils", "permissions.json"]);
@@ -61,7 +60,11 @@ client.on("ready", () => {
 
     //  In case bot is added to a new guild while it was offline
     client.guilds.cache.forEach(async guild => {
-        if (!servers[guild.id]) servers = newserver(guild);
+        if (!servers[guild.id]) servers[guild.id] = {
+            ...file(["database", "default_config.json"], true),
+            ...load("config").default_config
+        };
+
         servers[guild.id].name = guild.name;
 /*
         // load timers
@@ -87,7 +90,14 @@ client.on("ready", () => {
     save("servers", servers);
 });
 
-client.on("guildCreate", guild => servers = newserver(guild));    // If bot is added to guild at runtime
+client.on("guildCreate", guild => {
+    servers[guild.id] = {
+        ...file(["database", "default_config.json"], true),
+        ...load("config").default_config
+    }
+    servers[guild.id].name = guild.name;
+    save("servers", servers);
+});
 
 client.on("message", async (msg) => {
     if (msg.author.bot || msg.channel.type == "dm") return;
