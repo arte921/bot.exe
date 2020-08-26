@@ -5,7 +5,7 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
-    permission: permissions.trialmod,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         if (!config.selfroles.includes(argstring)) return "That's not a self assignable role!";
         const role = msg.guild.roles.cache.find(role => role.name == argstring);
