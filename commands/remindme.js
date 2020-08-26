@@ -17,7 +17,7 @@ module.exports = {
         if (isNaN(time) || time == "") return errors.syntax;
 
         const milliseconds = time * 1000 * 60;
-        const timestamp = Date.now() + milliseconds;
+        // const timestamp = Date.now() + milliseconds;
 
         console.log(time, note);
         setTimeout(() => {
@@ -25,14 +25,14 @@ module.exports = {
             delete servers[msg.guild.id].reminders[timestamp];
             save("servers", servers);
         }, milliseconds);
-        
+        /*
         servers[msg.guild.id].reminders[timestamp] = {
             channel: msg.channel.id,
             user: msg.author.id,
             message: argstring
         };
         
-        save("servers", servers);
+        save("servers", servers);*/
         msg.react("👍");
 
         return servers;
