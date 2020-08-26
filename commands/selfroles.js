@@ -5,11 +5,12 @@ const permissions = file([cwd, "utils", "permissions.json"]);
 const errors = file([cwd, "utils", "errors.json"]);
 
 module.exports = {
-    permission: permissions.moderator,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         if (config.selfroles.length == 0) return "No selfroles configured. See addrole and delrole commands."
         return config.selfroles.join("\n");
     },
     help: `
-    Allows the bot for "normal" members in the current channel`
+    Lists all available self assignable roles.
+    `
 }
