@@ -138,6 +138,7 @@ client.on("message", async (msg) => {
         } else {
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
                 reload(true);
+                msg.react("👍");
             } else {
                 msg.channel.send(config.storage[command] || "What do you mean 🙈");
             }
