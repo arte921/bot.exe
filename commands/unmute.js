@@ -14,7 +14,7 @@ module.exports = {
         if (member) {
             const role = msg.guild.roles.cache.find(role => role.name == "muted");
             member.roles.remove(role).catch(e => {
-                throw permissions.botperms;
+                return permissions.botperms;
             });
         } 
     },

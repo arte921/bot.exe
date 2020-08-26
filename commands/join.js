@@ -11,7 +11,7 @@ module.exports = {
         const role = msg.guild.roles.cache.find(role => role.name == argstring);
         if (!role) return "That's not a role in this server!";
         msg.member.roles.add(role).catch(e => {
-            throw permissions.botperms;
+            return permissions.botperms;
         });
         msg.react("👍");
     },
