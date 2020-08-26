@@ -7,7 +7,10 @@ const { save, load, file } = require(path.join(__dirname, "index.js"));
 const dbname = "servers";
 
 let database = load(dbname);
-let exampledb = load("config").default_config || file([__dirname, "default_config.json"]);
+const exampledb = {
+    ...file([__dirname, "default_config.json"]),
+    ...load("config").default_config
+};
 
 function sync (object, example) {
     for (key in example) {

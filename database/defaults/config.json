@@ -3,5 +3,8 @@
     "sysadmins":[],
     "gamestatus":"with sand",
     "caching":true,
-    "debug":false
+    "debug":false,
+    "default_config": {
+        "prefix": "ssh-"
+    }
 }

@@ -7,6 +7,8 @@ const errors = file([cwd, "utils", "errors.json"]);
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
+        const servers = load("servers");
+
         let firstspace = argstring.indexOf(" ");
         firstspace = firstspace < 0 ? argstring.length : firstspace;
         const time = argstring.substr(0, firstspace);
@@ -14,11 +16,26 @@ module.exports = {
         
         if (isNaN(time) || time == "") return errors.syntax;
 
+        const milliseconds = time * 1000 * 60;
+        const timestamp = Date.now() + milliseconds;
+
         console.log(time, note);
         setTimeout(() => {
             msg.reply(note);
-        }, time * 1000 * 60);
+            delete servers[msg.guild.id].reminders[timestamp];
+            save("servers", servers);
+        }, milliseconds);
+        
+        servers[msg.guild.id].reminders[timestamp] = {
+            channel: msg.channel.id,
+            user: msg.author.id,
+            message: argstring
+        };
+        
+        save("servers", servers);
         msg.react("👍");
+
+        return servers;
         
     },
     help: `

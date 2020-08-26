@@ -3,11 +3,13 @@ const fs = require("fs");
 const path = require("path");
 
 const Discord = require("discord.js");
+const { time } = require("console");
 
 const cwd = process.cwd();
 
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const newserver = require(path.join(cwd, "utils", "newserver.js"));
+const humandate = require(path.join(cwd, "utils", "humandate.js"));
 
 const permissions = file([cwd, "utils", "permissions.json"]);
 
@@ -62,7 +64,28 @@ client.on("ready", () => {
     client.guilds.cache.forEach((guild) => {
         if (!servers[guild.id]) servers = newserver(guild);
         servers[guild.id].name = guild.name;
+
+        // load timers
+        const current = Date.now();
+        for (timestamp in servers[guild.id].reminders) {
+            const timer = servers[guild.id].reminders[timestamp];
+            const channel = client.channels.cache.get(timer.channel);
+            console.log(channel);
+            if (timestamp > current) {
+                setTimeout(() => {
+                    channel.send(`<@${timer.user}>, ${timer.message}`);
+                    delete servers[msg.guild.id].reminders[timestamp];
+                    save("servers", servers);
+                }, timestamp - current);
+            } else if (current - timestamp < 60000) { // 1 minute
+                channel.send(`<@${timer.user}>, ${timer.message}`);
+            } else {
+                channel.send(`<@${timer.user}>, here is a reminder for ${timer.message} you set for ${humandate(current - timestamp)} ago :)`);
+            }
+        }
     });
+
+
 
     save("servers", servers);
 });

@@ -17,5 +17,8 @@
     "storage": {
         "placeholder": true
     },
-    "trialmodrole": "trialmod"
+    "trialmodrole": "trialmod",
+    "reminders": {
+        "placeholder": true
+    }
 }
