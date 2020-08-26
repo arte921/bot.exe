@@ -140,7 +140,7 @@ client.on("message", async (msg) => {
                 reload(true);
                 msg.react("👍");
             } else {
-                msg.channel.send(config.storage[command] || "What do you mean 🙈");
+                msg.channel.send(config.storage[command] || "What do you mean? 🙈");
             }
         }
     }
