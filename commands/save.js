@@ -17,7 +17,7 @@ module.exports = {
         console.log(key, value);
         if (!(key && value)) return errors.syntax;
         storage[key] = value;
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
 
         return servers;

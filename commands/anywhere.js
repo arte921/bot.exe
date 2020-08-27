@@ -9,7 +9,7 @@ module.exports = {
     code: async (msg, argstring, config) => {     
         const servers = await load("servers");   
         servers[msg.guild.id].blocked_channels = [];
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
         return servers;
     },

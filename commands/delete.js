@@ -13,7 +13,7 @@ module.exports = {
         if (!argstring || argstring == "") return errors.syntax;
         if (!storage[argstring]) return "That entry doesn't exist already";
         delete storage[argstring];
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
 
         return servers;

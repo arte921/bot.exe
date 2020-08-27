@@ -11,7 +11,7 @@ module.exports = {
         servers[msg.guild.id].blocked_channels = msg.guild.channels.cache  // loop trough channels, add all channels to approved channels
             .filter((channel) => channel.type == "text")    // Only include text channels
             .map((channel) => channel.id);  // Only save channel id's
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
         return servers;
     },

@@ -14,7 +14,7 @@ module.exports = {
         if (!allcommands.includes(argstring)) return "That command doesn't exist!";
         if (config.blocklist.includes(argstring)) return "Not installed already!";
         servers[msg.guild.id].blocklist.push(argstring);
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
 
         return servers;

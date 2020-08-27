@@ -23,7 +23,7 @@ module.exports = {
         setTimeout(() => {
             msg.reply(note);
             delete servers[msg.guild.id].reminders[timestamp];
-            save("servers", servers);
+            await save("servers", servers);
         }, milliseconds);
         /*
         servers[msg.guild.id].reminders[timestamp] = {
@@ -32,7 +32,7 @@ module.exports = {
             message: argstring
         };
         
-        save("servers", servers);*/
+        await save("servers", servers);*/
         msg.react("👍");
 
         return servers;

@@ -18,7 +18,7 @@ module.exports = {
             ...current
         };
 
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
 
         return servers;

@@ -11,7 +11,7 @@ module.exports = {
         const servers = await load("servers");
         if (!config.selfroles.includes(argstring)) return "Not a selfrole!";
         servers[msg.guild.id].selfroles = servers[msg.guild.id].selfroles.filter(command => command != argstring);
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
 
         return servers;

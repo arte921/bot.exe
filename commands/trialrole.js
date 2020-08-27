@@ -11,7 +11,7 @@ module.exports = {
         const servers = await load("servers");  
         if (!argstring || argstring == "") return "`" + servers[msg.guild.id].trialmodrole + "`";
         servers[msg.guild.id].trialmodrole = argstring;
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
 
         return servers;

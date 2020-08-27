@@ -11,7 +11,7 @@ module.exports = {
         if (!msg.guild.roles.cache.find(role => role.name == argstring)) return "Not a role!";
         if (config.selfroles.includes(argstring)) return "Already a selfrole!";
         servers[msg.guild.id].selfroles.push(argstring);
-        save("servers", servers);
+        await save("servers", servers);
         msg.react("👍");
 
         return servers;

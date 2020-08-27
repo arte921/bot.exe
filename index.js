@@ -25,18 +25,7 @@ async function reload (clearcache = true) {
 }
 
 async function runcommand (command, msg, argstring, config, permission_level) {
-    if (!commandcache[command]) return msg.channel.send(config.storage[command] || "That's not a command!");
-    if (config.blocklist.includes(command)) return msg.channel.send("That command is blocked on this server!");
-    if (permission_level < commandcache[command].permission) return msg.channel.send("You aren't allowed to use this command!");
-          
-    const result = await commandcache[command]
-        .code(msg, argstring, config)
-        .catch(console.log);
-        
-    if (result == undefined); else if (typeof(result) == "object") {
-        servers = result;
-    } else if (result != "") msg.channel.send(result)
-    else msg.channel.send(errors.syntax);
+
 }
 
 const client = new Discord.Client();
@@ -90,25 +79,17 @@ client.on("message", async msg => {
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
     
-    runcommand (command, msg, argstring, config, permission_level);
-/*
-    if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
-        runcommand (command, msg, argstring, config, permission_level);
-    } else {    // Otherwise get the command from disk
-        let commandfilepath = path.join(cwd, "commands", command + ".js");  // Compose the path to where the command should be
-        if (fs.existsSync(commandfilepath)) {   // Check if command exists. Blocks, TODO
-            commandcache[command] = require(commandfilepath); // Get the code from disk
-            delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates.
-            runcommand (command, msg, argstring, config, permission_level);
-        } else {
-            if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
-                await reload(true);
-                msg.react("👍");
-            } else {
-                msg.channel.send(config.storage[command] || "What do you mean? 🙈");
-            }
-        }
-    }*/
+    if (!commandcache[command]) return msg.channel.send(config.storage[command] || "That's not a command!");
+    if (config.blocklist.includes(command)) return msg.channel.send("That command is blocked on this server!");
+    if (permission_level < commandcache[command].permission) return msg.channel.send("You aren't allowed to use this command!");
+          
+    const result = await commandcache[command]
+        .code(msg, argstring, config)
+        .catch(console.log);
+        
+    if (result == undefined); else if (typeof(result) == "object") servers = result
+    else if (typeof(result) == "string" && result.length > 0) msg.channel.send(msg.channel.send(result));
+
 });
 
 // Runs when added to new server.
@@ -119,7 +100,7 @@ client.on("guildCreate", async guild => {
         ...cfg.default_config
     }
     servers[guild.id].name = guild.name;
-    await save("servers", servers);
+    await await save("servers", servers);
 });
 
  // load the configs for first time

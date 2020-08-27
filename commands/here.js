@@ -11,7 +11,7 @@ module.exports = {
         if (servers[msg.guild.id].blocked_channels.includes(msg.channel.id)) {
             const index = servers[msg.guild.id].blocked_channels.indexOf(msg.channel.id);
             servers[msg.guild.id].blocked_channels.splice(index, 1);
-            save("servers", servers);
+            await save("servers", servers);
             msg.react("👍");
             return servers;
         } else {

@@ -15,7 +15,7 @@ module.exports = {
             return "File too large for Discord!";
         });
         await unlink(file);
-        save("dump", messages);
+        await save("dump", messages);
     },
     help: ``
 }
