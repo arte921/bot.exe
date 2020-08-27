@@ -10,9 +10,8 @@ const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"));
 
 let globalconfig, servers, commandcache;
-let online = false;
 
-async function reload (clearcache = true) {
+async function reload (clearcache = true, online = false) {
     globalconfig = await load("config");
     servers = await load("servers");
     if (clearcache) commandcache = {};  // also clear the command cache to make sure the commands also use new config.
@@ -24,8 +23,13 @@ async function reload (clearcache = true) {
     });
 }
 
-async function runcommand (command, msg, argstring, config, permission_level) {
-
+async function newguild (guild) {
+    servers[guild.id] = {
+        ...await file(["database", "default_config.json"], true),
+        ...globalconfig.default_config,
+        name: guild.name
+    };
+    await save("servers", servers);
 }
 
 const client = new Discord.Client();
@@ -33,21 +37,10 @@ const client = new Discord.Client();
 // Runs at successful login to discord.
 client.on("ready", async () => {
     console.log(`Logged in as ${client.user.tag}`);
-    online = true;
-    // set game status
     client.user.setActivity(globalconfig.gamestatus);
 
     //  In case bot is added to a new guild while it was offline
-    client.guilds.cache.forEach(async guild => {
-        if (!servers[guild.id]) servers[guild.id] = {
-            ...await file(["database", "default_config.json"], true),
-            ...(await load("config")).default_config
-        };
-
-        servers[guild.id].name = guild.name;
-    });
-
-    await save("servers", servers);
+    client.guilds.cache.filter(guild => !servers[guild.id]).forEach(newguild);
 });
 
 // Runs on new message.
@@ -94,15 +87,7 @@ client.on("message", async msg => {
 });
 
 // Runs when added to new server.
-client.on("guildCreate", async guild => {
-    const cfg = await load("config");
-    servers[guild.id] = {
-        ...await file(["database", "default_config.json"], true),
-        ...cfg.default_config
-    }
-    servers[guild.id].name = guild.name;
-    await save("servers", servers);
-});
+client.on("guildCreate", newguild);
 
  // load the configs for first time
 reload().then(() => client.login(globalconfig.token));

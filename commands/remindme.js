@@ -10,14 +10,13 @@ module.exports = {
         let firstspace = argstring.indexOf(" ");
         firstspace = firstspace < 0 ? argstring.length : firstspace;
         const time = argstring.substr(0, firstspace);
+        const note = argstring.substr(firstspace + 1);
 
         if (isNaN(time) || time == "") return errors.syntax;
 
         const milliseconds = time * 1000 * 60;
 
-        setTimeout(() => {
-            msg.reply(argstring);
-        }, milliseconds);
+        setTimeout(() => msg.reply(note), milliseconds);
 
         msg.react("👍");
         
