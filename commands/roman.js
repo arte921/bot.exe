@@ -45,6 +45,7 @@ module.exports = {
     code: async (msg, argstring, config) => {
 
         if (!isint(argstring)) return errors.syntax;
+        if (argstring > 10 ** 6) return "Number too high!";
 
         let leftover = argstring;
         let result = "";

@@ -4,13 +4,22 @@ const path = require("path");
 
 const { save, load, file } = require(path.join(__dirname, "index.js"));
 
-const dbname = "servers";
+let database, exampledb;
 
-let database = load(dbname);
-const exampledb = {
-    ...file([__dirname, "default_config.json"]),
-    ...load("config").default_config
-};
+async function dostuff (dbname = "servers") {
+    database = await load(dbname);
+
+    exampledb = {
+        ...await file([__dirname, "default_config.json"]),
+        ...(await load("config")).default_config
+    };
+
+    for (id in database) {
+        sync(database[id], exampledb);
+    }
+    
+    await save(dbname, database, true);
+}
 
 function sync (object, example) {
     for (key in example) {
@@ -28,8 +37,4 @@ function sync (object, example) {
     }
 }
 
-for (id in database) {
-    sync(database[id], exampledb);
-}
-
-save(dbname, database, true);
+dostuff();
