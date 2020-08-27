@@ -25,7 +25,7 @@ async function reload (clearcache = true) {
 }
 
 async function runcommand (command, msg, argstring, config, permission_level) {
-    if (!commandcache[command]) return msg.channel.send("That's not a command!");
+    if (!commandcache[command]) return msg.channel.send(config.storage[command] || "That's not a command!");
     if (config.blocklist.includes(command)) return msg.channel.send("That command is blocked on this server!");
     if (permission_level < commandcache[command].permission) return msg.channel.send("You aren't allowed to use this command!");
           
