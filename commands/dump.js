@@ -1,13 +1,21 @@
 const path = require("path");
+const { writeFile, unlink } = require("fs").promises;
 const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
-const permissions = file([cwd, "utils", "permissions.json"]);
-const errors = file([cwd, "utils", "errors.json"]);
+const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"));
+
 
 module.exports = {
     permission: permissions.sysadmin,
     code: async (msg, argstring, config) => {
-        console.log(await msg.channel.fetchMessages());
+        const messages = await msg.channel.messages.fetch();
+        const file = path.join("temp", `${msg.channel.id}_${Date.now()}.json`);
+        await writeFile(file, JSON.stringify(messages));
+        await msg.channel.send({files: [file]}).catch((e) => {
+            return "File too large for Discord!";
+        });
+        await unlink(file);
+        save("dump", messages);
     },
     help: ``
 }

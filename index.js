@@ -3,56 +3,49 @@ const fs = require("fs");
 const path = require("path");
 
 const Discord = require("discord.js");
-const { time } = require("console");
 
 const cwd = process.cwd();
 
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
-const humandate = require(path.join(cwd, "utils", "humandate.js"));
+const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"));
 
-const permissions = file([cwd, "utils", "permissions.json"]);
+const humandate = require(path.join(cwd, "utils", "humandate.js"));
 
 const maxlength = 2000;
 
 let globalconfig, servers, commandcache;
 let online = false;
 
-function reload (clearcache = true) {
-    globalconfig = load("config");
-    servers = load("servers");
+async function reload (clearcache = true) {
+    globalconfig = await load("config");
+    servers = await load("servers");
     if (clearcache) commandcache = {};  // also clear the command cache to make sure the commands also use new config.
     if (online) client.user.setActivity(globalconfig.gamestatus); // set game status in case it changed in config. only when online to prevent error.
+
+    const commands = await fs.promises.readdir(path.join(cwd, "commands"));
+    commands.forEach(command => {
+        commandcache[command.replace(".js", "")] = require(path.join(cwd, "commands", command));
+    });
 }
 
-reload(); // load the configs for first time
-
 async function runcommand (command, msg, argstring, config, permission_level) {
-    if (permission_level < commandcache[command].permission) {
-        msg.channel.send("You aren't allowed to use this command!");
-    } else {    
-        const result = await commandcache[command]
-            .code(msg, argstring, config)
-            .catch(console.log);
-            
-        if (result == undefined); else if (typeof(result) == "object") {
-            servers = result;
-        } else {
-            if (result.length < maxlength) msg.channel.send(result);
-            else {
-                let last = 0;
-                for (let i = maxlength; i < result.length; i += maxlength) {
-                    msg.channel.send(result.substr(last, i));
-                    last = i;
-                }
-            }
-        }
-    }
+    if (!commandcache[command]) return msg.channel.send("That's not a command!");
+    if (config.blocklist.includes(command)) return msg.channel.send("That command is blocked on this server!");
+    if (permission_level < commandcache[command].permission) return msg.channel.send("You aren't allowed to use this command!");
+          
+    const result = await commandcache[command]
+        .code(msg, argstring, config)
+        .catch(console.log);
+        
+    if (result == undefined); else if (typeof(result) == "object") {
+        servers = result;
+    } else  msg.channel.send(result);
 }
 
 const client = new Discord.Client();
 
-// runs at successful login to discord
-client.on("ready", () => {
+// Runs at successful login to discord.
+client.on("ready", async () => {
     console.log(`Logged in as ${client.user.tag}`);
     online = true;
     // set game status
@@ -61,45 +54,18 @@ client.on("ready", () => {
     //  In case bot is added to a new guild while it was offline
     client.guilds.cache.forEach(async guild => {
         if (!servers[guild.id]) servers[guild.id] = {
-            ...file(["database", "default_config.json"], true),
-            ...load("config").default_config
+            ...await file(["database", "default_config.json"], true),
+            ...(await load("config")).default_config
         };
 
         servers[guild.id].name = guild.name;
-/*
-        // load timers
-        const current = Date.now();
-        for (timestamp in servers[guild.id].reminders) {
-            const timer = servers[guild.id].reminders[timestamp];
-            const channel = await client.channels.fetch(timer.channel);
-            console.log(channel);
-            if (timestamp > current) {
-                setTimeout(() => {
-                    channel.send(`<@${timer.user}>, ${timer.message}`);
-                    delete servers[msg.guild.id].reminders[timestamp];
-                    save("servers", servers);
-                }, timestamp - current);
-            } else if (current - timestamp < 60000) { // 1 minute
-                channel.send(`<@${timer.user}>, ${timer.message}`);
-            } else {
-                channel.send(`<@${timer.user}>, here is a reminder for ${timer.message} you set for ${humandate(current - timestamp)} ago :)`);
-            }
-        }*/
     });
 
-    save("servers", servers);
+    await save("servers", servers);
 });
 
-client.on("guildCreate", guild => {
-    servers[guild.id] = {
-        ...file(["database", "default_config.json"], true),
-        ...load("config").default_config
-    }
-    servers[guild.id].name = guild.name;
-    save("servers", servers);
-});
-
-client.on("message", async (msg) => {
+// Runs on new message.
+client.on("message", async msg => {
     if (msg.author.bot || msg.channel.type == "dm") return;
 
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
@@ -124,27 +90,42 @@ client.on("message", async (msg) => {
     let firstspace = message.indexOf(" ");    // Get the index of the first space in the message (= where the arguments begin)
     firstspace = firstspace < 0 ? message.length : firstspace;  // Set it to end of message if there aren't any arguments
     const command = message.substr(0, firstspace);  // Get the command name, eg. the part between prefix and first space
-    if (config.blocklist.includes(command)) return; // Stop execution if the command is blocked on this server
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
+    
+    runcommand (command, msg, argstring, config, permission_level);
+/*
     if (command in commandcache && globalconfig.caching) {  // If the command is in cache and the caching functionality is enabled
         runcommand (command, msg, argstring, config, permission_level);
     } else {    // Otherwise get the command from disk
         let commandfilepath = path.join(cwd, "commands", command + ".js");  // Compose the path to where the command should be
-        if (fs.existsSync(commandfilepath)) {   // Check if command exists
+        if (fs.existsSync(commandfilepath)) {   // Check if command exists. Blocks, TODO
             commandcache[command] = require(commandfilepath); // Get the code from disk
             delete require.cache[require.resolve(commandfilepath)]; // Delete nodejs buitin cache, because it's already cached and to enable live bot updates.
             runcommand (command, msg, argstring, config, permission_level);
         } else {
             if (globalconfig.sysadmins.includes(msg.author.id) && command == "reload") {
-                reload(true);
+                await reload(true);
                 msg.react("👍");
             } else {
                 msg.channel.send(config.storage[command] || "What do you mean? 🙈");
             }
         }
-    }
+    }*/
 });
 
-console.log("logging in");
-client.login(globalconfig.token);   // Login to discord
+// Runs when added to new server.
+client.on("guildCreate", async guild => {
+    const cfg = await load("config");
+    servers[guild.id] = {
+        ...await file(["database", "default_config.json"], true),
+        ...cfg.default_config
+    }
+    servers[guild.id].name = guild.name;
+    await save("servers", servers);
+});
+
+reload().then(() => { // load the configs for first time
+    console.log("logging in");
+    client.login(globalconfig.token);   // Login to discord
+}); 

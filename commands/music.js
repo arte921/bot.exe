@@ -3,8 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
-const permissions = file([cwd, "utils", "permissions.json"]);
-const errors = file([cwd, "utils", "errors.json"]);
+const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"));
+
 
 const notplaying = "Nothing playing!";
 
