@@ -96,11 +96,8 @@ client.on("guildCreate", async guild => {
         ...cfg.default_config
     }
     servers[guild.id].name = guild.name;
-    await await save("servers", servers);
+    await save("servers", servers);
 });
 
  // load the configs for first time
-reload().then(() => {
-    console.log("logging in");
-    client.login(globalconfig.token);   // Login to discord
-}); 
+reload().then(() => client.login(globalconfig.token));
