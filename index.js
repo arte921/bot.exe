@@ -61,11 +61,7 @@ client.on("message", async msg => {
     if (msg.member.permissions.has("KICK_MEMBERS")) permission_level = permissions.moderator;
     if (globalconfig.sysadmins.includes(msg.author.id)) permission_level = permissions.sysadmin;
 
-    config.errands.enabled.forEach((name) => {
-        const utilpath = path.join(cwd, "utils", name + ".js")
-        require(utilpath)(msg, config);
-        delete require.cache[require.resolve(utilpath)]; // no caching to allow live patching and they are rarely used anyway.
-    });
+    config.errands.enabled.forEach(name => require(path.join(cwd, "utils", name + ".js"))(msg, config));
 
     if (
         msg.content.slice(0, config.prefix.length).toLowerCase() != config.prefix.toLowerCase() || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
@@ -88,7 +84,7 @@ client.on("message", async msg => {
         .catch(console.log);
         
     if (result == undefined); else if (typeof(result) == "object") servers = result
-    else if (typeof(result) == "string" && result.length > 0) msg.channel.send(msg.channel.send(result));
+    else if (typeof(result) == "string" && result != "") msg.channel.send(result);
 
 });
 
