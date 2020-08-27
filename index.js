@@ -86,15 +86,11 @@ client.on("message", async msg => {
     if (result == undefined); else if (typeof(result) == "object") servers = result
     else if (typeof(result) == "string" && result != "") {
         if (result.length > 2000) {
-            const file = path.join(cwd, "temp", "message_" + Math.random() + ".txt");
+            const file = path.join(cwd, "temp", command + Date.now() + ".txt");
             await fs.promises.writeFile(file, result);
-            msg.channel.send({files: [file]}).catch(() => {
-                msg.channel.send("Message too large for Discord!");
-            });
+            msg.channel.send({files: [file]}).catch(() => msg.channel.send("Message too large for Discord!"));
         } else msg.channel.send(result);
-        
     }
-
 });
 
 // Runs when added to new server.
