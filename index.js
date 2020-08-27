@@ -9,10 +9,6 @@ const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"));
 
-const humandate = require(path.join(cwd, "utils", "humandate.js"));
-
-const maxlength = 2000;
-
 let globalconfig, servers, commandcache;
 let online = false;
 
@@ -125,7 +121,8 @@ client.on("guildCreate", async guild => {
     await save("servers", servers);
 });
 
-reload().then(() => { // load the configs for first time
+ // load the configs for first time
+reload().then(() => {
     console.log("logging in");
     client.login(globalconfig.token);   // Login to discord
 }); 

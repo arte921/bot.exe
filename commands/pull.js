@@ -8,7 +8,7 @@ module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
         if (!argstring || argstring == "") return errors.syntax;
-        const servers = load("servers");
+        const servers = await load("servers");
         if (!servers[argstring]) return "This bot doesn't seem to be in the given server!"
         const current = servers[msg.guild.id].storage;
         const other = servers[argstring].storage;

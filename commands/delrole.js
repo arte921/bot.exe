@@ -8,7 +8,7 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 module.exports = {
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {
-        const servers = load("servers");
+        const servers = await load("servers");
         if (!config.selfroles.includes(argstring)) return "Not a selfrole!";
         servers[msg.guild.id].selfroles = servers[msg.guild.id].selfroles.filter(command => command != argstring);
         save("servers", servers);

@@ -8,7 +8,7 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 module.exports = {
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {
-        const servers = load("servers");
+        const servers = await load("servers");
         const allcommands = fs.readdirSync(path.join(cwd, "commands")).map(command => command.replace(".js", ""));
         if (!argstring || argstring == "") return errors.syntax;
         if (!allcommands.includes(argstring)) return "That command doesn't exist!";

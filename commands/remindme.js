@@ -7,7 +7,7 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        const servers = load("servers");
+        const servers = await load("servers");
 
         let firstspace = argstring.indexOf(" ");
         firstspace = firstspace < 0 ? argstring.length : firstspace;

@@ -11,7 +11,7 @@ module.exports = {
         const key = argstring.substr(0, firstspace);
         const value = argstring.substr(firstspace + 1);
         
-        const servers = load("servers");
+        const servers = await load("servers");
         const storage = servers[msg.guild.id].storage;
 
         console.log(key, value);

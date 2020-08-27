@@ -8,7 +8,7 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 module.exports = {
     permission: permissions.moderator,
     code: async (msg, argstring, config) => {
-        const servers = load("servers");  
+        const servers = await load("servers");  
         if (!argstring || argstring == "") return "`" + servers[msg.guild.id].trialmodrole + "`";
         servers[msg.guild.id].trialmodrole = argstring;
         save("servers", servers);
