@@ -6,7 +6,7 @@ const { save, load, file } = require(path.join(__dirname, "index.js"));
 
 let database, exampledb;
 
-async function dostuff (dbname = "servers") {
+const dostuff = async (dbname = "servers") => {
     database = await load(dbname);
 
     exampledb = {
@@ -21,7 +21,7 @@ async function dostuff (dbname = "servers") {
     await save(dbname, database, true);
 }
 
-function sync (object, example) {
+const sync = (object, example) => {
     for (key in example) {
         if (!object[key] && example[key]) {
             object[key] = example[key];

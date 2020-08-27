@@ -11,26 +11,27 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 
 let globalconfig, servers, commandcache;
 
-async function reload (clearcache = true, online = false) {
+const reload = async (clearcache = true, online = false) => {
     globalconfig = await load("config");
     servers = await load("servers");
-    if (clearcache) commandcache = {};  // also clear the command cache to make sure the commands also use new config.
+    if (clearcache) commandcache = {};  // Create empty cache object, clear deleted commands from cache
     if (online) client.user.setActivity(globalconfig.gamestatus); // set game status in case it changed in config. only when online to prevent error.
 
     const commands = await fs.promises.readdir(path.join(cwd, "commands"));
     commands.forEach(command => {
+        
         commandcache[command.replace(".js", "")] = require(path.join(cwd, "commands", command));
     });
-}
+};
 
-async function newguild (guild) {
+const newguild = async guild => {
     servers[guild.id] = {
         ...await file(["database", "default_config.json"], true),
         ...globalconfig.default_config,
         name: guild.name
     };
     await save("servers", servers);
-}
+};
 
 const client = new Discord.Client();
 
@@ -68,6 +69,7 @@ client.on("message", async msg => {
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
     
+    if (command == "reload" && permission_level >= permissions.sysadmin) return reload(argstring != "config", true).then(() => msg.react("👍"));
     if (!commandcache[command]) return msg.channel.send(config.storage[command] || "That's not a command!");
     if (config.blocklist.includes(command)) return msg.channel.send("That command is blocked on this server!");
     if (permission_level < commandcache[command].permission) return msg.channel.send("You aren't allowed to use this command!");

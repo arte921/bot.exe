@@ -7,7 +7,7 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 
 const emojis = JSON.parse(fs.readFileSync(path.join(cwd, "assets", "emoji.json")).toString());
 
-function getEmoji(keyword, maxemoji) {
+const getEmoji = (keyword, maxemoji) => {
     let candidates = emojis.filter(
         (entry) => entry[1].join(" ").indexOf(keyword.toLowerCase()) >= 0
     );
