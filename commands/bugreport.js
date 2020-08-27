@@ -3,11 +3,10 @@ const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"));
 
-const globalconfig = load("config");
-
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
+        const globalconfig = await load("config");
         if (!argstring || argstring == "") return errors.syntax;
         globalconfig.sysadmins.forEach(adminid => msg.client.users.cache.get(adminid).send(
             `\`${msg.author.tag}\` from \`${msg.guild.name}\` sent a bug report:

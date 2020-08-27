@@ -35,7 +35,8 @@ async function runcommand (command, msg, argstring, config, permission_level) {
         
     if (result == undefined); else if (typeof(result) == "object") {
         servers = result;
-    } else  msg.channel.send(result);
+    } else if (result != "") msg.channel.send(result)
+    else msg.channel.send(errors.syntax);
 }
 
 const client = new Discord.Client();
