@@ -84,7 +84,16 @@ client.on("message", async msg => {
         .catch(console.log);
         
     if (result == undefined); else if (typeof(result) == "object") servers = result
-    else if (typeof(result) == "string" && result != "") msg.channel.send(result);
+    else if (typeof(result) == "string" && result != "") {
+        if (result.length > 2000) {
+            const file = path.join(cwd, "temp", "message_" + Math.random() + ".txt");
+            await fs.promises.writeFile(file, result);
+            msg.channel.send({files: [file]}).catch(() => {
+                msg.channel.send("Message too large for Discord!");
+            });
+        } else msg.channel.send(result);
+        
+    }
 
 });
 
