@@ -5,6 +5,7 @@ const midhugs = ["⊂（♡⌂♡）⊃", "⊂(◉‿◉)つ", "＼(^o^)／", "d
 const getrandom = (array) => array[Math.floor(Math.random() * array.length)];
 
 const approveemoji = "✨";
+const timeout = 60; // minutes
 
 const path = require("path");
 const cwd = process.cwd();
@@ -15,31 +16,45 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        const reciever = msg.mentions.users.first();
-        if (reciever) {
+        const recievers = msg.mentions.users.map(user => user.id);
+
+        if (recievers.length > 1) recievers[0].hug = getrandom(midhugs);
+
+        if (argstring == "") return `**${getrandom(midhugs)}**`;
+        else if (recievers.length == 0) return `**${msg.author.username} ${getrandom(lefthugs)} ${getrandom(righthugs)} ${argstring}**`;
+        else {
             let starthug = getrandom(lefthugs);
-            msg.channel.send(`**${msg.author.username}: ${starthug} ${argstring} ?**`).then(botmsg => {
-                botmsg.react(approveemoji);
-                botmsg.awaitReactions(
-                    (reaction, reacter) => reaction.emoji.name == approveemoji && reacter.id == reciever.id,
-                    { max: 1, time: 600000, errors: ['time'] }
-                ).then(() => {
-                    botmsg.edit(`**${msg.author.username} ${starthug} ${getrandom(righthugs)} ${reciever.username}**`);
-                }).catch(() => {});
+            const botmsg = await msg.channel.send(`**${msg.author.username}: ${starthug} ${argstring} ?**`);
+            botmsg.react(approveemoji);
+            
+            const collector = botmsg.createReactionCollector(
+                (reaction, reacter) => reaction.emoji.name == approveemoji && recievers.includes(reacter.id),
+                { time: timeout * 1000 * 60 }
+            );
+
+            let hugline = starthug;
+            let usernameline = msg.author.username;
+            let recievernumber = 0;
+
+            collector.on('collect', (reaction, user) => {
+                const hug = getrandom(recievernumber == 0 && recievers.length > 1 ? midhugs : righthugs);
+                usernameline += ", " + user.username;
+                hugline += " " + hug;
+
+                botmsg.edit(`**${hugline}\n${usernameline}**`);
+                recievernumber++;
             });
-        } else if (argstring != "") {
-            return `**${msg.author.username} ${getrandom(lefthugs)} ${getrandom(righthugs)} ${argstring}**`;
-        } else return getrandom(midhugs);
+        };
     },
     help: `
-    Usage 1: hug @mention
-        Asks the mentioned one for a hug
-        If the mentioned person reacts with ${approveemoji} within 10 minutes, the hug is accepted and will be completed.
+    Usage 1: \`hug @mentions\`.
+        Asks the mentioned users for a hug.
+        If the mentioned persons reacts with ${approveemoji} within ${timeout} minutes, the hug is accepted and will be completed.
     
-    Usage 2: hug [text]
+    Usage 2: \`hug [text]\`
         Will hug what's provided
     
-    Usage 3: hug
+    Usage 3: \`hug\`
         Will send an ascci hug.
     `
 }
