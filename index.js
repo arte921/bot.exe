@@ -58,7 +58,7 @@ client.on("message", async msg => {
     config.errands.enabled.forEach(name => require(path.join(cwd, "utils", name + ".js"))(msg, config));
 
     if (
-        msg.content.slice(0, config.prefix.length).toLowerCase() != config.prefix.toLowerCase() || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
+        !msg.content.toLowerCase().startsWith(config.prefix.toLowerCase()) || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
         (permission_level < permissions.trialmod && config.blocked_channels.includes(msg.channel.id))  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
     ) return;   // Then stop
 

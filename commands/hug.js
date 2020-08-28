@@ -38,7 +38,7 @@ module.exports = {
 
             let joined = [];
 
-            collector.on('collect', (reaction, user) => {
+            collector.on('collect', (_, user) => {
                 if (joined.includes(user.id)) return;
                 joined.push(user.id);
 
