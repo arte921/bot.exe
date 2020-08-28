@@ -7,12 +7,12 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 module.exports = {
     permission: permissions.sysadmin,
     code: async (msg, argstring, config) => {
+        msg.react("🛠");
         let lastid = msg.id;
 
         let allmessages = [];
 
-        let done = false;
-        while (!done) {
+        while (true) {
             const messages = (await msg.channel.messages.fetch({
                 limit: 100,
                 before: lastid
@@ -28,7 +28,7 @@ module.exports = {
 
             allmessages.push(...messages.map(message => message.content));
             
-            done = messages.length < 100;
+            if (messages.length < 100) break;
         }
 
         console.log(allmessages.length);
