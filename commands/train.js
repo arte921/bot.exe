@@ -50,7 +50,7 @@ module.exports = {
         allmessages = {
             intents: allmessages.map((message, index) => {
                 return {
-                    tag: message.content,
+                    tag: Math.random(),
                     patterns: allmessages.slice(index, restrict(index + patternlimit, 0, allmessages.length)),
                     responses: allmessages.slice(restrict(index - responselimit, 0, allmessages.length), index),
                     context_set: ""
@@ -65,7 +65,7 @@ module.exports = {
         await msg.author.send({files: [file]}).catch(() => failed = true);
         if (failed) return "File too large for Discord!";
         msg.react("👍");
-        await unlink(file);
+        // await unlink(file);
     },
     help: ``
 }
