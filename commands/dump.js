@@ -33,12 +33,12 @@ module.exports = {
 
         console.log(allmessages.length);
 
-
-        const file = path.join("temp", `${msg.channel.id}_${Date.now()}.json`);
+        const file = path.join("temp", `${msg.channel.id}_chat.json`);
         await writeFile(file, JSON.stringify(allmessages));
-        let failed = false;
-        await msg.channel.send({files: [file]}).catch(() => failed = true);
-        if (failed) return "File too large for Discord!";
+        msg.react("👍");
+        // let failed = false;
+        // await msg.channel.send({files: [file]}).catch(() => failed = true);
+        // if (failed) return "File too large for Discord!";
         // await unlink(file);
     },
     help: ``
