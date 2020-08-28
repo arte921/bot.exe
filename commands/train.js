@@ -30,7 +30,10 @@ module.exports = {
                 before: lastid
             })).map(message => {
                 return {
-                    content: message.content,
+                    content: message.content
+                        .toLowerCase()
+                        .replace(/\*/g, "")
+                        .replace(/`/g, ""),
                     id: message.id
                 };
             });
