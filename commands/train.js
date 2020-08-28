@@ -61,7 +61,8 @@ module.exports = {
         let failed = false;
         await msg.author.send({files: [file]}).catch(() => failed = true);
         if (failed) return "File too large for Discord!";
-        // await unlink(file);
+        msg.react("👍");
+        await unlink(file);
     },
     help: ``
 }
