@@ -2,7 +2,7 @@ const righthugs = ["⊂(・﹏・⊂)","ლ(・ヮ・ლ)","⊂(・ヮ・⊂)", 
 const lefthugs = ["(つ◉益◉)つ", "(っಠ‿ಠ)っ", "ʕっ•ᴥ•ʔっ", "（っ・∀・）っ", "(っ⇀⑃↼)っ", "(つ´∀｀)つ", "(つ▀¯▀)つ", "(っ´▽｀)っ", "(づ￣ ³￣)づ", "(.づ◡﹏◡)づ.", "(っ*´∀｀*)っ", "(っ⇀`皿′↼)っ", "(.づσ▿σ)づ."];
 const midhugs = ["⊂（♡⌂♡）⊃", "⊂(◉‿◉)つ", "＼(^o^)／", "d=(´▽｀)=b", "⊂( ◜◒◝ )⊃", "⊂((・▽・))⊃"];
 
-const getrandom = (array) => array[Math.floor(Math.random() * array.length)];
+const getrandom = array => array[Math.floor(Math.random() * array.length)];
 
 const approveemoji = "✨";
 const timeout = 60; // minutes
@@ -34,15 +34,20 @@ module.exports = {
 
             let hugline = starthug;
             let usernameline = msg.author.username;
-            let recievernumber = 0;
+            let first = true;
+
+            let joined = [];
 
             collector.on('collect', (reaction, user) => {
-                const hug = getrandom(recievernumber == 0 && recievers.length > 1 ? midhugs : righthugs);
+                if (joined.includes(user.id)) return;
+                joined.push(user.id);
+
+                const hug = getrandom(first && recievers.length > 1 ? midhugs : righthugs);
                 usernameline += ", " + user.username;
                 hugline += " " + hug;
 
                 botmsg.edit(`**${hugline}\n${usernameline}**`);
-                recievernumber++;
+                first = false;
             });
         };
     },
