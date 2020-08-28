@@ -69,7 +69,6 @@ client.on("message", async msg => {
     const argstring = message.substr(firstspace + 1);   // Get the string of arguments
     console.log(msg.author.tag, "   ", message);    // Log who runs what command
     
-    if (command == "reload" && permission_level >= permissions.sysadmin) return reload(argstring != "config", true).then(() => msg.react("👍"));
     if (!commandcache[command]) return msg.channel.send(config.storage[command] || "That's not a command!");
     if (config.blocklist.includes(command)) return msg.channel.send("That command is blocked on this server!");
     if (permission_level < commandcache[command].permission) return msg.channel.send("You aren't allowed to use this command!");
