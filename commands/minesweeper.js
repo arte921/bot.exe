@@ -36,6 +36,12 @@ const getbombs = (posx, posy, map) => {
     return bombs;
 
 };
+/*
+const laymine = (x, y, map) => {
+    if (x == 0 || x == map[0].length) return false;
+    if (y == 0 || y == map.length) return false;
+    if (map[y][x - 1] || map[y - 1][x]) return false;
+};*/
 
 module.exports = {
     permission: permissions.member,
