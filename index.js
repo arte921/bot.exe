@@ -55,8 +55,6 @@ client.on("message", async msg => {
     if (msg.member.permissions.has("KICK_MEMBERS")) permission_level = permissions.moderator;
     if (globalconfig.sysadmins.includes(msg.author.id)) permission_level = permissions.sysadmin;
 
-    config.errands.enabled.forEach(name => require(path.join(cwd, "utils", name + ".js"))(msg, config));
-
     if (
         !msg.content.toLowerCase().startsWith(config.prefix.toLowerCase()) || // Does it start with prefix? Prefix can be capitalized for mobile users with auto capitalisation.
         (permission_level < permissions.trialmod && config.blocked_channels.includes(msg.channel.id))  // If bot isn't allowed in channel. Moderators/sysadmins can use bot anywhere.
