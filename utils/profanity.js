@@ -1,4 +1,4 @@
-const badwords = ["simp"];
+const badwords = [ "simp", "heck", "no" ];
 
 module.exports = (msg, config) => {
     let naughty = false;
