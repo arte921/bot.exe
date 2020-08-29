@@ -60,12 +60,11 @@ module.exports = {
 
         const file = path.join("temp", `${msg.channel.id}_chat.json`);
         await writeFile(file, JSON.stringify(allmessages));
-        // return `Indexed ${allmessages.length} messages in ${Math.round((Date.now() - starttime) / 1000)} seconds for usage in chat command.`
         let failed = false;
         await msg.author.send({files: [file]}).catch(() => failed = true);
         if (failed) return "File too large for Discord!";
         msg.react("👍");
-        // await unlink(file);
+        await unlink(file);
     },
     help: ``
 }
