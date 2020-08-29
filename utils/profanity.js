@@ -8,7 +8,7 @@ module.exports = (msg, config) => {
     for (const badword of badwords) {
         if (msg.content.includes(badword)) {
             naughty = true;
-            finalmessage = finalmessage.replace(new RegExp(badword, "ig"), "#".repeat(badword.length));
+            finalmessage = finalmessage.replace(new RegExp(badword, "ig"), "nya");
         };
     };
     
