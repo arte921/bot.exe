@@ -88,5 +88,13 @@ client.on("message", async msg => {
 // Runs when added to new server.
 client.on("guildCreate", newguild);
 
- // load the configs for first time
-reload().then(() => client.login(globalconfig.token));
+const backup = () => {
+    const file = path.join(cwd, "database", "storage", "servers.json");
+    globalconfig.sysadmins.forEach(adminid => client.users.cache.get(adminid).send({files: [file]}).catch(console.log));
+};
+
+// load the configs for first time
+reload().then(async () => {
+    await client.login(globalconfig.token);
+    setInterval(backup, 1000 * 60 * 60);
+});
