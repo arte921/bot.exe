@@ -2,19 +2,18 @@ const badwords = ["simp"];
 
 module.exports = (msg, config) => {
     let naughty = false;
-    let words = msg.content.split(" ");
-    
-    words = words.map(word => {
-        if (badwords.includes(word)) {
+
+    let finalmessage = msg.content;
+
+    for (const badword of badwords) {
+        if (msg.content.includes(badword)) {
             naughty = true;
-            return "#".repeat(word.length);
-        } else {
-            return word;
-        }
-    });
+            finalmessage = finalmessage.replace(new RegExp(badword, "ig"), "#".repeat(badword.length));
+        };
+    };
     
     if (naughty) {
-        msg.delete().catch((e) => {});
-        msg.channel.send("`" + msg.author.username + "`: " + words.join(" "));
+        msg.delete().catch(() => {});
+        msg.channel.send("`" + msg.author.username + "`: " + finalmessage);
     }
 }
