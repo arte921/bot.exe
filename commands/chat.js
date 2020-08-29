@@ -19,7 +19,7 @@ const getrandom = (array) => array[Math.floor(Math.random() * array.length)];
 
 // TODO prevent errors on incorrect input
 module.exports = {
-    permission: permissions.member,
+    permission: permissions.sysadmin,
     code: async (msg, argstring, config) => {
         const input = argstring.toLowerCase();
         
