@@ -6,7 +6,7 @@ const math = require("mathjs");
 
 
 module.exports = {
-    permission: permissions.sysadmin,
+    permission: permissions.member,
     code: async (msg, argstring, config) => {
         try{
             return math.evaluate(argstring).toString();
