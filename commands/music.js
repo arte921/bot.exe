@@ -17,9 +17,6 @@ let channels = {}
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        // to prevent users from being able to start music, but not control it
-        if (!globalconfig.caching) return "This command only works if command caching is enabled.";
-
         if (!msg.member.voice.channel) return "You need to join a voice channel to use the music command";
 
         const channel = msg.member.voice.channel.id;
