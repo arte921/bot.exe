@@ -23,4 +23,4 @@ module.exports = {
     
     Requires banning privilege for both the bot and whoever issues the command.
     `
-}
+};

@@ -74,7 +74,8 @@ client.on("message", async msg => {
         .code(msg, argstring, config)
         .catch(console.log);
         
-    if (result == undefined); else if (typeof(result) == "object") servers = result
+    if (result == undefined);
+    else if (typeof(result) == "object") servers = result
     else if (typeof(result) == "string" && result != "") {
         if (result.length > 2000) {
             const file = path.join(cwd, "temp", command + Date.now() + ".txt");
