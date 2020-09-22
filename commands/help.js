@@ -4,17 +4,17 @@ const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"));
 
+const starttext = "Available commands: \n\n";
+const permissiontexts = [
+    "Anyone can use",
+    "Trialadmin or higher",
+    "Moderator or higher",
+    "Sysadmin only"
+];
 
 module.exports = {
     permission: permissions.member,
     code: async (msg, argstring, config) => {
-        const starttext = `
-            All commands prefixed with ${config.prefix}, without additional spaces.
-
-            Available commands:
-
-            `;
-
         if (argstring == "") {
             let commands = fs
                 .readdirSync(path.join(cwd, "commands"))
@@ -24,29 +24,16 @@ module.exports = {
                             command.includes(blockedcommand)
                         )
                 )
-                .join("\n")
-                .replace(/.js/g, "");
-                
-            return starttext + commands;
+                .join("`, `")
+                .replace(/.js/g, "");                
+            return `${starttext} \`${commands}\``;
         } else {
             const commandpath = path.join(cwd, "commands", argstring + ".js");
             if (!fs.existsSync(commandpath)) return `Command "${argstring}" doesn't exist.`;
             const command = require(commandpath)
             const body = command.help;
             if (body == "") return `No help page found for "${argstring}".`;
-
-            const permissiontexts = [
-                "Anyone can use",
-                "Trialadmin or higher",
-                "Moderator or higher",
-                "Sysadmin only"
-            ];
-
-            return `
-                Permission level: ${permissiontexts[command.permission]}
-
-                ${command.help}
-            `;
+            return `Permission level: ${permissiontexts[command.permission]}\n\n${command.help}`;
         }
 
     },

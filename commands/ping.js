@@ -10,6 +10,6 @@ module.exports = {
         msg.channel.send("Hello " + msg.author.username);   // no return, for reliability
     },
     help: `
-    Returns a text plus the name of who sent the text.
+    Returns a text plus the name of who issued the command.
     `
 }

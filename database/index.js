@@ -26,4 +26,4 @@ module.exports = {
         const raw = await readFile(file)
         return JSON.parse(raw.toString());
     }
-}
+};
