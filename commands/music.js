@@ -5,14 +5,21 @@ const cwd = process.cwd();
 const { save, load, file } = require(path.join(cwd, "database", "index.js"));
 const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"));
 
-
 const notplaying = "Nothing playing!";
 
-const globalconfig = load("config");
+const channels = {}
 
-let channels = {}
-
-
+const stop = (channel) => {
+    try {
+        channels[channel].dispatcher.destroy();
+    } finally {
+        try {
+            channels[channel].dcchannel.leave();
+        } finally {
+            delete channels[channel];
+        }
+    }
+}
 
 module.exports = {
     permission: permissions.member,
@@ -21,7 +28,7 @@ module.exports = {
 
         const channel = msg.member.voice.channel.id;
         
-        let splitargstring = argstring.split(" ");
+        const splitargstring = argstring.split(" ");
 
         if (splitargstring[0] != "play" && !channels[channel]) return notplaying;
 
@@ -30,7 +37,7 @@ module.exports = {
                 channels[channel] = {}
 
                 if (msg.member.voice.channel) channels[channel].dcchannel = msg.member.voice.channel;
-                let connection = await channels[channel].dcchannel.join();
+                const connection = await channels[channel].dcchannel.join();
                 try{
                     channels[channel].dispatcher = connection.play(
                         ytdl(
@@ -38,9 +45,11 @@ module.exports = {
                             { filter: "audioonly" }
                         )
                     );
+                    setTimeout(() => stop(channel), 1000 * 60 * 60 * 4);    // to prevent memory leak if someone keeps it running
                     msg.react("👍");
                 } catch (e) {
-                    msg.channel.send("Please specify a youtube url 😅");
+                    console.log(e);
+                    msg.channel.send("Please specify a youtube url");
                     channels[channel].dcchannel.leave();
                 }
                 break;
@@ -61,14 +70,8 @@ module.exports = {
                 }
                 break;
             case "stop":
-                try {
-                    channels[channel].dispatcher.destroy();
-                    msg.react("👍");
-                } finally {
-                    try {
-                        channels[channel].dcchannel.leave();
-                    } catch(e) {}
-                }
+                stop(channel);
+                msg.react("👍");
                 break;
             case "volume":
                 try {
