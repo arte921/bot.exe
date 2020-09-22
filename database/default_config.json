@@ -1,10 +1,7 @@
 {
     "name": "placeholder",
     "prefix": "ssh-",
-    "blocklist": [
-        "kick",
-        "ban"
-    ],
+    "blocklist": [],
     "blocked_channels": [],
     "storage": {
         "placeholder": true

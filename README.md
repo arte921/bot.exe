@@ -12,4 +12,4 @@ You setup the bot by running the `installer.js` script in the `database` folder.
 
 If you want to have a custom default config for new servers, you can do so by either editing `database/default_config.json` (not recommended, because it might cause conflicts when updating from github) or by overriding values in the `default_config` key in the `database/storage/config.json`. (An example is given by overriding the prefix). Note that this, for now, only works for the top level keys, so subobjects need to be fully copied over.
 
-You can also just add it to your server using [this link](https://discord.com/api/oauth2/authorize?client_id=576435404107022347&permissions=3205184&scope=bot).
+You can also just add it to your server using [this link](https://discord.com/api/oauth2/authorize?client_id=576435404107022347&permissions=3206214&scope=bot).
