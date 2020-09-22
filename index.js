@@ -18,8 +18,7 @@ const reload = async (clearcache = true, online = false) => {
     if (online) client.user.setActivity(globalconfig.gamestatus); // set game status in case it changed in config. only when online to prevent error.
 
     const commands = await fs.promises.readdir(path.join(cwd, "commands"));
-    commands.forEach(command => {
-        
+    commands.forEach((command) => {
         commandcache[command.replace(".js", "")] = require(path.join(cwd, "commands", command));
     });
 };

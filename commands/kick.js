@@ -10,14 +10,12 @@ module.exports = {
         let args = argstring.split(" ");
         if (!args[0]) return errors.syntax;
         const user = msg.mentions.users.first();
-        if (user) {
-            const member = msg.guild.member(user);
-            if (member) {
-                member.kick(msg.author.tag).catch((e) => {
-                    return errors.botperms;
-                });
-            }
-        }
+        if (!user) return errors.syntax;
+        const member = msg.guild.member(user);
+        if (!member) return errors.syntax;
+        member.kick(msg.author.tag).catch((e) => {
+            msg.channel.send(errors.botperms);
+        });
     },
     help: `
     Usage: \`kick [metion of user to kick]\`.
