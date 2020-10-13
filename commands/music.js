@@ -10,6 +10,7 @@ const notplaying = "Nothing playing!";
 const channels = {}
 
 const stop = (channel) => {
+    if (!channels[channel]) return;
     try {
         channels[channel].dispatcher.destroy();
     } finally {

@@ -44,7 +44,7 @@ client.on("ready", async () => {
 });
 
 // Runs on new message.
-client.on("message", async msg => {
+client.on("message", async (msg) => {
     if (msg.author.bot || msg.channel.type == "dm") return;
 
     const config = servers[msg.guild.id.toString()];   // Load the config for the guild this message is from
