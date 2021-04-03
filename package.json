@@ -20,13 +20,13 @@
   },
   "homepage": "https://github.com/arte921/bot.exe#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "discord.js": "^12.2.0",
+    "@discordjs/opus": "^0.3.3",
+    "discord.js": "^12.5.3",
     "ffmpeg": "0.0.4",
-    "ffmpeg-static": "^4.2.6",
+    "ffmpeg-static": "^4.3.0",
     "fluent-ffmpeg": "^2.1.2",
-    "mathjs": "^7.2.0",
+    "mathjs": "^7.6.0",
     "request": "^2.88.2",
-    "ytdl-core": "^3.2.0"
+    "ytdl-core": "^3.4.2"
   }
 }
