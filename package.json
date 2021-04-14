@@ -26,7 +26,7 @@
     "ffmpeg-static": "^4.3.0",
     "fluent-ffmpeg": "^2.1.2",
     "mathjs": "^7.6.0",
-    "multiplanner": "2.0.9",
+    "multiplanner": "2.0.10",
     "request": "^2.88.2",
     "ytdl-core": "^3.4.2"
   }
