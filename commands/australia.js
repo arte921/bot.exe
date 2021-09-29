@@ -8,8 +8,7 @@ const { permissions, errors } = require(path.join(cwd, "utils", "constants.js"))
 
 module.exports = {
     permission: permissions.member,
-    code: async (msg, argstring, config) => {
-        return argstring
+    code: async (msg, argstring, config) =>  argstring
             .split("")
             .reverse()
             .map((char) => {
@@ -19,8 +18,7 @@ module.exports = {
                     ];
                 } else return char;
             })
-        .join("");
-    },
+        .join(""),
     help: `
     Returns the given text but stylized sᴉɥʇ ǝʞᴉl.
     `
